@@ -3,12 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\CompanyManagerRepository;
+use App\Repository\AircraftRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompanyManagerRepository::class)]
+#[ORM\Entity(repositoryClass: AircraftRepository::class)]
 #[ApiResource]
-class CompanyWorker
+class Aircraft
 {
     /**
      * @var int|null
@@ -19,16 +19,22 @@ class CompanyWorker
     private ?int $id = null;
 
     /**
-     * @var User|null
+     * @var AircraftModel|null
      */
-    #[ORM\ManyToOne(inversedBy: 'companyManagers')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $worker = null;
+    private ?AircraftModel $model = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    private ?string $serialNumber = null;
 
     /**
      * @var Company|null
      */
-    #[ORM\ManyToOne(inversedBy: 'companyWorkers')]
+    #[ORM\ManyToOne(inversedBy: 'aircrafts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
 
@@ -41,20 +47,39 @@ class CompanyWorker
     }
 
     /**
-     * @return User|null
+     * @return AircraftModel|null
      */
-    public function getWorker(): ?User
+    public function getModel(): ?AircraftModel
     {
-        return $this->worker;
+        return $this->model;
     }
 
     /**
-     * @param User|null $worker
+     * @param AircraftModel|null $model
      * @return $this
      */
-    public function setWorker(?User $worker): self
+    public function setModel(?AircraftModel $model): self
     {
-        $this->worker = $worker;
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSerialNumber(): ?string
+    {
+        return $this->serialNumber;
+    }
+
+    /**
+     * @param string $serialNumber
+     * @return $this
+     */
+    public function setSerialNumber(string $serialNumber): self
+    {
+        $this->serialNumber = $serialNumber;
 
         return $this;
     }
