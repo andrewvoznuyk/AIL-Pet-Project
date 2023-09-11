@@ -40,9 +40,11 @@ class GetAirportsDataInterface
         $this->denormalizer = $denormalizer;
         $this->validator = $validator;
     }
-    public function airportsApiParse():void{
+
+    public function airportsApiParse(): void
+    {
         $response = $this->client->request('GET', 'https://flight-radar1.p.rapidapi.com/airports/list', [
-            'headers'=>[
+            'headers' => [
                 'X-RapidAPI-Key' => '47e2b070fdmsh932f2501fdcf894p14620fjsn62d151a62acc',
                 'X-RapidAPI-Host' => 'flight-radar1.p.rapidapi.com']
         ]);
@@ -51,10 +53,10 @@ class GetAirportsDataInterface
         $content = $response->getContent();
         $requestData = json_decode($content, true);
 
-        $airportData=$requestData['rows'];
+        $airportData = $requestData['rows'];
 
-        for ($i=0;$i<10;$i++){
-            $airport=new Airport();
+        for ($i = 0; $i < 10; $i++) {
+            $airport = new Airport();
             $airport = $this->denormalizer->denormalize($airportData[$i], Airport::class, "array");
             $errors = $this->validator->validate($airportData[$i]);
 
