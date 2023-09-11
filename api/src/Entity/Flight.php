@@ -52,6 +52,19 @@ class Flight
     #[ORM\OneToMany(mappedBy: 'flight', targetEntity: Ticket::class)]
     private Collection $tickets;
 
+    /**
+     * @var CompanyFlights|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'flights')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CompanyFlights $fromLocation = null;
+
+    /**
+     * @var CompanyFlights|null
+     */
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?CompanyFlights $toLocation = null;
 
     /**
      *
@@ -81,7 +94,7 @@ class Flight
      * @param Aircraft|null $aircraft
      * @return $this
      */
-    public function setAircraft(?Aircraft $aircraft): static
+    public function setAircraft(?Aircraft $aircraft): self
     {
         $this->aircraft = $aircraft;
 
@@ -100,7 +113,7 @@ class Flight
      * @param \DateTimeInterface $departure
      * @return $this
      */
-    public function setDeparture(\DateTimeInterface $departure): static
+    public function setDeparture(\DateTimeInterface $departure): self
     {
         $this->departure = $departure;
 
@@ -119,7 +132,7 @@ class Flight
      * @param \DateTimeInterface $arrival
      * @return $this
      */
-    public function setArrival(\DateTimeInterface $arrival): static
+    public function setArrival(\DateTimeInterface $arrival): self
     {
         $this->arrival = $arrival;
 
@@ -138,7 +151,7 @@ class Flight
      * @param bool $isCompleted
      * @return $this
      */
-    public function setIsCompleted(bool $isCompleted): static
+    public function setIsCompleted(bool $isCompleted): self
     {
         $this->isCompleted = $isCompleted;
 
@@ -157,7 +170,7 @@ class Flight
      * @param Ticket $ticket
      * @return $this
      */
-    public function addTicket(Ticket $ticket): static
+    public function addTicket(Ticket $ticket): self
     {
         if (!$this->tickets->contains($ticket)) {
             $this->tickets->add($ticket);
@@ -171,7 +184,7 @@ class Flight
      * @param Ticket $ticket
      * @return $this
      */
-    public function removeTicket(Ticket $ticket): static
+    public function removeTicket(Ticket $ticket): self
     {
         if ($this->tickets->removeElement($ticket)) {
             // set the owning side to null (unless already changed)
@@ -179,6 +192,44 @@ class Flight
                 $ticket->setFlight(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return CompanyFlights|null
+     */
+    public function getFromLocation(): ?CompanyFlights
+    {
+        return $this->fromLocation;
+    }
+
+    /**
+     * @param CompanyFlights|null $fromLocation
+     * @return $this
+     */
+    public function setFromLocation(?CompanyFlights $fromLocation): static
+    {
+        $this->fromLocation = $fromLocation;
+
+        return $this;
+    }
+
+    /**
+     * @return CompanyFlights|null
+     */
+    public function getToLocation(): ?CompanyFlights
+    {
+        return $this->toLocation;
+    }
+
+    /**
+     * @param CompanyFlights|null $toLocation
+     * @return $this
+     */
+    public function setToLocation(?CompanyFlights $toLocation): static
+    {
+        $this->toLocation = $toLocation;
 
         return $this;
     }
