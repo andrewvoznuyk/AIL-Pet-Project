@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class GetAirportsDataInterface
+class GetAirportsDataService
 {
     /**
      * @var HttpClientInterface

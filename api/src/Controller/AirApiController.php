@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Airport;
-use App\Services\GetAirportsDataInterface;
+use App\Services\GetAirportsDataService;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use App\Entity\User;
@@ -21,14 +21,14 @@ class AirApiController extends AbstractController
 {
 
     /**
-     * @var GetAirportsDataInterface
+     * @var GetAirportsDataService
      */
-    private GetAirportsDataInterface $getAirportsData;
+    private GetAirportsDataService $getAirportsData;
 
     /**
-     * @param GetAirportsDataInterface $getAirportsData
+     * @param GetAirportsDataService $getAirportsData
      */
-    public function __construct(GetAirportsDataInterface $getAirportsData)
+    public function __construct(GetAirportsDataService $getAirportsData)
     {
         $this->getAirportsData = $getAirportsData;
     }
@@ -41,11 +41,11 @@ class AirApiController extends AbstractController
     public function loadAirports(Request $request): JsonResponse
     {
         if (in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
-            return new JsonResponse("404",Response::HTTP_NOT_FOUND);
+            return new JsonResponse("404", Response::HTTP_NOT_FOUND);
         }
 
         $this->getAirportsData->airportsApiParse();
 
-        return new JsonResponse([],Response::HTTP_OK);
+        return new JsonResponse([], Response::HTTP_OK);
     }
 }
