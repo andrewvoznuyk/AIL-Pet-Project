@@ -63,14 +63,19 @@ class RegistrationController extends AbstractController
         $requestData = json_decode($request->getContent(), true);
         $user = $this->denormalizer->denormalize($requestData, User::class, "array");
 
+        $this->validator->validate($user);
+
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashedPassword);
-
-        $this->validator->validate($user);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
+        /*$response = $client->request('GET', 'https://...', [
+            'headers' => [
+                'Accept' => 'application/json',
+            ],
+        ]);*/
         return new JsonResponse($user);
     }
 }
