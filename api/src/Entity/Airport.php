@@ -2,16 +2,41 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\CityRepository;
+use App\Repository\AirportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: CityRepository::class)]
-#[ApiResource]
+#[ORM\Entity(repositoryClass: AirportRepository::class)]
+#[\App\Validator\Constraints\Airport]
+#[\ApiPlatform\Core\Annotation\ApiResource(
+    collectionOperations: [
+        "get"  => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:collection:airport"]]
+        ],
+        "post" => [
+            "method"                  => "POST",
+            "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
+            "denormalization_context" => ["groups" => ["post:collection:airport"]],
+            "normalization_context"   => ["groups" => ["get:item:airport"]]
+        ]
+    ],
+    attributes: [
+        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    "name" => "partial",
+    "city" => "partial",
+    "country" => "partial",
+])]
 class Airport
 {
     /**
@@ -41,16 +66,16 @@ class Airport
     private ?string $country = null;
 
     /**
-     * @var string|null
+     * @var float|null
      */
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 6)]
-    private ?string $longitude = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $lon = null;
 
     /**
-     * @var string|null
+     * @var float|null
      */
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 6)]
-    private ?string $latitude = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $lat = null;
 
     /**
      * @return int|null
@@ -120,44 +145,6 @@ class Airport
     /**
      * @return string|null
      */
-    public function getLongitude(): ?string
-    {
-        return $this->longitude;
-    }
-
-    /**
-     * @param string $longitude
-     * @return $this
-     */
-    public function setLongitude(string $longitude): static
-    {
-        $this->longitude = $longitude;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getLatitude(): ?string
-    {
-        return $this->latitude;
-    }
-
-    /**
-     * @param string $latitude
-     * @return $this
-     */
-    public function setLatitude(string $latitude): static
-    {
-        $this->latitude = $latitude;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getCity(): ?string
     {
         return $this->city;
@@ -170,6 +157,44 @@ class Airport
     public function setCity(string $city): static
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getLon(): ?float
+    {
+        return $this->lon;
+    }
+
+    /**
+     * @param float|null $lon
+     * @return $this
+     */
+    public function setLon(?float $lon): static
+    {
+        $this->lon = $lon;
+
+        return $this;
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getLat(): ?float
+    {
+        return $this->lat;
+    }
+
+    /**
+     * @param float|null $lat
+     * @return $this
+     */
+    public function setLat(?float $lat): static
+    {
+        $this->lat = $lat;
 
         return $this;
     }
