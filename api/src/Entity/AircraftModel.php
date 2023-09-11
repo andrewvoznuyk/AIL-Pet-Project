@@ -61,6 +61,18 @@ class AircraftModel
     private ?int $rowWidth = null;
 
     /**
+     * @var int|null
+     */
+    #[ORM\Column]
+    private ?int $cruisingSpeed = null;
+
+    /**
+     * @var int|null
+     */
+    #[ORM\Column]
+    private ?int $maxLuggageWeight = null;
+
+    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -197,6 +209,44 @@ class AircraftModel
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getCruisingSpeed(): ?int
+    {
+        return $this->cruisingSpeed;
+    }
+
+    /**
+     * @param int $cruisingSpeed
+     * @return $this
+     */
+    public function setCruisingSpeed(int $cruisingSpeed): self
+    {
+        $this->cruisingSpeed = $cruisingSpeed;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxLuggageWeight(): ?int
+    {
+        return $this->maxLuggageWeight;
+    }
+
+    /**
+     * @param int $maxLuggageWeight
+     * @return $this
+     */
+    public function setMaxLuggageWeight(int $maxLuggageWeight): self
+    {
+        $this->maxLuggageWeight = $maxLuggageWeight;
 
         return $this;
     }

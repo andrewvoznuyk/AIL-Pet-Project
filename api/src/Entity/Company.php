@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
@@ -29,14 +30,39 @@ class Company
     /**
      * @var Collection|ArrayCollection
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyWorker::class)]
-    private Collection $companyWorkers;
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Aircraft::class, orphanRemoval: true)]
+    private Collection $aircrafts;
 
     /**
      * @var Collection|ArrayCollection
      */
-    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Aircraft::class, orphanRemoval: true)]
-    private Collection $aircrafts;
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Rating::class)]
+    private Collection $ratings;
+
+    /**
+     * @var \DateTimeInterface|null
+     */
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
+
+    /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'managerAtCompany', targetEntity: User::class)]
+    private Collection $managers;
+
+    /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyFlights::class)]
+    private Collection $companyFlights;
+
+    /**
+     * @var User|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'companies')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
 
     /**
      *
@@ -45,6 +71,9 @@ class Company
     {
         $this->companyWorkers = new ArrayCollection();
         $this->aircrafts = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
+        $this->managers = new ArrayCollection();
+        $this->companyFlights = new ArrayCollection();
     }
 
     /**
@@ -70,44 +99,6 @@ class Company
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, CompanyWorker>
-     */
-    public function getCompanyWorkers(): Collection
-    {
-        return $this->companyWorkers;
-    }
-
-    /**
-     * @param CompanyWorker $companyWorker
-     * @return $this
-     */
-    public function addCompanyWorker(CompanyWorker $companyWorker): self
-    {
-        if (!$this->companyWorkers->contains($companyWorker)) {
-            $this->companyWorkers->add($companyWorker);
-            $companyWorker->setCompany($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param CompanyWorker $companyWorker
-     * @return $this
-     */
-    public function removeCompanyWorker(CompanyWorker $companyWorker): self
-    {
-        if ($this->companyWorkers->removeElement($companyWorker)) {
-            // set the owning side to null (unless already changed)
-            if ($companyWorker->getCompany() === $this) {
-                $companyWorker->setCompany(null);
-            }
-        }
 
         return $this;
     }
@@ -146,6 +137,158 @@ class Company
                 $aircraft->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    /**
+     * @param Rating $rating
+     * @return $this
+     */
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Rating $rating
+     * @return $this
+     */
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getCompany() === $this) {
+                $rating->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param \DateTimeInterface $date
+     * @return $this
+     */
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getManagers(): Collection
+    {
+        return $this->managers;
+    }
+
+    /**
+     * @param User $manager
+     * @return $this
+     */
+    public function addManager(User $manager): self
+    {
+        if (!$this->managers->contains($manager)) {
+            $this->managers->add($manager);
+            $manager->setManagerAtCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param User $manager
+     * @return $this
+     */
+    public function removeManager(User $manager): self
+    {
+        if ($this->managers->removeElement($manager)) {
+            // set the owning side to null (unless already changed)
+            if ($manager->getManagerAtCompany() === $this) {
+                $manager->setManagerAtCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, CompanyFlights>
+     */
+    public function getCompanyFlights(): Collection
+    {
+        return $this->companyFlights;
+    }
+
+    /**
+     * @param CompanyFlights $companyFlight
+     * @return $this
+     */
+    public function addCompanyFlight(CompanyFlights $companyFlight): self
+    {
+        if (!$this->companyFlights->contains($companyFlight)) {
+            $this->companyFlights->add($companyFlight);
+            $companyFlight->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param CompanyFlights $companyFlight
+     * @return $this
+     */
+    public function removeCompanyFlight(CompanyFlights $companyFlight): self
+    {
+        if ($this->companyFlights->removeElement($companyFlight)) {
+            // set the owning side to null (unless already changed)
+            if ($companyFlight->getCompany() === $this) {
+                $companyFlight->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return User|null
+     */
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User|null $owner
+     * @return $this
+     */
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
