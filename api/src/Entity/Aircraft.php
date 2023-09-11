@@ -5,8 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AircraftRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: AircraftRepository::class)]
+#[UniqueEntity('serialNumber')]
 #[ApiResource]
 class Aircraft
 {
@@ -28,7 +30,7 @@ class Aircraft
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     private ?string $serialNumber = null;
 
     /**

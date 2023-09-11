@@ -22,6 +22,12 @@ class AircraftModel
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
     private ?string $manufacturer = null;
 
     /**
@@ -172,6 +178,25 @@ class AircraftModel
     public function setRowWidth(int $rowWidth): self
     {
         $this->rowWidth = $rowWidth;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
