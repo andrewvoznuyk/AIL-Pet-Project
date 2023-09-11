@@ -2,16 +2,41 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\CityRepository;
+use App\Repository\AirportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: CityRepository::class)]
+#[ORM\Entity(repositoryClass: AirportRepository::class)]
 #[\App\Validator\Constraints\Airport]
+#[\ApiPlatform\Core\Annotation\ApiResource(
+    collectionOperations: [
+        "get"  => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:collection:airport"]]
+        ],
+        "post" => [
+            "method"                  => "POST",
+            "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
+            "denormalization_context" => ["groups" => ["post:collection:airport"]],
+            "normalization_context"   => ["groups" => ["get:item:airport"]]
+        ]
+    ],
+    attributes: [
+        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    "name" => "partial",
+    "city" => "partial",
+    "country" => "partial",
+])]
 class Airport
 {
     /**
