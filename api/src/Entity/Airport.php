@@ -18,7 +18,7 @@ class Airport
      * @var int|null
      */
     #[ORM\Id]
-    #[Assert\Uuid]
+    #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
