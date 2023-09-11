@@ -33,11 +33,18 @@ class Company
     private Collection $companyWorkers;
 
     /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Aircraft::class, orphanRemoval: true)]
+    private Collection $aircrafts;
+
+    /**
      *
      */
     public function __construct()
     {
         $this->companyWorkers = new ArrayCollection();
+        $this->aircrafts = new ArrayCollection();
     }
 
     /**
@@ -99,6 +106,44 @@ class Company
             // set the owning side to null (unless already changed)
             if ($companyWorker->getCompany() === $this) {
                 $companyWorker->setCompany(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Aircraft>
+     */
+    public function getAircrafts(): Collection
+    {
+        return $this->aircrafts;
+    }
+
+    /**
+     * @param Aircraft $aircraft
+     * @return $this
+     */
+    public function addAircraft(Aircraft $aircraft): self
+    {
+        if (!$this->aircrafts->contains($aircraft)) {
+            $this->aircrafts->add($aircraft);
+            $aircraft->setCompany($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Aircraft $aircraft
+     * @return $this
+     */
+    public function removeAircraft(Aircraft $aircraft): self
+    {
+        if ($this->aircrafts->removeElement($aircraft)) {
+            // set the owning side to null (unless already changed)
+            if ($aircraft->getCompany() === $this) {
+                $aircraft->setCompany(null);
             }
         }
 
