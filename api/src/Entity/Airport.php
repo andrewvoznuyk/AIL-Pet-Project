@@ -154,7 +154,7 @@ class Airport
      * @param string $city
      * @return $this
      */
-    public function setCity(string $city): static
+    public function setCity(string $city): self
     {
         $this->city = $city;
 
@@ -173,7 +173,7 @@ class Airport
      * @param float|null $lon
      * @return $this
      */
-    public function setLon(?float $lon): static
+    public function setLon(?float $lon): self
     {
         $this->lon = $lon;
 
@@ -192,7 +192,7 @@ class Airport
      * @param float|null $lat
      * @return $this
      */
-    public function setLat(?float $lat): static
+    public function setLat(?float $lat): self
     {
         $this->lat = $lat;
 

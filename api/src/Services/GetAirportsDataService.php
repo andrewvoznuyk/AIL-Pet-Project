@@ -55,13 +55,19 @@ class GetAirportsDataService
 
         $airportData = $requestData['rows'];
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < count($airportData); $i++) {
             $airport = new Airport();
+
+            if (!is_double($airportData[$i]['lon']) or !is_double($airportData[$i]['lat'])) {
+                $airportData[$i]['lon'] = (double)$airportData[$i]['lon'];
+                $airportData[$i]['lat'] = (double)$airportData[$i]['lat'];
+            }
+
             $airport = $this->denormalizer->denormalize($airportData[$i], Airport::class, "array");
             $errors = $this->validator->validate($airportData[$i]);
 
             $this->entityManager->persist($airport);
-            $this->entityManager->flush();
+            $this->entityManager->flush($airport);
         }
     }
 }
