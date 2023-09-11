@@ -129,7 +129,7 @@ class Airport
      * @param string $longitude
      * @return $this
      */
-    public function setLongitude(string $longitude): static
+    public function setLongitude(string $longitude): self
     {
         $this->longitude = $longitude;
 
@@ -148,7 +148,7 @@ class Airport
      * @param string $latitude
      * @return $this
      */
-    public function setLatitude(string $latitude): static
+    public function setLatitude(string $latitude): self
     {
         $this->latitude = $latitude;
 
@@ -167,7 +167,7 @@ class Airport
      * @param string $city
      * @return $this
      */
-    public function setCity(string $city): static
+    public function setCity(string $city): self
     {
         $this->city = $city;
 
