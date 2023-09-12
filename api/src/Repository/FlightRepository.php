@@ -20,29 +20,23 @@ class FlightRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Flight::class);
     }
+    public function findAllByFilter($from,$to): array
+    {
+        $qb = $this->createQueryBuilder("flight");
 
-//    /**
-//     * @return Flight[] Returns an array of Flight objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('f.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?Flight
-//    {
-//        return $this->createQueryBuilder('f')
-//            ->andWhere('f.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $this->createQueryBuilder("flight")
+            ->innerJoin('flight.fromLocation', 'fromCompanyFlights')
+            ->innerJoin('flight.toLocation', 'toCompanyFlights')
+            ->innerJoin('fromCompanyFlights.airport', 'fromAirport')
+            ->innerJoin('toCompanyFlights.airport', 'toAirport')
+            ->andWhere($qb->expr()->eq('fromAirport.city', ':from'))
+            ->andWhere($qb->expr()->eq('fromAirport.city', ':to'))
+//          ->andWhere($qb->expr()->gte('f.departureDate', ':departureDate'))
+            ->setParameter('from', $from ? '%' . $from . '%' : '')
+            ->setParameter('to', $to ? '%' . $to . '%' : '')
+//          ->setParameter('departureDate', $departureDate ? '%' . $departureDate . '%' : '')
+            ->orderBy('flight.departure', 'DESC')
+            ->getQuery()->getResult()
+            ;
+    }
 }

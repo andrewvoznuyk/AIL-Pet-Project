@@ -8,9 +8,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FlightRepository::class)]
-#[ApiResource]
+#[\ApiPlatform\Core\Annotation\ApiResource(
+    collectionOperations: [
+        "get"  => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:collection:flight"]]
+        ],
+        "post" => [
+            "method"                  => "POST",
+            "security"                => "is_granted('" . User::ROLE_MANAGER . "')",
+            "denormalization_context" => ["groups" => ["post:collection:flight"]],
+            "normalization_context"   => ["groups" => ["get:item:flight"]]
+        ]
+    ],
+    itemOperations:[
+        "get"  => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:item:flight"]]
+        ],
+        "put"=>[
+            "method"                  => "PUT",
+            "security"                => "is_granted('" . User::ROLE_MANAGER . "')",
+            "denormalization_context" => ["groups" => ["post:item:flight"]],
+            "normalization_context"   => ["groups" => ["get:item:flight"]]
+        ]
+    ],
+    attributes: [
+        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
+    ]
+)]
 class Flight
 {
     /**
@@ -19,6 +48,10 @@ class Flight
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight"
+    ])]
     private ?int $id = null;
 
     /**
@@ -26,25 +59,40 @@ class Flight
      */
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:item:flight"
+    ])]
     private ?Aircraft $aircraft = null;
 
     /**
      * @var \DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:item:flight"
+    ])]
     private ?\DateTimeInterface $departure = null;
 
     /**
      * @var \DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:item:flight"
+    ])]
     private ?\DateTimeInterface $arrival = null;
 
     /**
      * @var bool|null
      */
     #[ORM\Column]
-    private ?bool $isCompleted = null;
+    private bool $isCompleted = false;
 
     /**
      * @var Collection|ArrayCollection
@@ -57,6 +105,11 @@ class Flight
      */
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:item:flight"
+    ])]
     private ?CompanyFlights $fromLocation = null;
 
     /**
@@ -64,6 +117,11 @@ class Flight
      */
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:item:flight"
+    ])]
     private ?CompanyFlights $toLocation = null;
 
     /**
@@ -72,6 +130,8 @@ class Flight
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
+
+        $this->isCompleted=false;
     }
 
     /**
@@ -140,9 +200,9 @@ class Flight
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
-    public function isIsCompleted(): ?bool
+    public function isIsCompleted(): bool
     {
         return $this->isCompleted;
     }
