@@ -18,21 +18,9 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class GetMilesService
 {
     /**
-     * @var HttpClientInterface
-     */
-    private HttpClientInterface $client;
-    /**
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $entityManager;
-    /**
-     * @var DenormalizerInterface
-     */
-    private DenormalizerInterface $denormalizer;
-    /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
 
     /**
      * @param HttpClientInterface $client
@@ -42,10 +30,7 @@ class GetMilesService
      */
     public function __construct(HttpClientInterface $client, EntityManagerInterface $entityManager, DenormalizerInterface $denormalizer, ValidatorInterface $validator)
     {
-        $this->client = $client;
         $this->entityManager = $entityManager;
-        $this->denormalizer = $denormalizer;
-        $this->validator = $validator;
     }
 
     /**
@@ -79,6 +64,7 @@ class GetMilesService
      * @return float
      * @throws Exception
      */
+
     public function getMilesFromCityAtoCityB($departureAirportId, $arrivalAirportId): float
     {
         $departurePoint = $this->entityManager->getRepository(Airport::class, true)->findOneBy($departureAirportId);
