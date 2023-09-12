@@ -28,6 +28,12 @@ class AircraftModel
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    private ?string $code = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
     private ?string $manufacturer = null;
 
     /**
@@ -199,5 +205,22 @@ class AircraftModel
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string|null $code
+     * @return void
+     */
+    public function setCode(?string $code): void
+    {
+        $this->code = $code;
     }
 }
