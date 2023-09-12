@@ -2,15 +2,60 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Action\CreateCompanyAction;
 use App\Repository\CompanyRepository;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get"  => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:collection:company"]]
+        ],
+        "post" => [
+            "method"                  => "POST",
+            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "denormalization_context" => ["groups" => ["post:collection:company"]],
+            "normalization_context"   => ["groups" => ["get:item:company"]],
+            "controller"              => CreateCompanyAction::class
+        ]
+    ],
+    itemOperations: [
+        "get"    => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:item:company"]]
+        ],
+        "put"    => [
+            "method"                  => "PUT",
+            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "denormalization_context" => ["groups" => ["post:collection:company"]],
+            "normalization_context"   => ["groups" => ["get:item:company"]],
+            "controller"              => CreateCompanyAction::class
+        ],
+        "patch"  => [
+            "method"                  => "PATCH",
+            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "denormalization_context" => ["groups" => ["post:collection:company"]],
+            "normalization_context"   => ["groups" => ["get:item:company"]],
+            "controller"              => CreateCompanyAction::class
+        ],
+        "delete" => [
+            "method"                => "DELETE",
+            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
+            "normalization_context" => ["groups" => ["get:item:company"]]
+        ],
+    ],
+    order: ['id' => 'DESC']
+)]
 class Company
 {
     /**
@@ -25,34 +70,45 @@ class Company
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[NotBlank]
+    #[NotNull]
+    #[Groups([
+        "get:collection:company",
+        "post:collection:company",
+        "get:item:company"
+    ])]
     private ?string $name = null;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Aircraft::class, orphanRemoval: true)]
     private Collection $aircrafts;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Rating::class)]
     private Collection $ratings;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var DateTimeInterface|null
      */
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[Groups([
+        "get:collection:company",
+        "get:item:company"
+    ])]
+    private ?DateTimeInterface $date = null;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'managerAtCompany', targetEntity: User::class)]
     private Collection $managers;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: CompanyFlights::class)]
     private Collection $companyFlights;
@@ -61,15 +117,13 @@ class Company
      * @var User|null
      */
     #[ORM\ManyToOne(inversedBy: 'companies')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
     /**
-     *
+     * Company controller
      */
     public function __construct()
     {
-        $this->companyWorkers = new ArrayCollection();
         $this->aircrafts = new ArrayCollection();
         $this->ratings = new ArrayCollection();
         $this->managers = new ArrayCollection();
@@ -79,7 +133,7 @@ class Company
     /**
      * @return int|null
      */
-    public function getId(): ?int
+    public function getId() : ?int
     {
         return $this->id;
     }
@@ -87,7 +141,7 @@ class Company
     /**
      * @return string|null
      */
-    public function getName(): ?string
+    public function getName() : ?string
     {
         return $this->name;
     }
@@ -96,7 +150,7 @@ class Company
      * @param string $name
      * @return $this
      */
-    public function setName(string $name): self
+    public function setName( string $name ) : self
     {
         $this->name = $name;
 
@@ -106,7 +160,7 @@ class Company
     /**
      * @return Collection<int, Aircraft>
      */
-    public function getAircrafts(): Collection
+    public function getAircrafts() : Collection
     {
         return $this->aircrafts;
     }
@@ -115,7 +169,7 @@ class Company
      * @param Aircraft $aircraft
      * @return $this
      */
-    public function addAircraft(Aircraft $aircraft): self
+    public function addAircraft( Aircraft $aircraft ) : self
     {
         if (!$this->aircrafts->contains($aircraft)) {
             $this->aircrafts->add($aircraft);
@@ -129,7 +183,7 @@ class Company
      * @param Aircraft $aircraft
      * @return $this
      */
-    public function removeAircraft(Aircraft $aircraft): self
+    public function removeAircraft( Aircraft $aircraft ) : self
     {
         if ($this->aircrafts->removeElement($aircraft)) {
             // set the owning side to null (unless already changed)
@@ -144,7 +198,7 @@ class Company
     /**
      * @return Collection<int, Rating>
      */
-    public function getRatings(): Collection
+    public function getRatings() : Collection
     {
         return $this->ratings;
     }
@@ -153,7 +207,7 @@ class Company
      * @param Rating $rating
      * @return $this
      */
-    public function addRating(Rating $rating): self
+    public function addRating( Rating $rating ) : self
     {
         if (!$this->ratings->contains($rating)) {
             $this->ratings->add($rating);
@@ -167,7 +221,7 @@ class Company
      * @param Rating $rating
      * @return $this
      */
-    public function removeRating(Rating $rating): self
+    public function removeRating( Rating $rating ) : self
     {
         if ($this->ratings->removeElement($rating)) {
             // set the owning side to null (unless already changed)
@@ -182,16 +236,16 @@ class Company
     /**
      * @return \DateTimeInterface|null
      */
-    public function getDate(): ?\DateTimeInterface
+    public function getDate() : ?\DateTimeInterface
     {
         return $this->date;
     }
 
     /**
-     * @param \DateTimeInterface $date
+     * @param DateTimeInterface $date
      * @return $this
      */
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate( DateTimeInterface $date ) : self
     {
         $this->date = $date;
 
@@ -201,7 +255,7 @@ class Company
     /**
      * @return Collection<int, User>
      */
-    public function getManagers(): Collection
+    public function getManagers() : Collection
     {
         return $this->managers;
     }
@@ -210,7 +264,7 @@ class Company
      * @param User $manager
      * @return $this
      */
-    public function addManager(User $manager): self
+    public function addManager( User $manager ) : self
     {
         if (!$this->managers->contains($manager)) {
             $this->managers->add($manager);
@@ -224,7 +278,7 @@ class Company
      * @param User $manager
      * @return $this
      */
-    public function removeManager(User $manager): self
+    public function removeManager( User $manager ) : self
     {
         if ($this->managers->removeElement($manager)) {
             // set the owning side to null (unless already changed)
@@ -239,7 +293,7 @@ class Company
     /**
      * @return Collection<int, CompanyFlights>
      */
-    public function getCompanyFlights(): Collection
+    public function getCompanyFlights() : Collection
     {
         return $this->companyFlights;
     }
@@ -248,7 +302,7 @@ class Company
      * @param CompanyFlights $companyFlight
      * @return $this
      */
-    public function addCompanyFlight(CompanyFlights $companyFlight): self
+    public function addCompanyFlight( CompanyFlights $companyFlight ) : self
     {
         if (!$this->companyFlights->contains($companyFlight)) {
             $this->companyFlights->add($companyFlight);
@@ -262,7 +316,7 @@ class Company
      * @param CompanyFlights $companyFlight
      * @return $this
      */
-    public function removeCompanyFlight(CompanyFlights $companyFlight): self
+    public function removeCompanyFlight( CompanyFlights $companyFlight ) : self
     {
         if ($this->companyFlights->removeElement($companyFlight)) {
             // set the owning side to null (unless already changed)
@@ -277,7 +331,7 @@ class Company
     /**
      * @return User|null
      */
-    public function getOwner(): ?User
+    public function getOwner() : ?User
     {
         return $this->owner;
     }
@@ -286,7 +340,7 @@ class Company
      * @param User|null $owner
      * @return $this
      */
-    public function setOwner(?User $owner): self
+    public function setOwner( ?User $owner ) : self
     {
         $this->owner = $owner;
 
