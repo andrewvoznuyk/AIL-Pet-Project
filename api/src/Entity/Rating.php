@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\CompanyManagerRepository;
+use App\Repository\RatingRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompanyManagerRepository::class)]
-#[ApiResource]
-class CompanyWorker
+#[ORM\Entity(repositoryClass: RatingRepository::class)]
+class Rating
 {
     /**
      * @var int|null
@@ -21,16 +19,22 @@ class CompanyWorker
     /**
      * @var User|null
      */
-    #[ORM\ManyToOne(inversedBy: 'companyManagers')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $worker = null;
+    private ?User $user = null;
 
     /**
      * @var Company|null
      */
-    #[ORM\ManyToOne(inversedBy: 'companyWorkers')]
+    #[ORM\ManyToOne(inversedBy: 'ratings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
+
+    /**
+     * @var int|null
+     */
+    #[ORM\Column]
+    private ?int $stars = null;
 
     /**
      * @return int|null
@@ -43,18 +47,18 @@ class CompanyWorker
     /**
      * @return User|null
      */
-    public function getWorker(): ?User
+    public function getUser(): ?User
     {
-        return $this->worker;
+        return $this->user;
     }
 
     /**
-     * @param User|null $worker
+     * @param User|null $user
      * @return $this
      */
-    public function setWorker(?User $worker): self
+    public function setUser(?User $user): self
     {
-        $this->worker = $worker;
+        $this->user = $user;
 
         return $this;
     }
@@ -74,6 +78,25 @@ class CompanyWorker
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getStars(): ?int
+    {
+        return $this->stars;
+    }
+
+    /**
+     * @param int $stars
+     * @return $this
+     */
+    public function setStars(int $stars): self
+    {
+        $this->stars = $stars;
 
         return $this;
     }

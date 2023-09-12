@@ -28,12 +28,6 @@ class AircraftModel
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    private ?string $code = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
     private ?string $manufacturer = null;
 
     /**
@@ -65,6 +59,18 @@ class AircraftModel
      */
     #[ORM\Column]
     private ?int $rowWidth = null;
+
+    /**
+     * @var int|null
+     */
+    #[ORM\Column]
+    private ?int $cruisingSpeed = null;
+
+    /**
+     * @var int|null
+     */
+    #[ORM\Column]
+    private ?int $maxLuggageWeight = null;
 
     /**
      * @return int|null
@@ -208,19 +214,40 @@ class AircraftModel
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getCode(): ?string
+    public function getCruisingSpeed(): ?int
     {
-        return $this->code;
+        return $this->cruisingSpeed;
     }
 
     /**
-     * @param string|null $code
-     * @return void
+     * @param int $cruisingSpeed
+     * @return $this
      */
-    public function setCode(?string $code): void
+    public function setCruisingSpeed(int $cruisingSpeed): self
     {
-        $this->code = $code;
+        $this->cruisingSpeed = $cruisingSpeed;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxLuggageWeight(): ?int
+    {
+        return $this->maxLuggageWeight;
+    }
+
+    /**
+     * @param int $maxLuggageWeight
+     * @return $this
+     */
+    public function setMaxLuggageWeight(int $maxLuggageWeight): self
+    {
+        $this->maxLuggageWeight = $maxLuggageWeight;
+
+        return $this;
     }
 }

@@ -25,7 +25,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const ROLE_MANAGER = "ROLE_MANAGER";
 
     /**
-     * @var string|null
+     * @var int|null
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,18 +46,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      */
     #[ORM\Column]
     #[Length(min: 8, minMessage: "Password must be at least {{ limit }} characters long")]
     private ?string $password = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255, nullable: false)]
-    #[NotBlank]
-    private ?string $fullname = null;
 
     /**
      * @var string|null
@@ -76,11 +69,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection|ArrayCollection
      */
-    #[ORM\OneToMany(mappedBy: 'worker', targetEntity: CompanyWorker::class)]
-    private Collection $companyWorkers;
-
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ticket::class)]
     private Collection $tickets;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255)]
+    private ?string $surname = null;
+
+    /**
+     * @var Company|null
+     */
+    #[ORM\ManyToOne(inversedBy: 'managers')]
+    private ?Company $managerAtCompany = null;
+
+    /**
+     * @var Collection|ArrayCollection
+     */
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Company::class)]
+    private Collection $companies;
 
     /**
      * User constructor
@@ -89,12 +103,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         //$this->id = Uuid::v4();
         $this->roles = [self::ROLE_USER];
-        $this->companyWorkers = new ArrayCollection();
         $this->tickets = new ArrayCollection();
+        $this->companies = new ArrayCollection();
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -199,25 +213,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @return string|null
      */
-    public function getFullname(): ?string
-    {
-        return $this->fullname;
-    }
-
-    /**
-     * @param string $fullname
-     * @return $this
-     */
-    public function setFullname(string $fullname): self
-    {
-        $this->fullname = $fullname;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
@@ -254,44 +249,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, CompanyWorker>
-     */
-    public function getCompanyWorkers(): Collection
-    {
-        return $this->companyWorkers;
-    }
-
-    /**
-     * @param CompanyWorker $companyManager
-     * @return $this
-     */
-    public function addCompanyManager(CompanyWorker $companyManager): static
-    {
-        if (!$this->companyWorkers->contains($companyManager)) {
-            $this->companyWorkers->add($companyManager);
-            $companyManager->setWorker($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param CompanyWorker $companyManager
-     * @return $this
-     */
-    public function removeCompanyManager(CompanyWorker $companyManager): static
-    {
-        if ($this->companyWorkers->removeElement($companyManager)) {
-            // set the owning side to null (unless already changed)
-            if ($companyManager->getWorker() === $this) {
-                $companyManager->setWorker(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection<int, Ticket>
      */
     public function getTickets(): Collection
@@ -299,7 +256,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->tickets;
     }
 
-    public function addTicket(Ticket $ticket): static
+    /**
+     * @param Ticket $ticket
+     * @return $this
+     */
+    public function addTicket(Ticket $ticket): self
     {
         if (!$this->tickets->contains($ticket)) {
             $this->tickets->add($ticket);
@@ -309,12 +270,111 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeTicket(Ticket $ticket): static
+    /**
+     * @param Ticket $ticket
+     * @return $this
+     */
+    public function removeTicket(Ticket $ticket): self
     {
         if ($this->tickets->removeElement($ticket)) {
             // set the owning side to null (unless already changed)
             if ($ticket->getUser() === $this) {
                 $ticket->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return $this
+     */
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSurname(): ?string
+    {
+        return $this->surname;
+    }
+
+    /**
+     * @param string $surname
+     * @return $this
+     */
+    public function setSurname(string $surname): self
+    {
+        $this->surname = $surname;
+
+        return $this;
+    }
+
+    /**
+     * @return Company|null
+     */
+    public function getManagerAtCompany(): ?Company
+    {
+        return $this->managerAtCompany;
+    }
+
+    /**
+     * @param Company|null $managerAtCompany
+     * @return $this
+     */
+    public function setManagerAtCompany(?Company $managerAtCompany): self
+    {
+        $this->managerAtCompany = $managerAtCompany;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Company>
+     */
+    public function getCompanies(): Collection
+    {
+        return $this->companies;
+    }
+
+    /**
+     * @param Company $company
+     * @return $this
+     */
+    public function addCompany(Company $company): self
+    {
+        if (!$this->companies->contains($company)) {
+            $this->companies->add($company);
+            $company->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Company $company
+     * @return $this
+     */
+    public function removeCompany(Company $company): self
+    {
+        if ($this->companies->removeElement($company)) {
+            // set the owning side to null (unless already changed)
+            if ($company->getOwner() === $this) {
+                $company->setOwner(null);
             }
         }
 
