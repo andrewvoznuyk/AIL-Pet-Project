@@ -1,5 +1,6 @@
 import { getExpirationDate, isExpired } from "./checkExpiredToken";
 import eventBus from "./eventBus";
+import {storageGetItem, TOKEN} from "../storage/storage";
 
 const userAuthenticationConfig = (jsonld = true, multipart = false) => {
 
@@ -7,7 +8,7 @@ const userAuthenticationConfig = (jsonld = true, multipart = false) => {
   let contentType = multipart ? "multipart/form-data" : type;
 
   if (localStorage.getItem("token") !== null) {
-    if (isExpired(getExpirationDate(localStorage.getItem("token")))) {
+    if (isExpired(getExpirationDate(storageGetItem(TOKEN)))) {
       eventBus.dispatch("logout", { expired: true });
       return;
     }
@@ -15,7 +16,7 @@ const userAuthenticationConfig = (jsonld = true, multipart = false) => {
     return {
       headers: {
         "Content-Type": contentType,
-        "Authorization": "Bearer " + localStorage.getItem("token"),
+        "Authorization": "Bearer " + storageGetItem(TOKEN),
         "Accept": type
       }
     };

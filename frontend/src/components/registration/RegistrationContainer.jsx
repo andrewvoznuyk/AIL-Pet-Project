@@ -3,14 +3,15 @@ import {NavLink, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Helmet} from "react-helmet-async";
 import {Breadcrumbs, Link, Typography} from "@mui/material";
-import LoginForm from "./LoginForm";
 import Notification from "../elemets/notification/Notification";
 import {authentication} from "../../utils/authenticationRequest";
 import {responseStatus} from "../../utils/consts";
 import {AppContext} from "../../App";
 import loginRequest from "../../utils/loginRequest";
+import RegistrationForm from "./RegistrationForm";
+import {storageSetItem, TOKEN} from "../../storage/storage";
 
-const Login = () => {
+const RegistrationContainer = () => {
     const navigate = useNavigate();
 
     const {setAuthenticated, authenticated} = useContext(AppContext);
@@ -24,39 +25,33 @@ const Login = () => {
         message: ""
     });
 
-    const authenticationRequest = () => {
+    const registrationRequest = () => {
+
         if (!authData) {
             return;
         }
 
         setLoading(true);
 
-        loginRequest(authData,
-            () => {
-                setAuthenticated(true);
-            },
-            (message) => {
-                setError(message);
-                setNotification({...notification, visible: true, type: "error", message: message});
-            },
-            () => {
-                setLoading(false);
-            });
-
-        /*    axios.post(`/api/login-check`, authData).then(response => {
-              if (response.status === responseStatus.HTTP_OK && response.data.token) {
-                localStorage.setItem("token", response.data.token);
-                setAuthenticated(true);
-              }
-            }).catch(error => {
-              setError(error.response.data.message);
-              setNotification({ ...notification, visible: true, type: "error", message: error.response.data.message });
-            }).finally(() => setLoading(false));
-         */
+        axios.post(`/api/registration`, authData).then(response => {
+            if (response.status === responseStatus.HTTP_OK) {
+                //login immediately after registration
+                console.log("registered...")
+                loginRequest(authData,
+                    () => {
+                        setAuthenticated(true);
+                        console.log("and logged!")
+                    });
+            }
+        }).catch(error => {
+            console.log(error.response.data)
+            setError(error.response.data.detail);
+            setNotification({...notification, visible: true, type: "error", message: error.response.data.detail});
+        }).finally(() => setLoading(false));
     };
 
     useEffect(() => {
-        authenticationRequest();
+        registrationRequest();
     }, [authData]);
 
     useEffect(() => {
@@ -73,16 +68,10 @@ const Login = () => {
             }
             <Helmet>
                 <title>
-                    Sign in
+                    Create account
                 </title>
             </Helmet>
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link component={NavLink} underline="hover" color="inherit" to="/">
-                    Home
-                </Link>
-                <Typography color="text.primary">Sign In</Typography>
-            </Breadcrumbs>
-            <LoginForm
+            <RegistrationForm
                 setAuthData={setAuthData}
                 loading={loading}
             />
@@ -90,4 +79,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default RegistrationContainer;

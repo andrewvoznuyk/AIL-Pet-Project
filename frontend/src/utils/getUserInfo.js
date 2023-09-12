@@ -1,18 +1,19 @@
 import jwt_decode from "jwt-decode";
+import {storageGetItem, storageKeyExists, TOKEN} from "../storage/storage";
 
 const getUserInfo = () => {
-  let token = null;
+    let token = null;
 
-  if (localStorage.getItem("token") !== "") {
-    try {
-      token = jwt_decode(localStorage.getItem("token"));
-    } catch (e) {
-      return null;
+    if (storageKeyExists(TOKEN)) {
+        try {
+            token = jwt_decode(storageGetItem(TOKEN));
+        } catch (e) {
+            return null;
+        }
+        return token;
     }
-    return token;
-  }
 
-  return null;
+    return null;
 };
 
 export default getUserInfo;
