@@ -95,25 +95,40 @@ class GetAirportsDataService
      */
     public function aircraftsApiParse(): void
     {
-        $response = $this->client->request('GET', 'https://flight-radar1.p.rapidapi.com/aircrafts/list', [
+        $response = $this->client->request('GET', 'https://airplanesdb.p.rapidapi.com/', [
             'headers' => [
                 'X-RapidAPI-Key' => '47e2b070fdmsh932f2501fdcf894p14620fjsn62d151a62acc',
-                'X-RapidAPI-Host' => 'flight-radar1.p.rapidapi.com']
+                'X-RapidAPI-Host' => 'airplanesdb.p.rapidapi.com']
         ]);
 
         $statusCode = $response->getStatusCode();
         $content = $response->getContent();
         $requestData = json_decode($content, true);
 
-        $aircraftData = $requestData['rows'];
-        for ($i = 0; $i < count($aircraftData); $i++) {
-
-            for ($j = 0; $j < count($aircraftData[$i]['models'])-1; $j++)
-
+        for ($i = 0; $i < count($requestData); $i++) {
             $aircraft = new AircraftModel();
 
-            $airport = $this->denormalizer->denormalize($aircraftData[$i]['models'][$j], AircraftModel::class, "array");
-            $errors = $this->validator->validate($aircraftData[$i]);
+            if ($requestData[$i]['cruise_speed_kmph'] === null) {
+                $requestData[$i]['cruise_speed_kmph'] = 600;
+            }
+
+            if (is_float($requestData[$i]['cruise_speed_kmph'])) {
+                $requestData[$i]['cruise_speed_kmph'] = intval($requestData[$i]['cruise_speed_kmph']);
+            }
+
+            if ($requestData[$i]['engine'] === null) {
+                $requestData[$i]['engine'] = "Default engine";
+            }
+
+            if ($requestData[$i]['imgThumb'] === null) {
+                $requestData[$i]['imgThumb'] = "https://media.cnn.com/api/v1/images/stellar/prod/221216150405-c919a.jpg?c=16x9&q=h_720,w_1280,c_fill";
+            }
+
+            $aircraft = $this->denormalizer->denormalize($requestData[$i], AircraftModel::class, "array");
+            $errors = $this->validator->validate($requestData[$i]);
+
+            $this->entityManager->persist($aircraft);
+            $this->entityManager->flush($aircraft);
         }
     }
 }

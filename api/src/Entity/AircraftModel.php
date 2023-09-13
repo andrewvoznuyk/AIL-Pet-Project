@@ -4,10 +4,40 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AircraftModelRepository;
+use App\Services\GetAirportsDataService;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AircraftModelRepository::class)]
-#[ApiResource]
+#[\ApiPlatform\Core\Annotation\ApiResource(
+    collectionOperations: [
+        "get"  => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:collection:model"]]
+        ],
+        "post" => [
+            "method"                  => "POST",
+            "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
+            "denormalization_context" => ["groups" => ["post:collection:model"]],
+            "normalization_context"   => ["groups" => ["get:item:model"]]
+        ]
+    ],
+    itemOperations:[
+        "get"  => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:item:model"]]
+        ],
+        "put"=>[
+            "method"                  => "PUT",
+            "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
+            "denormalization_context" => ["groups" => ["post:item:model"]],
+            "normalization_context"   => ["groups" => ["get:item:model"]]
+        ]
+    ],
+    attributes: [
+        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
+    ]
+)]
 class AircraftModel
 {
     /**
@@ -22,55 +52,67 @@ class AircraftModel
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[Groups([
+        "get:item:model",
+        "get:collection:model",
+        "post:item:model"
+    ])]
+    private ?string $plane = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
-    private ?string $manufacturer = null;
+    #[Groups([
+        "get:item:model",
+        "get:collection:model",
+        "post:item:model"
+    ])]
+    private ?string $brand = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column]
-    private ?int $businessPlaces = null;
+    #[Groups([
+        "get:item:model",
+        "get:collection:model",
+        "post:item:model"
+    ])]
+    private ?int $passenger_capacity = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column]
-    private ?int $economPlaces = null;
+    #[Groups([
+        "get:item:model",
+        "get:collection:model",
+        "post:item:model"
+    ])]
+    private ?int $cruise_speed_kmph = null;
 
     /**
-     * @var int|null
+     * @var string|null
      */
-    #[ORM\Column]
-    private ?int $standartPlaces = null;
+    #[ORM\Column(length: 255)]
+    #[Groups([
+        "get:item:model",
+        "get:collection:model",
+        "post:item:model"
+    ])]
+    private ?string $engine = null;
 
     /**
-     * @var int|null
+     * @var string|null
      */
-    #[ORM\Column]
-    private ?int $rowsCount = null;
-
-    /**
-     * @var int|null
-     */
-    #[ORM\Column]
-    private ?int $rowWidth = null;
-
-    /**
-     * @var int|null
-     */
-    #[ORM\Column]
-    private ?int $cruisingSpeed = null;
-
-    /**
-     * @var int|null
-     */
-    #[ORM\Column]
-    private ?int $maxLuggageWeight = null;
+    #[ORM\Column(length: 255)]
+    #[Groups([
+        "get:item:model",
+        "get:collection:model",
+        "post:item:model"
+    ])]
+    private ?string $imgThumb = null;
 
     /**
      * @return int|null
@@ -81,115 +123,28 @@ class AircraftModel
     }
 
     /**
+     * @param int|null $id
+     */
+    public function setId(?int $id): void
+    {
+        $this->id = $id;
+    }
+
+    /**
      * @return string|null
      */
-    public function getManufacturer(): ?string
+    public function getPlane(): ?string
     {
-        return $this->manufacturer;
+        return $this->plane;
     }
 
     /**
-     * @param string $manufacturer
+     * @param string $plane
      * @return $this
      */
-    public function setManufacturer(string $manufacturer): self
+    public function setPlane(string $plane): self
     {
-        $this->manufacturer = $manufacturer;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getBusinessPlaces(): ?int
-    {
-        return $this->businessPlaces;
-    }
-
-    /**
-     * @param int $businessPlaces
-     * @return $this
-     */
-    public function setBusinessPlaces(int $businessPlaces): self
-    {
-        $this->businessPlaces = $businessPlaces;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getEconomPlaces(): ?int
-    {
-        return $this->economPlaces;
-    }
-
-    /**
-     * @param int $economPlaces
-     * @return $this
-     */
-    public function setEconomPlaces(int $economPlaces): self
-    {
-        $this->economPlaces = $economPlaces;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getStandartPlaces(): ?int
-    {
-        return $this->standartPlaces;
-    }
-
-    /**
-     * @param int $standartPlaces
-     * @return $this
-     */
-    public function setStandartPlaces(int $standartPlaces): self
-    {
-        $this->standartPlaces = $standartPlaces;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRowsCount(): ?int
-    {
-        return $this->rowsCount;
-    }
-
-    /**
-     * @param int $rowsCount
-     * @return $this
-     */
-    public function setRowsCount(int $rowsCount): self
-    {
-        $this->rowsCount = $rowsCount;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getRowWidth(): ?int
-    {
-        return $this->rowWidth;
-    }
-
-    /**
-     * @param int $rowWidth
-     * @return $this
-     */
-    public function setRowWidth(int $rowWidth): self
-    {
-        $this->rowWidth = $rowWidth;
+        $this->plane = $plane;
 
         return $this;
     }
@@ -197,18 +152,56 @@ class AircraftModel
     /**
      * @return string|null
      */
-    public function getName(): ?string
+    public function getBrand(): ?string
     {
-        return $this->name;
+        return $this->brand;
     }
 
     /**
-     * @param string $name
+     * @param string $brand
      * @return $this
      */
-    public function setName(string $name): self
+    public function setBrand(string $brand): self
     {
-        $this->name = $name;
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEngine(): ?string
+    {
+        return $this->engine;
+    }
+
+    /**
+     * @param string $engine
+     * @return $this
+     */
+    public function setEngine(string $engine): self
+    {
+        $this->engine = $engine;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImgThumb(): ?string
+    {
+        return $this->imgThumb;
+    }
+
+    /**
+     * @param string $imgThumb
+     * @return $this
+     */
+    public function setImgThumb(string $imgThumb): self
+    {
+        $this->imgThumb = $imgThumb;
 
         return $this;
     }
@@ -216,18 +209,18 @@ class AircraftModel
     /**
      * @return int|null
      */
-    public function getCruisingSpeed(): ?int
+    public function getPassengerCapacity(): ?int
     {
-        return $this->cruisingSpeed;
+        return $this->passenger_capacity;
     }
 
     /**
-     * @param int $cruisingSpeed
+     * @param int $passenger_capacity
      * @return $this
      */
-    public function setCruisingSpeed(int $cruisingSpeed): self
+    public function setPassengerCapacity(int $passenger_capacity): self
     {
-        $this->cruisingSpeed = $cruisingSpeed;
+        $this->passenger_capacity = $passenger_capacity;
 
         return $this;
     }
@@ -235,19 +228,20 @@ class AircraftModel
     /**
      * @return int|null
      */
-    public function getMaxLuggageWeight(): ?int
+    public function getCruiseSpeedKmph(): ?int
     {
-        return $this->maxLuggageWeight;
+        return $this->cruise_speed_kmph;
     }
 
     /**
-     * @param int $maxLuggageWeight
+     * @param int $cruise_speed_kmph
      * @return $this
      */
-    public function setMaxLuggageWeight(int $maxLuggageWeight): self
+    public function setCruiseSpeedKmph(int $cruise_speed_kmph): self
     {
-        $this->maxLuggageWeight = $maxLuggageWeight;
+        $this->cruise_speed_kmph = $cruise_speed_kmph;
 
         return $this;
     }
+
 }
