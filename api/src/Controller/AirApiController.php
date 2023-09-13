@@ -25,10 +25,14 @@ class AirApiController extends AbstractController
      * @var GetAirportsDataService
      */
     private GetAirportsDataService $getAirportsData;
+    /**
+     * @var EntityManagerInterface
+     */
     private EntityManagerInterface $entityManager;
 
     /**
      * @param GetAirportsDataService $getAirportsData
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(GetAirportsDataService $getAirportsData, EntityManagerInterface $entityManager)
     {
@@ -39,8 +43,13 @@ class AirApiController extends AbstractController
     /**
      * @param Request $request
      * @return JsonResponse
+     * @throws ExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    #[Route('load-airport-data', name: 'load_airport_data')]
+    #[Route('load-airport-data', name: 'load_airport_data', methods: ["POST"])]
     public function loadAirports(Request $request): JsonResponse
     {
         if (in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
@@ -51,7 +60,12 @@ class AirApiController extends AbstractController
 
         return new JsonResponse([], Response::HTTP_OK);
     }
-    #[Route('test-request', name: 'test-request')]
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    #[Route('test-request', name: 'test-request', methods: ["GET"])]
     public function testRequest(Request $request): JsonResponse
     {
         $requestData=json_decode($request->getContent(),true);
