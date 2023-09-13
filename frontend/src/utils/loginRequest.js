@@ -2,15 +2,23 @@ import axios from "axios";
 import {responseStatus} from "./consts";
 import {storageGetItem, storageSetItem, TOKEN} from "../storage/storage";
 
-const loginRequest = (authData, onSuccess, onError, onFinally) => {
+const loginRequest = (authData, onSuccess = null, onError = null, onFinally = null) => {
     axios.post(`/api/login-check`, authData).then(response => {
         if (response.status === responseStatus.HTTP_OK && response.data.token) {
             storageSetItem(TOKEN, response.data.token);
-            onSuccess();
+            if (onSuccess) {
+                onSuccess();
+            }
         }
     }).catch(error => {
-        onError(error.response.data.message);
-    }).finally(() => onFinally());
+        if (onError) {
+            onError(error.response.data.message);
+        }
+    }).finally(() => {
+        if (onFinally) {
+            onFinally();
+        }
+    });
 }
 
 export default loginRequest;

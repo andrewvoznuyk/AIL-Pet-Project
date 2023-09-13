@@ -41,9 +41,9 @@ class RegistrationController extends AbstractController
      */
     public function __construct(
         UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface $entityManager,
-        ValidatorInterface $validator,
-        DenormalizerInterface $denormalizer
+        EntityManagerInterface      $entityManager,
+        ValidatorInterface          $validator,
+        DenormalizerInterface       $denormalizer
     )
     {
         $this->passwordHasher = $passwordHasher;
@@ -57,7 +57,7 @@ class RegistrationController extends AbstractController
      * @return JsonResponse
      * @throws ExceptionInterface
      */
-    #[Route('/registration', name: 'app_registration', methods: ['POST'])]
+    #[Route('/register', name: 'app_register', methods: ['POST'])]
     public function registration(Request $request): JsonResponse
     {
         $requestData = json_decode($request->getContent(), true);
@@ -71,11 +71,6 @@ class RegistrationController extends AbstractController
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        /*$response = $client->request('GET', 'https://...', [
-            'headers' => [
-                'Accept' => 'application/json',
-            ],
-        ]);*/
         return new JsonResponse($user);
     }
 }
