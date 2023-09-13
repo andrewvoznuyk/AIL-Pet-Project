@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\RatingRepository;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\CompanyManagerRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: RatingRepository::class)]
-class Rating
+#[ORM\Entity(repositoryClass: CompanyManagerRepository::class)]
+#[ApiResource]
+class CompanyWorker
 {
     /**
      * @var int|null
@@ -19,21 +21,16 @@ class Rating
     /**
      * @var User|null
      */
-    #[ORM\ManyToOne]
-    private ?User $user = null;
+    #[ORM\ManyToOne(inversedBy: 'companyManagers')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $worker = null;
 
     /**
      * @var Company|null
      */
-    #[ORM\ManyToOne(inversedBy: 'ratingsArray')]
+    #[ORM\ManyToOne(inversedBy: 'companyWorkers')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
-
-    /**
-     * @var int|null
-     */
-    #[ORM\Column]
-    private ?int $stars = null;
 
     /**
      * @return int|null
@@ -46,18 +43,18 @@ class Rating
     /**
      * @return User|null
      */
-    public function getUser(): ?User
+    public function getWorker(): ?User
     {
-        return $this->user;
+        return $this->worker;
     }
 
     /**
-     * @param User|null $user
+     * @param User|null $worker
      * @return $this
      */
-    public function setUser(?User $user): self
+    public function setWorker(?User $worker): self
     {
-        $this->user = $user;
+        $this->worker = $worker;
 
         return $this;
     }
@@ -77,25 +74,6 @@ class Rating
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getStars(): ?int
-    {
-        return $this->stars;
-    }
-
-    /**
-     * @param int $stars
-     * @return $this
-     */
-    public function setStars(int $stars): self
-    {
-        $this->stars = $stars;
 
         return $this;
     }

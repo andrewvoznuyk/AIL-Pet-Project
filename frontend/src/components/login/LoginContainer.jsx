@@ -8,7 +8,6 @@ import Notification from "../elemets/notification/Notification";
 import { authentication } from "../../utils/authenticationRequest";
 import { responseStatus } from "../../utils/consts";
 import { AppContext } from "../../App";
-import loginRequest from "../../utils/loginRequest";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,19 +30,7 @@ const Login = () => {
 
     setLoading(true);
 
-    loginRequest(authData,
-        () => {
-          setAuthenticated(true);
-        },
-        (message) => {
-          setError(message);
-          setNotification({ ...notification, visible: true, type: "error", message: message });
-        },
-        () => {
-          setLoading(false);
-        });
-
-/*    axios.post(`/api/login-check`, authData).then(response => {
+    axios.post(`/api/login-check`, authData).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data.token) {
         localStorage.setItem("token", response.data.token);
         setAuthenticated(true);
@@ -52,7 +39,6 @@ const Login = () => {
       setError(error.response.data.message);
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.message });
     }).finally(() => setLoading(false));
- */
   };
 
   useEffect(() => {

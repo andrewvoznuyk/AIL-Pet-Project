@@ -5,12 +5,12 @@ namespace App\Controller;
 use ApiPlatform\Validator\ValidatorInterface;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class RegistrationController extends AbstractController
@@ -55,7 +55,7 @@ class RegistrationController extends AbstractController
     /**
      * @param Request $request
      * @return JsonResponse
-     * @throws ExceptionInterface
+     * @throws Exception
      */
     #[Route('/registration', name: 'app_registration', methods: ['POST'])]
     public function registration(Request $request): JsonResponse
@@ -63,19 +63,14 @@ class RegistrationController extends AbstractController
         $requestData = json_decode($request->getContent(), true);
         $user = $this->denormalizer->denormalize($requestData, User::class, "array");
 
-        $this->validator->validate($user);
-
         $hashedPassword = $this->passwordHasher->hashPassword($user, $user->getPassword());
         $user->setPassword($hashedPassword);
+
+        $this->validator->validate($user);
 
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 
-        /*$response = $client->request('GET', 'https://...', [
-            'headers' => [
-                'Accept' => 'application/json',
-            ],
-        ]);*/
         return new JsonResponse($user);
     }
 }

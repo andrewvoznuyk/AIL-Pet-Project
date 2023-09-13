@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TicketRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
@@ -24,7 +23,7 @@ class Ticket
      */
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $buyer = null;
+    private ?User $user = null;
 
     /**
      * @var Flight|null
@@ -52,36 +51,6 @@ class Ticket
     private ?int $price = null;
 
     /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
-    private ?string $surname = null;
-
-    /**
-     * @var string|null
-     */
-    #[ORM\Column(length: 255)]
-    private ?string $documentId = null;
-
-    /**
-     * @var \DateTimeInterface|null
-     */
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $birthDate = null;
-
-    /**
-     * @var int|null
-     */
-    #[ORM\Column]
-    private ?int $luggageMass = null;
-
-    /**
      * @return int|null
      */
     public function getId(): ?int
@@ -92,18 +61,18 @@ class Ticket
     /**
      * @return User|null
      */
-    public function getBuyer(): ?User
+    public function getUser(): ?User
     {
-        return $this->buyer;
+        return $this->user;
     }
 
     /**
-     * @param User|null $buyer
+     * @param User|null $user
      * @return $this
      */
-    public function setBuyer(?User $buyer): self
+    public function setUser(?User $user): static
     {
-        $this->buyer = $buyer;
+        $this->user = $user;
 
         return $this;
     }
@@ -120,7 +89,7 @@ class Ticket
      * @param Flight|null $flight
      * @return $this
      */
-    public function setFlight(?Flight $flight): self
+    public function setFlight(?Flight $flight): static
     {
         $this->flight = $flight;
 
@@ -139,7 +108,7 @@ class Ticket
      * @param int $place
      * @return $this
      */
-    public function setPlace(int $place): self
+    public function setPlace(int $place): static
     {
         $this->place = $place;
 
@@ -158,7 +127,7 @@ class Ticket
      * @param string $class
      * @return $this
      */
-    public function setClass(string $class): self
+    public function setClass(string $class): static
     {
         $this->class = $class;
 
@@ -177,104 +146,9 @@ class Ticket
      * @param int $price
      * @return $this
      */
-    public function setPrice(int $price): self
+    public function setPrice(int $price): static
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     * @return $this
-     */
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getSurname(): ?string
-    {
-        return $this->surname;
-    }
-
-    /**
-     * @param string $surname
-     * @return $this
-     */
-    public function setSurname(string $surname): self
-    {
-        $this->surname = $surname;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDocumentId(): ?string
-    {
-        return $this->documentId;
-    }
-
-    /**
-     * @param string $documentId
-     * @return $this
-     */
-    public function setDocumentId(string $documentId): self
-    {
-        $this->documentId = $documentId;
-
-        return $this;
-    }
-
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getBirthDate(): ?\DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
-    /**
-     * @param \DateTimeInterface $birthDate
-     * @return $this
-     */
-    public function setBirthDate(\DateTimeInterface $birthDate): self
-    {
-        $this->birthDate = $birthDate;
-
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getLuggageMass(): ?int
-    {
-        return $this->luggageMass;
-    }
-
-    /**
-     * @param int $luggageMass
-     * @return $this
-     */
-    public function setLuggageMass(int $luggageMass): self
-    {
-        $this->luggageMass = $luggageMass;
 
         return $this;
     }
