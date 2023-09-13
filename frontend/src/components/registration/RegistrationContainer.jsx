@@ -33,18 +33,15 @@ const RegistrationContainer = () => {
 
         setLoading(true);
 
-        axios.post(`/api/registration`, authData).then(response => {
+        axios.post(`/api/register`, authData).then(response => {
             if (response.status === responseStatus.HTTP_OK) {
                 //login immediately after registration
-                console.log("registered...")
                 loginRequest(authData,
                     () => {
                         setAuthenticated(true);
-                        console.log("and logged!")
                     });
             }
         }).catch(error => {
-            console.log(error.response.data)
             setError(error.response.data.detail);
             setNotification({...notification, visible: true, type: "error", message: error.response.data.detail});
         }).finally(() => setLoading(false));

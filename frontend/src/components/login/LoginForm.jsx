@@ -1,17 +1,18 @@
 import React from "react";
 import {
     Button,
-    FormControl,
+    FormControl, Grid,
     IconButton,
     Input,
     InputAdornment,
-    InputLabel,
+    InputLabel, Link,
     TextField,
     Typography
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import InputPassword from "../elemets/input/InputPassword";
 
-const LoginForm = ({ setAuthData, loading }) => {
+const LoginForm = ({setAuthData, loading}) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -38,24 +39,10 @@ const LoginForm = ({ setAuthData, loading }) => {
                 name="email"
                 required
             />
-            <FormControl variant="standard">
-                <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
-                <Input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    name="password"
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                            >
-                                {showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                />
-            </FormControl>
+            <InputPassword
+                id="password"
+                name="password"
+            />
             <Button
                 variant="contained"
                 type="submit"
@@ -63,8 +50,17 @@ const LoginForm = ({ setAuthData, loading }) => {
             >
                 Sign In
             </Button>
+            <Grid container spacing={2}>
+                <Grid item>
+                    <Link href="/register" variant="body2">
+                        {"Doesn't have an account? Sign Up"}
+                    </Link>
+                </Grid>
+            </Grid>
+
         </form>
-    );
+    )
+        ;
 };
 
 export default LoginForm;
