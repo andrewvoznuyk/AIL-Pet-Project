@@ -16,6 +16,10 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class AirApiController extends AbstractController
@@ -44,12 +48,12 @@ class AirApiController extends AbstractController
      * @param Request $request
      * @return JsonResponse
      * @throws ExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
-    #[Route('load-airport-data', name: 'load_airport_data', methods: ["POST"])]
+    #[Route('load-airport-data', name: 'load_airport_data', methods: ["POST","GET"])]
     public function loadAirports(Request $request): JsonResponse
     {
         if (in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
@@ -57,6 +61,18 @@ class AirApiController extends AbstractController
         }
 
         $this->getAirportsData->airportsApiParse();
+
+        return new JsonResponse([], Response::HTTP_OK);
+    }
+
+    #[Route('load-aircraft-data', name: 'load_aircraft_data', methods: ["POST","GET"])]
+    public function loadAircrafts(Request $request): JsonResponse
+    {
+        if (in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
+            return new JsonResponse("404", Response::HTTP_NOT_FOUND);
+        }
+
+        $this->getAirportsData->aircraftsApiParse();
 
         return new JsonResponse([], Response::HTTP_OK);
     }
