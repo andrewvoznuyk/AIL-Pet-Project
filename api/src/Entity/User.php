@@ -6,12 +6,11 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
@@ -19,7 +18,28 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Unique;
 
-#[ApiResource()]
+#[ApiResource(
+    collectionOperations: [
+        "get" => [
+            "method" => "GET",
+            "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
+            "normalization_context" => ["groups" => ["get:collection:user"]]
+        ]
+    ],
+    itemOperations: [
+        "get" => [
+            "method" => "GET",
+            "security" => "(is_granted('" . User::ROLE_ADMIN . "')) or (is_granted('" . User::ROLE_USER . "') and object == user)",
+            "normalization_context" => ["groups" => ["get:item:user"]]
+        ],
+        "put" => [
+            "method" => "PUT",
+            "security" => "object == user",
+            "denormalization_context" => ["groups" => ["put:item:user"]],
+            "normalization_context" => ["groups" => ["get:item:user"]]
+        ]
+    ]
+)]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ["email"], message: "Email is already in use")]
 #[UniqueEntity(fields: ["phoneNumber"], message: "Phone number is already in use")]
@@ -37,6 +57,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: "uuid", unique: true)]
     #[ORM\GeneratedValue(strategy: "CUSTOM")]
     #[ORM\CustomIdGenerator(class: "doctrine.uuid_generator")]
+    #[Groups([
+        "get:collection:user"
+    ])]
     private Uuid $id;
 
     /**
@@ -45,6 +68,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     #[Email]
     #[NotBlank]
+    #[Groups([
+        "get:item:user",
+        "get:collection:user"
+    ])]
     private ?string $email = null;
 
     /**
@@ -65,6 +92,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column(length: 255, unique: true)]
     #[NotBlank]
+    #[Groups([
+        "get:item:user",
+        "get:collection:user",
+        "put:item:user"
+    ])]
     private ?string $phoneNumber = null;
 
     /**
@@ -84,12 +116,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[Groups([
+        "get:item:user",
+        "get:collection:user",
+        "put:item:user"
+    ])]
     private ?string $name = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[Groups([
+        "get:item:user",
+        "get:collection:user",
+        "put:item:user"
+    ])]
     private ?string $surname = null;
 
     /**
@@ -115,7 +157,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return int|null
+     * @return Uuid|null
      */
     public function getId(): ?Uuid
     {
