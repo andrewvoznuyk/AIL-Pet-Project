@@ -19,6 +19,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Unique;
 
+/**
+ *
+ */
 #[ApiResource(
     collectionOperations: [
         "get" => [
@@ -53,6 +56,9 @@ use Symfony\Component\Validator\Constraints\Unique;
 #[UniqueEntity(fields: ["phoneNumber"], message: "Phone number is already in use")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /**
+     *
+     */
     public const ROLE_USER = "ROLE_USER";
     public const ROLE_ADMIN = "ROLE_ADMIN";
     public const ROLE_OWNER = "ROLE_OWNER";
@@ -163,6 +169,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Company::class)]
     private Collection $companies;
+
+    /**
+     * @var Verification|null
+     */
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Verification $verification = null;
+
+    /**
+     * @var bool
+     */
+    #[ORM\Column]
+    private bool $isVerified = false;
 
     /**
      * User constructor
@@ -444,6 +462,49 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $company->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Verification|null
+     */
+    public function getVerification(): ?Verification
+    {
+        return $this->verification;
+    }
+
+    /**
+     * @param Verification $verification
+     * @return $this
+     */
+    public function setVerification(Verification $verification): self
+    {
+        // set the owning side of the relation if necessary
+        if ($verification->getUser() !== $this) {
+            $verification->setUser($this);
+        }
+
+        $this->verification = $verification;
+
+        return $this;
+    }
+
+    /**
+     * @return bool|null
+     */
+    public function isIsVerified(): ?bool
+    {
+        return $this->isVerified;
+    }
+
+    /**
+     * @param bool $isVerified
+     * @return $this
+     */
+    public function setIsVerified(bool $isVerified): self
+    {
+        $this->isVerified = $isVerified;
 
         return $this;
     }
