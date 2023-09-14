@@ -9,22 +9,11 @@ const FlightsPage = () => {
 
   return (
     <>
-        <OwnerFlightsContainer />
-      {/*<Can*/}
-      {/*  role={user.roles}*/}
-      {/*  perform={flights.OWNER}*/}
-      {/*  yes={() => <OwnerFlightsContainer />}*/}
-      {/*/>*/}
-      {/*<Can*/}
-      {/*  role={user.roles}*/}
-      {/*  perform={flights.MANAGER}*/}
-      {/*  yes={() => <ClientGoodsContainer />}*/}
-      {/*/>*/}
-      {/*  <Can*/}
-      {/*      role={user.roles}*/}
-      {/*      perform={flights.USER}*/}
-      {/*      yes={() => <ClientGoodsContainer />}*/}
-      {/*  />*/}
+      <Can
+        role={user.roles}
+        perform={flights.OWNER}
+        yes={() => <OwnerFlightsContainer />}
+      />
     </>
   );
 };

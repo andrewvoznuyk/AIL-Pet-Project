@@ -17,10 +17,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ],
         "post" => [
             "method"                  => "POST",
-//            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
             "denormalization_context" => ["groups" => ["post:collection:companyFlights"]],
-            "normalization_context"   => ["groups" => ["get:item:companyFlights"]],
-//            "controller"              => CreateCompanyFlightsAction::class
+            "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
         ]
     ],
     itemOperations: [
@@ -30,21 +29,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ],
         "put"    => [
             "method"                  => "PUT",
-//            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
             "denormalization_context" => ["groups" => ["post:collection:companyFlights"]],
-            "normalization_context"   => ["groups" => ["get:item:companyFlights"]],
-//            "controller"              => CreateCompanyFlightsAction::class
+            "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
         ],
         "patch"  => [
             "method"                  => "PATCH",
-//            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
             "denormalization_context" => ["groups" => ["post:collection:companyFlights"]],
-            "normalization_context"   => ["groups" => ["get:item:companyFlights"]],
-//            "controller"              => CreateCompanyFlightsAction::class
+            "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
         ],
         "delete" => [
             "method"                => "DELETE",
-//            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
+            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
             "normalization_context" => ["groups" => ["get:item:companyFlights"]]
         ],
     ],
