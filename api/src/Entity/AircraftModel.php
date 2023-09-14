@@ -73,7 +73,7 @@ class AircraftModel
     /**
      * @var int|null
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups([
         "get:item:model",
         "get:collection:model",
@@ -84,7 +84,7 @@ class AircraftModel
     /**
      * @var int|null
      */
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     #[Groups([
         "get:item:model",
         "get:collection:model",
