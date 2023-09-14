@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Airport;
+use App\Entity\Company;
 use App\Entity\Flight;
 use App\Services\GetAirportsDataService;
 use Symfony\Component\HttpFoundation\Response;
@@ -88,5 +89,15 @@ class AirApiController extends AbstractController
         $flights=$this->entityManager->getRepository(Flight::class)->findAllByFilter($requestData['from'],$requestData['to']);
 
         return new JsonResponse($flights, Response::HTTP_OK);
+    }
+    #[Route('get-company-list', name: 'get_company_list', methods: ["GET"])]
+    public function getCompanyList(Request $request): JsonResponse
+    {
+        if (in_array(User::ROLE_OWNER, $this->getUser()->getRoles())) {
+            return new JsonResponse("404", Response::HTTP_NOT_FOUND);
+        }
+
+        $companyList=$this->entityManager->getRepository(Company::class)->findBy(['owner'=>$this->getUser()]);
+        return new JsonResponse($companyList, Response::HTTP_OK);
     }
 }

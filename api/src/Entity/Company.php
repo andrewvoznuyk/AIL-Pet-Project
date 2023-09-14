@@ -56,7 +56,7 @@ use Symfony\Component\Validator\Constraints\NotNull;
     ],
     order: ['id' => 'DESC']
 )]
-class Company
+class Company implements \JsonSerializable
 {
     /**
      * @var int|null
@@ -64,6 +64,10 @@ class Company
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "get:collection:company",
+        "get:item:company"
+    ])]
     private ?int $id = null;
 
     /**
@@ -117,6 +121,10 @@ class Company
      * @var User|null
      */
     #[ORM\ManyToOne(inversedBy: 'companies')]
+    #[Groups([
+        "get:collection:company",
+        "get:item:company"
+    ])]
     private ?User $owner = null;
 
     /**
@@ -345,5 +353,12 @@ class Company
         $this->owner = $owner;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "name"=>$this->name
+        ];
     }
 }
