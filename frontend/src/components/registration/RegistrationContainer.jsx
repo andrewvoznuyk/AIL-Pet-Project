@@ -33,8 +33,9 @@ const RegistrationContainer = () => {
 
         setLoading(true);
 
-        axios.post(`/api/register`, authData).then(response => {
-            if (response.status === responseStatus.HTTP_OK) {
+        axios.post(`/api/users`, authData).then(response => {
+            console.log(response);
+            if (response.status === responseStatus.HTTP_CREATED) {
                 //login immediately after registration
                 loginRequest(authData,
                     () => {
