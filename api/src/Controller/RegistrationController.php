@@ -59,9 +59,8 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @return JsonResponse
      * @throws ExceptionInterface
+     * @deprecated Use ApiResource (post to /users) instead.
      */
     #[Route('/register', name: 'app_register', methods: ['POST'])]
     public function registration(Request $request): JsonResponse
