@@ -6,18 +6,20 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\TicketRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
 #[ApiResource]
 class Ticket
 {
     /**
-     * @var int|null
+     * @var Uuid
      */
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: "uuid", unique: true)]
+    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\CustomIdGenerator(class: "doctrine.uuid_generator")]
+    private Uuid $id;
 
     /**
      * @var User|null
@@ -82,9 +84,9 @@ class Ticket
     private ?int $luggageMass = null;
 
     /**
-     * @return int|null
+     * @return Uuid|null
      */
-    public function getId(): ?int
+    public function getId(): ?Uuid
     {
         return $this->id;
     }

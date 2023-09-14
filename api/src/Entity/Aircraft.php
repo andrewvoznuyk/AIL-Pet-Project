@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AircraftRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -39,6 +40,18 @@ class Aircraft
     #[ORM\ManyToOne(inversedBy: 'aircrafts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Company $company = null;
+
+    /**
+     * @var array
+     */
+    #[ORM\Column]
+    private array $places = [];
+
+    /**
+     * @var array
+     */
+    #[ORM\Column(type: Types::ARRAY)]
+    private array $columns = [];
 
     /**
      * @return int|null
@@ -101,6 +114,44 @@ class Aircraft
     public function setCompany(?Company $company): self
     {
         $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPlaces(): array
+    {
+        return $this->places;
+    }
+
+    /**
+     * @param array $places
+     * @return $this
+     */
+    public function setPlaces(array $places): static
+    {
+        $this->places = $places;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getColumns(): array
+    {
+        return $this->columns;
+    }
+
+    /**
+     * @param array $columns
+     * @return $this
+     */
+    public function setColumns(array $columns): static
+    {
+        $this->columns = $columns;
 
         return $this;
     }
