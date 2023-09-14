@@ -4,6 +4,7 @@ import {Button, ButtonGroup, Typography} from "@mui/material";
 import {useContext} from "react";
 import {AppContext} from "../../App";
 import eventBus from "../../utils/eventBus";
+import PlaneSelectForm from "../../components/planeSelect/PlaneSelectForm";
 
 const HomePage = () => {
     const {authenticated} = useContext(AppContext);
@@ -47,6 +48,7 @@ const HomePage = () => {
                         </Button>
                     }
                 </ButtonGroup>
+                <PlaneSelectForm/>
             </div>
         </>
     );
