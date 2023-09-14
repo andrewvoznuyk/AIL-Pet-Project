@@ -42,17 +42,6 @@ const Login = () => {
             () => {
                 setLoading(false);
             });
-
-        /*    axios.post(`/api/login-check`, authData).then(response => {
-              if (response.status === responseStatus.HTTP_OK && response.data.token) {
-                localStorage.setItem("token", response.data.token);
-                setAuthenticated(true);
-              }
-            }).catch(error => {
-              setError(error.response.data.message);
-              setNotification({ ...notification, visible: true, type: "error", message: error.response.data.message });
-            }).finally(() => setLoading(false));
-         */
     };
 
     useEffect(() => {

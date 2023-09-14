@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Action\CreateUserAction;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -24,6 +25,13 @@ use Symfony\Component\Validator\Constraints\Unique;
             "method" => "GET",
             "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
             "normalization_context" => ["groups" => ["get:collection:user"]]
+        ],
+        "post" => [
+            "method" => "POST",
+            "security" => "!is_granted('" . User::ROLE_MANAGER . "') and !is_granted('" . User::ROLE_USER . "')",
+            "denormalization_context" => ["groups" => ["post:collection:user"]],
+            "normalization_context" => ["groups" => ["empty"]],
+            "controller" => CreateUserAction::class
         ]
     ],
     itemOperations: [
@@ -70,7 +78,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[NotBlank]
     #[Groups([
         "get:item:user",
-        "get:collection:user"
+        "get:collection:user",
+        "post:collection:user"
     ])]
     private ?string $email = null;
 
@@ -85,6 +94,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     #[Length(min: 8, minMessage: "Password must be at least {{ limit }} characters long")]
+    #[Groups([
+        "post:collection:user"
+    ])]
     private ?string $password = null;
 
     /**
@@ -95,7 +107,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([
         "get:item:user",
         "get:collection:user",
-        "put:item:user"
+        "put:item:user",
+        "post:collection:user"
     ])]
     private ?string $phoneNumber = null;
 
@@ -119,7 +132,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([
         "get:item:user",
         "get:collection:user",
-        "put:item:user"
+        "put:item:user",
+        "post:collection:user"
     ])]
     private ?string $name = null;
 
@@ -130,7 +144,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([
         "get:item:user",
         "get:collection:user",
-        "put:item:user"
+        "put:item:user",
+        "post:collection:user"
     ])]
     private ?string $surname = null;
 
@@ -138,6 +153,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Company|null
      */
     #[ORM\ManyToOne(inversedBy: 'managers')]
+    #[Groups([
+        "post:collection:user"
+    ])]
     private ?Company $managerAtCompany = null;
 
     /**
