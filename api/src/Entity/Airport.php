@@ -9,6 +9,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AirportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -26,6 +27,12 @@ use Symfony\Component\Validator\Constraints as Assert;
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:airport"]],
             "normalization_context"   => ["groups" => ["get:item:airport"]]
+        ]
+    ],
+    itemOperations: [
+        "get" => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:item:airport"]]
         ]
     ],
     attributes: [
@@ -52,17 +59,31 @@ class Airport
      */
     #[ORM\Column(length: 255)]
     #[NotBlank]
+    #[Groups([
+        "get:item:airport",
+        "get:collection:airport"
+    ])]
     private ?string $name = null;
+
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[Groups([
+        "get:item:airport",
+        "get:collection:airport"
+    ])]
     private ?string $city = null;
+
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
     #[NotBlank]
+    #[Groups([
+        "get:item:airport",
+        "get:collection:airport"
+    ])]
     private ?string $country = null;
 
     /**

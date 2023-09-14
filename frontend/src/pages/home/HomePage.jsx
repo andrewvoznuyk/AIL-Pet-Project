@@ -21,6 +21,14 @@ const HomePage = () => {
                     Welcome!
                 </Typography>
                 <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                    {authenticated &&
+                    <Button
+                        to="/flights"
+                        component={NavLink}
+                    >
+                        Flights
+                    </Button>
+                    }
                     <Button
                         to={authenticated ? "/panel/goods" : "/login"}
                         component={NavLink}
