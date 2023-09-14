@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-//use App\Action\CreateCompanyFlightsAction;
+use App\EntityListener\CompanyFlightsListener;
 use App\Repository\CompanyFlightsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -63,7 +63,7 @@ class CompanyFlights
     /**
      * @var Airport|null
      */
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "companyFlights")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:companyFlights",
@@ -75,7 +75,7 @@ class CompanyFlights
     /**
      * @var Airport|null
      */
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "companyFlights")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:companyFlights",
@@ -87,7 +87,7 @@ class CompanyFlights
     /**
      * @var Company|null
      */
-    #[ORM\ManyToOne(inversedBy: 'companyFlights')]
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: "companyFlights")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:companyFlights",

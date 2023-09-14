@@ -1,26 +1,19 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {responseStatus} from "../../../utils/consts";
-import {TextField, Button, MenuItem, Select} from "@mui/material";
+import {TextField, Button, MenuItem, Select, FormControl, InputLabel} from "@mui/material";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 
 const FlightsCreate = () => {
 
-    const [flights, setFlights] = useState({
-        company: '',
-        fromAirport: null,
-        toAirport: null
-    });
+    const [company, setCompany] = useState('');
+    const [fromAirport, setFromAirport] = useState(null);
+    const [toAirport, setToAirport] = useState(null);
 
     const [loading, setLoading] = useState(false);
 
     const [airportList, setAirportList] = useState([]);
     const [comapniesList, setComapniesList] = useState([]);
-
-    const handleChange = (event) => {
-        const {name, value} = event.target;
-        setFlights({...flights, [name]: value});
-    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -31,9 +24,9 @@ const FlightsCreate = () => {
         setLoading(true);
 
         axios.post("api/company-flights", {
-            company: flights.company,
-            fromAirport: flights.fromAirport,
-            toAirport: flights.toAirport
+            company: company,
+            fromAirport: fromAirport,
+            toAirport: toAirport
         }, userAuthenticationConfig(false)).then(response => {
             console.log("add!")
         }).catch(error => {
@@ -68,6 +61,8 @@ const FlightsCreate = () => {
         fetchCompanies();
     }, []);
 
+    const availableToAirports = airportList.filter(item => item["@id"] !== fromAirport);
+
     return (
         <>
             <form onSubmit={handleSubmit}>
@@ -76,27 +71,38 @@ const FlightsCreate = () => {
                     <TextField
                         type="text"
                         name="company"
-                        value={flights.company}
-                        onChange={handleChange}
+                        value={company}
+                        onChange={(e)=>{setCompany(e.target.value)}}
                     />
                 </div>
                 <div>
-                    From:
-                    <Select onChange={handleChange} label='From' name="fromAirport" value={flights.fromAirport}>
-                        {airportList && airportList.map((item, key) => (
-                            <MenuItem key={key}
-                                    value={item["id"]}>{item["name"]} ({item["city"]}, {item["country"]})</MenuItem>
-                        ))}
-                    </Select>
+                    <FormControl style={{width:500}}>
+                        <InputLabel id="fromInput">From</InputLabel>
+                        <Select
+                            labelId="fromInput"
+                            id="from"
+                            label="from"
+                        >
+                            {airportList && airportList.map((item, key) => (
+                                <MenuItem key={key} value={item.name} onClick={()=>{setFromAirport(item["@id"])}}>{item.name} ({item.city}, {item.country})</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </div>
+                <br/>
                 <div>
-                    To:
-                    <Select onChange={handleChange} label='To' name="toAirport" value={flights.toAirport}>
-                        {airportList && airportList.map((item, key) => (
-                            <MenuItem key={key}
-                                      value={item["id"]}>{item["name"]} ({item["city"]}, {item["country"]})</MenuItem>
-                        ))}
-                    </Select>
+                    <FormControl style={{width:500}}>
+                        <InputLabel id="toInput">To</InputLabel>
+                        <Select
+                            labelId="toInput"
+                            id="to"
+                            label="to"
+                        >
+                            {availableToAirports && availableToAirports.map((item, key) => (
+                                <MenuItem key={key} value={item.name} onClick={()=>{setToAirport(item["@id"])}}>{item.name} ({item.city}, {item.country})</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </div>
                 <Button variant="contained" type="submit">
                     Create flight
