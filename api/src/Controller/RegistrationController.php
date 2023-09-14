@@ -76,39 +76,6 @@ class RegistrationController extends AbstractController
 
     /**
      * @param Request $request
-     * @return JsonResponse
-     * @throws ExceptionInterface
-     * @throws Exception
-     */
-    #[Security("is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')")]
-    #[Route('/users', name: 'app_user_create', methods: ['POST'])]
-    public function registerWorker(Request $request): JsonResponse
-    {
-        $user = $this->createUser($request);
-
-        $currentUser = $this->getUser();
-        $roles = $currentUser->getRoles();
-
-        if (in_array(User::ROLE_ADMIN, $roles)) {
-            $user->setRoles([User::ROLE_OWNER]);
-        } else if (in_array(User::ROLE_OWNER, $roles)) {
-            $user->setRoles([User::ROLE_MANAGER]);
-
-            //check if company belongs to this owner
-            $company = $user->getManagerAtCompany();
-            if (is_null($company) || $company->getOwner() !== $currentUser) {
-                throw new UnprocessableEntityHttpException("Wrong company");
-            }
-        }
-
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
-
-        return new JsonResponse($user);
-    }
-
-    /**
-     * @param Request $request
      * @return User
      * @throws ExceptionInterface
      * @throws Exception
