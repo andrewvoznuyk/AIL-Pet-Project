@@ -125,6 +125,18 @@ class Flight
     private ?CompanyFlights $toLocation = null;
 
     /**
+     * @var array
+     */
+    #[ORM\Column]
+    private array $placesCoefs = [];
+
+    /**
+     * @var array
+     */
+    #[ORM\Column]
+    private array $initPrices = [];
+
+    /**
      *
      */
     public function __construct()
@@ -290,6 +302,44 @@ class Flight
     public function setToLocation(?CompanyFlights $toLocation): self
     {
         $this->toLocation = $toLocation;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getPlacesCoefs(): array
+    {
+        return $this->placesCoefs;
+    }
+
+    /**
+     * @param array $placesCoefs
+     * @return $this
+     */
+    public function setPlacesCoefs(array $placesCoefs): self
+    {
+        $this->placesCoefs = $placesCoefs;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getInitPrices(): array
+    {
+        return $this->initPrices;
+    }
+
+    /**
+     * @param array $initPrices
+     * @return $this
+     */
+    public function setInitPrices(array $initPrices): self
+    {
+        $this->initPrices = $initPrices;
 
         return $this;
     }
