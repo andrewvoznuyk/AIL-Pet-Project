@@ -21,7 +21,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:model"]],
             "normalization_context"   => ["groups" => ["get:item:model"]],
-            "controller"              => GetApiDataService::class
+            "controller"              => GetAircraftModelApiAction::class
         ]
     ],
     itemOperations: [
