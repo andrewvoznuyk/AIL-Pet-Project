@@ -1,101 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-    Box,
-    Button, Card, CardContent,
-    FormControl, Grid,
-    IconButton,
-    Input,
-    InputAdornment,
-    InputLabel, Link,
-    TextField,
-    Typography
+  Box,
+  Button, Card, CardContent,
+  FormControl, Grid,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel, Link,
+  TextField,
+  Typography
 } from "@mui/material";
-import {Visibility, VisibilityOff} from "@mui/icons-material";
-import InputCustom from "../elemets/input/InputCustom"
-import InputPassword from "../elemets/input/InputPassword"
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import InputCustom from "../elemets/input/InputCustom";
+import InputPassword from "../elemets/input/InputPassword";
 import InputPhoneNumber from "../elemets/input/InputPhoneNumber";
+import InputDataLoader from "../elemets/input/InputDataLoader";
+import InputAddRemove from "../elemets/input/InputAddRemove";
 
-const CreateFlightForm = ({setData, loading}) => {
-    const handleSubmit = (event) => {
-        event.preventDefault();
+const CreateFlightForm = ({ setData, loading }) => {
 
-        const data = {
-            email: event.target.email.value,
-            password: event.target.password.value,
-            name: event.target.name.value,
-            surname: event.target.surname.value,
-            phoneNumber: event.target.phoneNumber.value,
-        }
+  const [plane, setPlane] = useState(null);
 
-        setData(data);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const data = {
+      aircraft: plane.id,
+      initPrices: {
+        "business": event.target.businessPrice.value,
+        "econom": event.target.economPrice.value,
+        "standard": event.target.standardPrice.value,
+      }
     };
 
-    return (
-        <Box
-            sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}
-        >
-            <form onSubmit={handleSubmit}>
-                <Typography variant="h4" component="h1">
-                    Create flight
-                </Typography>
+    //setData(data);
+    console.log(data);
+  };
 
-                <InputCustom
-                    id="name"
-                    type="text"
-                    label="First name"
-                    name="name"
-                    required
-                />
+  return (
+    <Box
+      sx={{
+        marginTop: 8,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}
+    >
+      <Grid container>
+        <Grid item xs={11} lg={5}>
+          <form onSubmit={handleSubmit}>
+            <Typography variant="h4" component="h1">
+              Create flight
+            </Typography>
 
-                <InputCustom
-                    id="surname"
-                    type="text"
-                    label="Last name"
-                    name="surname"
-                    required
-                />
+            <InputCustom
+              type="text"
+              label="Start price (business)"
+              name="businessPrice"
+              required
+            />
 
-                <InputCustom
-                    id="email"
-                    type="email"
-                    label="E-mail"
-                    name="email"
-                    required
-                />
+            <p></p>
 
-                <InputPhoneNumber
-                    name="phoneNumber"
-                    label=""
-                />
+            <InputCustom
+              type="text"
+              label="Start price (econom)"
+              name="economPrice"
+              required
+            />
 
-                <InputPassword
-                    id="password"
-                    name="password"
-                />
+            <p></p>
 
-                <Button
-                    variant="contained"
-                    type="submit"
-                    disabled={loading}
-                >
-                    Sign Up
-                </Button>
+            <InputCustom
+              type="text"
+              label="Start price (standard)"
+              name="standardPrice"
+              required
+            />
 
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <Link href="/login" variant="body2">
-                            {"Already have an account? Sign In"}
-                        </Link>
-                    </Grid>
-                </Grid>
-            </form>
-        </Box>
-    );
+            <p></p>
+
+            <InputDataLoader
+              name="test"
+              label="Select Aircraft"
+              url="/api/aircraft"
+              searchWord="serialNumber"
+              getOptionLabel={(option) => option.serialNumber}
+              onChange={(e, v) => setPlane(v)}
+            />
+
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={loading}
+            >
+              Create
+            </Button>
+          </form>
+        </Grid>
+      </Grid>
+    </Box>
+  );
 };
 
 export default CreateFlightForm;
