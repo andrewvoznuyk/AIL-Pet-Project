@@ -15,7 +15,7 @@ use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class GetAirportsDataService
+class GetApiDataService
 {
 
     /**
