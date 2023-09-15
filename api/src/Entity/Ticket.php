@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\TicketRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -12,6 +13,7 @@ use Symfony\Component\Uid\Uuid;
 #[ApiResource]
 class Ticket
 {
+
     /**
      * @var Uuid
      */
@@ -72,10 +74,10 @@ class Ticket
     private ?string $documentId = null;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $birthDate = null;
+    private ?DateTimeInterface $birthDate = null;
 
     /**
      * @var int|null
@@ -244,18 +246,18 @@ class Ticket
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getBirthDate(): ?\DateTimeInterface
+    public function getBirthDate(): ?DateTimeInterface
     {
         return $this->birthDate;
     }
 
     /**
-     * @param \DateTimeInterface $birthDate
+     * @param DateTimeInterface $birthDate
      * @return $this
      */
-    public function setBirthDate(\DateTimeInterface $birthDate): self
+    public function setBirthDate(DateTimeInterface $birthDate): self
     {
         $this->birthDate = $birthDate;
 
@@ -280,4 +282,5 @@ class Ticket
 
         return $this;
     }
+
 }

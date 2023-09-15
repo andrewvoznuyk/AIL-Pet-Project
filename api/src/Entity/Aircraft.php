@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AircraftRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,6 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 #[ApiResource]
 class Aircraft
 {
+
     /**
      * @var int|null
      */
@@ -130,7 +131,7 @@ class Aircraft
      * @param array $places
      * @return $this
      */
-    public function setPlaces(array $places): static
+    public function setPlaces(array $places): self
     {
         $this->places = $places;
 
@@ -149,10 +150,11 @@ class Aircraft
      * @param array $columns
      * @return $this
      */
-    public function setColumns(array $columns): static
+    public function setColumns(array $columns): self
     {
         $this->columns = $columns;
 
         return $this;
     }
+
 }

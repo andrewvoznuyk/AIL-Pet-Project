@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\Security;
 
 class CreateUserAction
 {
+
     /**
      * @var Security
      */
@@ -31,7 +32,7 @@ class CreateUserAction
      * @param ValidatorInterface $validator
      */
     public function __construct(
-        Security $security,
+        Security                    $security,
         UserPasswordHasherInterface $passwordHasher,
         ValidatorInterface          $validator,
     )
@@ -48,21 +49,20 @@ class CreateUserAction
         //if unauthorized
         if (empty($currentUser)) {
             $data->setManagerAtCompany(null);
-        }
-        else {
+        } else {
             $roles = $currentUser->getRoles();
 
             //Admin creates owner
             if (in_array(User::ROLE_ADMIN, $roles)) {
                 $data->setRoles([User::ROLE_OWNER]);
                 $data->setManagerAtCompany(null);
-            }
-            //Owner creates manager
+            } //Owner creates manager
             else if (in_array(User::ROLE_OWNER, $roles)) {
                 $data->setRoles([User::ROLE_MANAGER]);
 
                 //check if company belongs to this owner
                 $company = $data->getManagerAtCompany();
+
                 if (is_null($company) || $company->getOwner() !== $currentUser) {
                     throw new UnprocessableEntityHttpException("Wrong company");
                 }
@@ -77,4 +77,5 @@ class CreateUserAction
 
         return $data;
     }
+
 }

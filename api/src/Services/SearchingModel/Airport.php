@@ -9,6 +9,7 @@ class Airport
      * @var string
      */
     private string $item;
+
     /**
      * @var Airport|null
      */
@@ -47,4 +48,5 @@ class Airport
     {
         $this->next = $next;
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CompanyIncomeRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -9,8 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CompanyIncomeRepository::class)]
+#[ApiResource]
 class CompanyIncome
 {
+
     /**
      * @var Uuid
      */
@@ -23,7 +26,10 @@ class CompanyIncome
     /**
      * @var Flight|null
      */
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: [
+        'persist',
+        'remove'
+    ])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Flight $flight = null;
 
@@ -93,4 +99,5 @@ class CompanyIncome
 
         return $this;
     }
+
 }

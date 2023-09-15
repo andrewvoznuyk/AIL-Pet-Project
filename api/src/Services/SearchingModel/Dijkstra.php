@@ -4,6 +4,7 @@ namespace App\Services\SearchingModel;
 
 class Dijkstra
 {
+
     private const INFINITY = 1e20;
 
     /**
@@ -111,4 +112,5 @@ class Dijkstra
 
         return $path;
     }
+
 }

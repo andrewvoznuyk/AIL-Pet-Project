@@ -16,18 +16,22 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GetAirportsDataService
 {
+
     /**
      * @var HttpClientInterface
      */
     private HttpClientInterface $client;
+
     /**
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $entityManager;
+
     /**
      * @var DenormalizerInterface
      */
     private DenormalizerInterface $denormalizer;
+
     /**
      * @var ValidatorInterface
      */
@@ -59,8 +63,9 @@ class GetAirportsDataService
     {
         $response = $this->client->request('GET', 'https://flight-radar1.p.rapidapi.com/airports/list', [
             'headers' => [
-                'X-RapidAPI-Key' => '47e2b070fdmsh932f2501fdcf894p14620fjsn62d151a62acc',
-                'X-RapidAPI-Host' => 'flight-radar1.p.rapidapi.com']
+                'X-RapidAPI-Key'  => '47e2b070fdmsh932f2501fdcf894p14620fjsn62d151a62acc',
+                'X-RapidAPI-Host' => 'flight-radar1.p.rapidapi.com'
+            ]
         ]);
 
         $statusCode = $response->getStatusCode();
@@ -97,8 +102,9 @@ class GetAirportsDataService
     {
         $response = $this->client->request('GET', 'https://airplanesdb.p.rapidapi.com/', [
             'headers' => [
-                'X-RapidAPI-Key' => '47e2b070fdmsh932f2501fdcf894p14620fjsn62d151a62acc',
-                'X-RapidAPI-Host' => 'airplanesdb.p.rapidapi.com']
+                'X-RapidAPI-Key'  => '47e2b070fdmsh932f2501fdcf894p14620fjsn62d151a62acc',
+                'X-RapidAPI-Host' => 'airplanesdb.p.rapidapi.com'
+            ]
         ]);
 
         $statusCode = $response->getStatusCode();
@@ -131,4 +137,5 @@ class GetAirportsDataService
             $this->entityManager->flush($aircraft);
         }
     }
+
 }

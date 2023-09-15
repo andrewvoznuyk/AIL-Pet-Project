@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 
 abstract class UserRelationExtension extends AbstractCurrentUserExtension
 {
+
     /**
      * @param QueryBuilder $queryBuilder
      * @return void
@@ -17,4 +18,5 @@ abstract class UserRelationExtension extends AbstractCurrentUserExtension
             ->andWhere($rootAlias . '.user = :user')
             ->setParameter('user', $this->tokenStorage->getToken()->getUser());
     }
+
 }
