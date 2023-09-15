@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\AircraftModel;
 use App\Entity\Airport;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -30,7 +31,7 @@ class GetAirportsDataService
     /**
      * @var DenormalizerInterface
      */
-    private DenormalizerInterface $denormalizer;
+    private DenormalizerInterface $denormalize;
 
     /**
      * @var ValidatorInterface
@@ -47,7 +48,7 @@ class GetAirportsDataService
     {
         $this->client = $client;
         $this->entityManager = $entityManager;
-        $this->denormalizer = $denormalizer;
+        $this->denormalize = $denormalizer;
         $this->validator = $validator;
     }
 
@@ -68,26 +69,29 @@ class GetAirportsDataService
             ]
         ]);
 
-        $statusCode = $response->getStatusCode();
         $content = $response->getContent();
         $requestData = json_decode($content, true);
 
         $airportData = $requestData['rows'];
 
         for ($i = 0; $i < count($airportData); $i++) {
-            $airport = new Airport();
 
             if (!is_double($airportData[$i]['lon']) or !is_double($airportData[$i]['lat'])) {
                 $airportData[$i]['lon'] = (double)$airportData[$i]['lon'];
                 $airportData[$i]['lat'] = (double)$airportData[$i]['lat'];
             }
 
-            $airport = $this->denormalizer->denormalize($airportData[$i], Airport::class, "array");
+            $airport = $this->denormalize->denormalize($airportData[$i], Airport::class, "array");
             $errors = $this->validator->validate($airportData[$i]);
 
             $this->entityManager->persist($airport);
-            $this->entityManager->flush($airport);
         }
+
+        if (count($errors) != 0) {
+            throw new Exception();
+        }
+
+        $this->entityManager->flush();
     }
 
     /**
@@ -107,12 +111,10 @@ class GetAirportsDataService
             ]
         ]);
 
-        $statusCode = $response->getStatusCode();
         $content = $response->getContent();
         $requestData = json_decode($content, true);
 
         for ($i = 0; $i < count($requestData); $i++) {
-            $aircraft = new AircraftModel();
 
             if ($requestData[$i]['cruise_speed_kmph'] === null) {
                 $requestData[$i]['cruise_speed_kmph'] = 600;
@@ -130,12 +132,17 @@ class GetAirportsDataService
                 $requestData[$i]['imgThumb'] = "https://media.cnn.com/api/v1/images/stellar/prod/221216150405-c919a.jpg?c=16x9&q=h_720,w_1280,c_fill";
             }
 
-            $aircraft = $this->denormalizer->denormalize($requestData[$i], AircraftModel::class, "array");
+            $aircraft = $this->denormalize->denormalize($requestData[$i], AircraftModel::class, "array");
             $errors = $this->validator->validate($requestData[$i]);
 
             $this->entityManager->persist($aircraft);
-            $this->entityManager->flush($aircraft);
         }
+        if (count($errors) != 0) {
+            throw new Exception();
+        }
+
+        $this->entityManager->flush();
+
     }
 
 }

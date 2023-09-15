@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Action\GetAirportApiAction;
 use App\Repository\AirportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,7 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             "method"                  => "POST",
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:airport"]],
-            "normalization_context"   => ["groups" => ["get:item:airport"]]
+            "normalization_context"   => ["groups" => ["get:item:airport"]],
+            "controller"              => GetAirportApiAction::class
         ]
     ],
     itemOperations: [
