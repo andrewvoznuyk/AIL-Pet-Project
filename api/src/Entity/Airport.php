@@ -3,9 +3,9 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AirportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AirportRepository::class)]
 #[\App\Validator\Constraints\Airport]
-#[\ApiPlatform\Core\Annotation\ApiResource(
+#[ApiResource(
     collectionOperations: [
         "get"  => [
             "method"                => "GET",

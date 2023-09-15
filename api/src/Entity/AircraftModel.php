@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AircraftModelRepository;
-use App\Services\GetAirportsDataService;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AircraftModelRepository::class)]
-#[\ApiPlatform\Core\Annotation\ApiResource(
+#[ApiResource(
     collectionOperations: [
         "get"  => [
             "method"                => "GET",

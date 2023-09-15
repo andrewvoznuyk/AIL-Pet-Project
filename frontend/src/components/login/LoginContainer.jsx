@@ -65,12 +65,6 @@ const Login = () => {
                     Sign in
                 </title>
             </Helmet>
-            <Breadcrumbs aria-label="breadcrumb">
-                <Link component={NavLink} underline="hover" color="inherit" to="/">
-                    Home
-                </Link>
-                <Typography color="text.primary">Sign In</Typography>
-            </Breadcrumbs>
             <LoginForm
                 setAuthData={setAuthData}
                 loading={loading}

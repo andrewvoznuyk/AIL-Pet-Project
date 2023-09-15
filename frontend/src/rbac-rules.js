@@ -19,6 +19,12 @@ const rules = {
       flights.OWNER
     ],
     dynamic: {}
+  },
+  ROLE_MANAGER: {
+    static: [
+      flights.MANAGER
+    ],
+    dynamic: {}
   }
 };
 

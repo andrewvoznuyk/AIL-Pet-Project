@@ -8,7 +8,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: VerificationRepository::class)]
 class Verification
 {
-
     /**
      * @var int|null
      */
@@ -20,10 +19,7 @@ class Verification
     /**
      * @var User|null
      */
-    #[ORM\OneToOne(inversedBy: 'verification', cascade: [
-        'persist',
-        'remove'
-    ])]
+    #[ORM\OneToOne(inversedBy: 'verification', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
@@ -78,5 +74,4 @@ class Verification
 
         return $this;
     }
-
 }

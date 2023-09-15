@@ -2,24 +2,40 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\AircraftRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AircraftRepository::class)]
 #[UniqueEntity('serialNumber')]
-#[ApiResource]
+#[ApiResource(
+    collectionOperations: [
+        "get" => [
+            "method" => "GET",
+            "normalization_context" => ["groups" => ["get:collection:aircraft"]]
+        ]
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: [
+    "aircraftModel" => "partial",
+    "serialNumber" => "partial",
+])]
 class Aircraft
 {
-
     /**
      * @var int|null
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "get:collection:aircraft"
+    ])]
     private ?int $id = null;
 
     /**
@@ -27,12 +43,18 @@ class Aircraft
      */
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups([
+        "get:collection:aircraft"
+    ])]
     private ?AircraftModel $model = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255, unique: true)]
+    #[Groups([
+        "get:collection:aircraft"
+    ])]
     private ?string $serialNumber = null;
 
     /**
@@ -51,7 +73,7 @@ class Aircraft
     /**
      * @var array
      */
-    #[ORM\Column(type: Types::ARRAY)]
+    #[ORM\Column(type: Types::JSON)]
     private array $columns = [];
 
     /**
@@ -156,5 +178,4 @@ class Aircraft
 
         return $this;
     }
-
 }
