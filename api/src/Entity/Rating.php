@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: RatingRepository::class)]
 class Rating
 {
+
     /**
      * @var int|null
      */
@@ -100,4 +101,5 @@ class Rating
 
         return $this;
     }
+
 }

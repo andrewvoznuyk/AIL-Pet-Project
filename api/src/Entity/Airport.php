@@ -40,12 +40,13 @@ use Symfony\Component\Validator\Constraints as Assert;
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
-    "name" => "partial",
-    "city" => "partial",
+    "name"    => "partial",
+    "city"    => "partial",
     "country" => "partial",
 ])]
 class Airport
 {
+
     /**
      * @var int|null
      */
@@ -219,4 +220,5 @@ class Airport
 
         return $this;
     }
+
 }

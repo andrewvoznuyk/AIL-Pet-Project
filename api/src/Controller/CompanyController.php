@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Security;
 
 class CompanyController extends AbstractController
 {
+
     /**
      * @var EntityManagerInterface
      */
@@ -19,7 +20,7 @@ class CompanyController extends AbstractController
     /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct( EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
     }
@@ -28,7 +29,7 @@ class CompanyController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/user-company', name: 'app_user_company', methods: ['GET'])]
-    public function getOwnerCompany() : JsonResponse
+    public function getOwnerCompany(): JsonResponse
     {
         $user = $this->getUser();
 
@@ -37,7 +38,7 @@ class CompanyController extends AbstractController
         $companyData = [];
         foreach ($userCompanies as $company) {
             $companyData[] = [
-                'id' => $company->getId(),
+                'id'   => $company->getId(),
                 'name' => $company->getName(),
                 'date' => $company->getDate()
             ];
@@ -45,4 +46,5 @@ class CompanyController extends AbstractController
 
         return new JsonResponse($companyData);
     }
+
 }

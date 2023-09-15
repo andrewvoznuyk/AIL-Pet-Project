@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services\SearchingModel;
+
 use App\Entity\Airport;
 use Generator;
 

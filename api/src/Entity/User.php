@@ -19,35 +19,32 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 use Symfony\Component\Validator\Constraints\Unique;
 
-/**
- *
- */
 #[ApiResource(
     collectionOperations: [
-        "get" => [
-            "method" => "GET",
-            "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
+        "get"  => [
+            "method"                => "GET",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
             "normalization_context" => ["groups" => ["get:collection:user"]]
         ],
         "post" => [
-            "method" => "POST",
-            "security" => "!is_granted('" . User::ROLE_MANAGER . "') and !is_granted('" . User::ROLE_USER . "')",
+            "method"                  => "POST",
+            "security"                => "!is_granted('" . User::ROLE_MANAGER . "') and !is_granted('" . User::ROLE_USER . "')",
             "denormalization_context" => ["groups" => ["post:collection:user"]],
-            "normalization_context" => ["groups" => ["empty"]],
-            "controller" => CreateUserAction::class
+            "normalization_context"   => ["groups" => ["empty"]],
+            "controller"              => CreateUserAction::class
         ]
     ],
     itemOperations: [
         "get" => [
-            "method" => "GET",
-            "security" => "(is_granted('" . User::ROLE_ADMIN . "')) or (is_granted('" . User::ROLE_USER . "') and object == user)",
+            "method"                => "GET",
+            "security"              => "(is_granted('" . User::ROLE_ADMIN . "')) or (is_granted('" . User::ROLE_USER . "') and object == user)",
             "normalization_context" => ["groups" => ["get:item:user"]]
         ],
         "put" => [
-            "method" => "PUT",
-            "security" => "object == user",
+            "method"                  => "PUT",
+            "security"                => "object == user",
             "denormalization_context" => ["groups" => ["put:item:user"]],
-            "normalization_context" => ["groups" => ["get:item:user"]]
+            "normalization_context"   => ["groups" => ["get:item:user"]]
         ]
     ]
 )]
@@ -56,12 +53,10 @@ use Symfony\Component\Validator\Constraints\Unique;
 #[UniqueEntity(fields: ["phoneNumber"], message: "Phone number is already in use")]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
-    /**
-     *
-     */
-    public const ROLE_USER = "ROLE_USER";
-    public const ROLE_ADMIN = "ROLE_ADMIN";
-    public const ROLE_OWNER = "ROLE_OWNER";
+
+    public const ROLE_USER    = "ROLE_USER";
+    public const ROLE_ADMIN   = "ROLE_ADMIN";
+    public const ROLE_OWNER   = "ROLE_OWNER";
     public const ROLE_MANAGER = "ROLE_MANAGER";
 
     /**
@@ -126,7 +121,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $mileBonuses = 0;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ticket::class)]
     private Collection $tickets;
@@ -165,7 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Company $managerAtCompany = null;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Company::class)]
     private Collection $companies;
@@ -173,7 +168,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Verification|null
      */
-    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(mappedBy: 'user', cascade: [
+        'persist',
+        'remove'
+    ])]
     private ?Verification $verification = null;
 
     /**
@@ -508,4 +506,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
 }

@@ -20,6 +20,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SearchTheShortestWayService
 {
+
     /**
      * @var Graph
      */
@@ -28,12 +29,11 @@ class SearchTheShortestWayService
     /**
      * @var GetMilesService
      */
-
     private GetMilesService $getMilesService;
+
     /**
      * @var EntityManagerInterface
      */
-
     private EntityManagerInterface $entityManager;
 
     /**
@@ -51,10 +51,9 @@ class SearchTheShortestWayService
      * @param array $airports
      * @return void
      */
-    private function addAirportsToGraph(array $airports) : void
+    private function addAirportsToGraph(array $airports): void
     {
-        for ($i = 0; $i < count($airports); $i++)
-        {
+        for ($i = 0; $i < count($airports); $i++) {
             $this->graph->addAirport($airports[$i]);
         }
     }
@@ -64,10 +63,9 @@ class SearchTheShortestWayService
      * @return void
      * @throws Exception
      */
-    private function addWays(array $flights) : void
+    private function addWays(array $flights): void
     {
-        for ($i = 0; $i < count($flights); $i++)
-        {
+        for ($i = 0; $i < count($flights); $i++) {
             /** @var Flight $flight */
             $flight = $flights[$i];
             $frAirport = $this->entityManager->getRepository(Airport::class)->findOneBy(["name" => $flight->getFromLocation()]);
@@ -88,9 +86,9 @@ class SearchTheShortestWayService
         $this->addAirportsToGraph($airports);
         $this->addWays($flights);
 
-        $dijkstra= new Dijkstra($this->graph);
+        $dijkstra = new Dijkstra($this->graph);
 
-        return  $dijkstra->getShortestPath('A', "B");
+        return $dijkstra->getShortestPath('A', "B");
     }
 
 }

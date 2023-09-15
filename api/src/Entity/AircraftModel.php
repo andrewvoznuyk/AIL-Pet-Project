@@ -22,24 +22,22 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "normalization_context"   => ["groups" => ["get:item:model"]]
         ]
     ],
-    itemOperations:[
-        "get"  => [
+    itemOperations: [
+        "get" => [
             "method"                => "GET",
             "normalization_context" => ["groups" => ["get:item:model"]]
         ],
-        "put"=>[
+        "put" => [
             "method"                  => "PUT",
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:item:model"]],
             "normalization_context"   => ["groups" => ["get:item:model"]]
         ]
-    ],
-//    attributes: [
-//        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
-//    ]
+    ]
 )]
 class AircraftModel
 {
+
     /**
      * @var int|null
      */

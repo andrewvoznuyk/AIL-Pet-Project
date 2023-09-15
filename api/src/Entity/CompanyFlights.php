@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use App\EntityListener\CompanyFlightsListener;
 use App\Repository\CompanyFlightsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -49,6 +48,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class CompanyFlights
 {
+
     /**
      * @var int|null
      */
@@ -123,7 +123,7 @@ class CompanyFlights
     /**
      * @return Airport|null
      */
-    public function getFromAirport() : ?Airport
+    public function getFromAirport(): ?Airport
     {
         return $this->fromAirport;
     }
@@ -132,7 +132,7 @@ class CompanyFlights
      * @param Airport|null $fromAirport
      * @return CompanyFlights
      */
-    public function setFromAirport( ?Airport $fromAirport ) : self
+    public function setFromAirport(?Airport $fromAirport): self
     {
         $this->fromAirport = $fromAirport;
 
@@ -142,7 +142,7 @@ class CompanyFlights
     /**
      * @return Airport|null
      */
-    public function getToAirport() : ?Airport
+    public function getToAirport(): ?Airport
     {
         return $this->toAirport;
     }
@@ -151,10 +151,11 @@ class CompanyFlights
      * @param Airport|null $toAirport
      * @return CompanyFlights
      */
-    public function setToAirport( ?Airport $toAirport ) : self
+    public function setToAirport(?Airport $toAirport): self
     {
         $this->toAirport = $toAirport;
 
         return $this;
     }
+
 }

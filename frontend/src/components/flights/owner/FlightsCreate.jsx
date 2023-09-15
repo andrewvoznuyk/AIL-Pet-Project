@@ -16,7 +16,7 @@ const FlightsCreate = () => {
         visible: false,
         type: "",
         message: ""
-    })
+    });
 
     const [airportList, setAirportList] = useState([]);
     const [companiesList, setCompaniesList] = useState([]);
@@ -34,11 +34,11 @@ const FlightsCreate = () => {
             fromAirport: fromAirport,
             toAirport: toAirport
         }, userAuthenticationConfig(false)).then(response => {
-            setNotification({...notification, visible: true, type: "success", message: "Company flight created!"})
+            setNotification({...notification, visible: true, type: "success", message: "Company flight created!"});
         }).catch(error => {
-            setNotification({...notification, visible: true, type: "error", message: error.response.data.title})
+            setNotification({...notification, visible: true, type: "error", message: error.response.data.title});
         }).finally(() => {
-            setLoading(false)
+            setLoading(false);
         });
     }
 
@@ -48,7 +48,7 @@ const FlightsCreate = () => {
                 setCompaniesList(response.data);
             }
         }).catch(error => {
-            console.log("error List");
+            setNotification({...notification, visible: true, type: "error", message: error.response.data.title});
         });
     };
 
@@ -58,7 +58,7 @@ const FlightsCreate = () => {
                 setAirportList(response.data["hydra:member"]);
             }
         }).catch(error => {
-            console.log("error List");
+            setNotification({...notification, visible: true, type: "error", message: error.response.data.title});
         });
     };
 

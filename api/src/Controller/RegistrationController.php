@@ -26,14 +26,17 @@ class RegistrationController extends AbstractController
      * @var UserPasswordHasherInterface
      */
     private UserPasswordHasherInterface $passwordHasher;
+
     /**
      * @var EntityManagerInterface
      */
     private EntityManagerInterface $entityManager;
+
     /**
      * @var ValidatorInterface
      */
     private ValidatorInterface $validator;
+
     /**
      * @var DenormalizerInterface
      */
@@ -104,4 +107,5 @@ class RegistrationController extends AbstractController
 
         return $user;
     }
+
 }

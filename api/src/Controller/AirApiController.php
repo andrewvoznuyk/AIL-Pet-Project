@@ -29,6 +29,7 @@ class AirApiController extends AbstractController
      * @var GetAirportsDataService
      */
     private GetAirportsDataService $getAirportsData;
+
     /**
      * @var EntityManagerInterface
      */
@@ -53,7 +54,11 @@ class AirApiController extends AbstractController
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    #[Route('load-airport-data', name: 'load_airport_data', methods: ["POST","GET"])]
+    #[Route('load-airport-data', name: 'load_airport_data',
+        methods: [
+            "POST",
+            "GET"
+        ])]
     public function loadAirports(Request $request): JsonResponse
     {
         if (in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
@@ -65,7 +70,11 @@ class AirApiController extends AbstractController
         return new JsonResponse([], Response::HTTP_OK);
     }
 
-    #[Route('load-aircraft-data', name: 'load_aircraft_data', methods: ["POST","GET"])]
+    #[Route('load-aircraft-data', name: 'load_aircraft_data',
+        methods: [
+            "POST",
+            "GET"
+        ])]
     public function loadAircrafts(Request $request): JsonResponse
     {
         if (in_array(User::ROLE_ADMIN, $this->getUser()->getRoles())) {
@@ -84,9 +93,10 @@ class AirApiController extends AbstractController
     #[Route('test-request', name: 'test-request', methods: ["GET"])]
     public function testRequest(Request $request): JsonResponse
     {
-        $requestData=json_decode($request->getContent(),true);
-        $flights=$this->entityManager->getRepository(Flight::class)->findAllByFilter($requestData['from'],$requestData['to']);
+        $requestData = json_decode($request->getContent(), true);
+        $flights = $this->entityManager->getRepository(Flight::class)->findAllByFilter($requestData['from'], $requestData['to']);
 
         return new JsonResponse($flights, Response::HTTP_OK);
     }
+
 }
