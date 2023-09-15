@@ -29,8 +29,8 @@ const PlaneSelectForm = () => {
     const requestCompany=()=>{
         axios.get("/api/get-company-list", userAuthenticationConfig()).then(response => {
             console.log(response.data);
-            if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
-                setCompanyList(JSON.stringify(response.data));
+            if (response.status === responseStatus.HTTP_OK && response.data) {
+                setCompanyList(response.data);
             }
         }).catch(error => {
             console.log("error");

@@ -128,7 +128,7 @@ class GetAirportsDataService
             $errors = $this->validator->validate($requestData[$i]);
 
             $this->entityManager->persist($aircraft);
-            $this->entityManager->flush($aircraft);
         }
+        $this->entityManager->flush($aircraft);
     }
 }

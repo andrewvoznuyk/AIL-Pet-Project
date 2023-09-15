@@ -98,6 +98,17 @@ class AirApiController extends AbstractController
         }
 
         $companyList=$this->entityManager->getRepository(Company::class)->findBy(['owner'=>$this->getUser()]);
-        return new JsonResponse($companyList, Response::HTTP_OK);
+
+        $companyData = [];
+
+        foreach ($companyList as $company)
+        {
+        $companyData[] = [
+            'id' => $company->getId(),
+            'name' => $company->getName(),
+            'date' => $company->getDate()
+            ];
+        }
+        return new JsonResponse($companyData, Response::HTTP_OK);
     }
 }
