@@ -43,6 +43,10 @@ class AircraftModel
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "get:item:model",
+        "get:collection:model"
+    ])]
     private ?int $id = null;
 
     /**

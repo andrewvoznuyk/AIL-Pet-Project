@@ -16,13 +16,15 @@ const rules = {
   },
   ROLE_OWNER: {
     static: [
-      flights.OWNER
+      flights.OWNER,
+      goods.OWNER
     ],
     dynamic: {}
   },
   ROLE_MANAGER: {
     static: [
-      flights.MANAGER
+      flights.MANAGER,
+      goods.MANAGER
     ],
     dynamic: {}
   }
