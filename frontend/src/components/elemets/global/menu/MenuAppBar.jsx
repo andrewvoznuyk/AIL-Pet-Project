@@ -6,16 +6,14 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
-import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import DropdownLogged from "./DropdownLogged";
+import DropdownUnlogged from "./DropdownUnlogged";
 import { Button } from "@mui/material";
-import eventBus from "../../../utils/eventBus";
+import eventBus from "../../../../utils/eventBus";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AppContext } from "../../../App";
+import { AppContext } from "../../../../App";
 
 export default function MenuAppBar () {
 
@@ -30,7 +28,7 @@ export default function MenuAppBar () {
   const goTo = (route) => {
     navigate(route);
     handleClose();
-  }
+  };
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -70,20 +68,11 @@ export default function MenuAppBar () {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                {!authenticated &&
-                  <MenuItem onClick={() => goTo("login")}>Sign in</MenuItem>
-                }
-                {!authenticated &&
-                  <MenuItem onClick={() => goTo("register")}>Sign up</MenuItem>
-                }
-
                 {authenticated &&
-                  <MenuItem onClick={handleClose}>Profile</MenuItem>
+                  <DropdownLogged goTo={goTo}/>
                 }
-                {authenticated &&
-                  <MenuItem
-                    onClick={() => eventBus.dispatch("logout")}
-                  >Logout</MenuItem>
+                {!authenticated &&
+                  <DropdownUnlogged goTo={goTo}/>
                 }
               </Menu>
             </div>
@@ -91,6 +80,5 @@ export default function MenuAppBar () {
         </Toolbar>
       </AppBar>
     </Box>
-  )
-    ;
+  );
 }

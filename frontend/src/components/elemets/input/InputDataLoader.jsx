@@ -7,7 +7,7 @@ import axios from "axios";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import { responseStatus } from "../../../utils/consts";
 
-function InputDataLoader ({ url, name = "", getOptionLabel, searchWord = "", label, onChange = undefined }) {
+function InputDataLoader ({ url, name = "", getOptionLabel, itemsPerPage = 20, searchWord = "", label, onChange = undefined }) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [inputQuery, setInputQuery] = useState("");
@@ -20,7 +20,7 @@ function InputDataLoader ({ url, name = "", getOptionLabel, searchWord = "", lab
     setInputQuery(e.target.value);
   };
   const sendRequest = () => {
-    axios.get(`${url}?${searchWord}=${inputQuery}&itemsPerPage=1`, userAuthenticationConfig()).then(response => {
+    axios.get(`${url}?${searchWord}=${inputQuery}&itemsPerPage=${itemsPerPage}`, userAuthenticationConfig()).then(response => {
 
       if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
         let data = response.data["hydra:member"];
@@ -53,7 +53,6 @@ function InputDataLoader ({ url, name = "", getOptionLabel, searchWord = "", lab
   return (
     <Autocomplete
       onInput={onInput}
-      sx={{ width: 300 }}
       ref={ref0}
       name={name}
       open={open}

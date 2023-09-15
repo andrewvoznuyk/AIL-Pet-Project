@@ -1,17 +1,10 @@
 import {useContext, useEffect, useState} from "react";
-import {NavLink, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {Helmet} from "react-helmet-async";
-import {Breadcrumbs, Link, Typography} from "@mui/material";
-import Notification from "../elemets/notification/Notification";
-import {authentication} from "../../utils/authenticationRequest";
-import {responseStatus} from "../../utils/consts";
-import {AppContext} from "../../App";
-import loginRequest from "../../utils/loginRequest";
-import RegistrationForm from "./RegistrationForm";
-import {storageSetItem, TOKEN} from "../../storage/storage";
+import Notification from "../../elemets/notification/Notification";
+import {responseStatus} from "../../../utils/consts";
 import CreateFlightForm from "./CreateFlightForm";
-import userAuthenticationConfig from "../../utils/userAuthenticationConfig";
+import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 
 const FlightContainer = () => {
 

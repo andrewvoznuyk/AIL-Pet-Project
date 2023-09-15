@@ -6,7 +6,7 @@ import {AppContext} from "../../App";
 import eventBus from "../../utils/eventBus";
 import PlaneSelectForm from "../../components/planeSelect/PlaneSelectForm";
 import InputDataLoader from "../../components/elemets/input/InputDataLoader";
-import CreateFlightForm from "../../components/flight/CreateFlightForm";
+import CreateFlightForm from "../../components/flights/manager/CreateFlightForm";
 
 const HomePage = () => {
     const {authenticated} = useContext(AppContext);
@@ -23,6 +23,14 @@ const HomePage = () => {
                     Welcome!
                 </Typography>
                 <ButtonGroup variant="contained" aria-label="outlined primary button group">
+                    {authenticated &&
+                    <Button
+                        to="/flights"
+                        component={NavLink}
+                    >
+                        Flights
+                    </Button>
+                    }
                     <Button
                         to={authenticated ? "/panel/goods" : "/login"}
                         component={NavLink}
@@ -51,7 +59,6 @@ const HomePage = () => {
                     }
                 </ButtonGroup>
                 <PlaneSelectForm/>
-              <CreateFlightForm/>
             </div>
         </>
     );

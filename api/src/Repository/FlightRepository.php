@@ -16,11 +16,21 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class FlightRepository extends ServiceEntityRepository
 {
+
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Flight::class);
     }
-    public function findAllByFilter($from,$to): array
+
+    /**
+     * @param $from
+     * @param $to
+     * @return array
+     */
+    public function findAllByFilter($from, $to): array
     {
         $qb = $this->createQueryBuilder("flight");
 
@@ -36,7 +46,7 @@ class FlightRepository extends ServiceEntityRepository
             ->setParameter('to', $to ? '%' . $to . '%' : '')
 //          ->setParameter('departureDate', $departureDate ? '%' . $departureDate . '%' : '')
             ->orderBy('flight.departure', 'DESC')
-            ->getQuery()->getResult()
-            ;
+            ->getQuery()->getResult();
     }
+
 }

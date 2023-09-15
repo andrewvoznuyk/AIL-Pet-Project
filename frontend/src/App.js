@@ -10,7 +10,7 @@ import getUserInfo from "./utils/getUserInfo";
 import eventBus from "./utils/eventBus";
 import "nprogress/nprogress.css";
 import "./assets/css/main.css";
-import MenuAppBar from "./components/elemets/global/MenuAppBar";
+import MenuAppBar from "./components/elemets/global/menu/MenuAppBar";
 
 export const AppContext = createContext({});
 

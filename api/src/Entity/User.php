@@ -124,7 +124,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private int $mileBonuses = 0;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ticket::class)]
     private Collection $tickets;
@@ -163,7 +163,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Company $managerAtCompany = null;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Company::class)]
     private Collection $companies;

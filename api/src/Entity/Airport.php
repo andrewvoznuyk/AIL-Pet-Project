@@ -3,19 +3,20 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiResource;
 use App\Repository\AirportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AirportRepository::class)]
 #[\App\Validator\Constraints\Airport]
-#[\ApiPlatform\Core\Annotation\ApiResource(
+#[ApiResource(
     collectionOperations: [
         "get"  => [
             "method"                => "GET",
@@ -28,17 +29,24 @@ use Symfony\Component\Validator\Constraints as Assert;
             "normalization_context"   => ["groups" => ["get:item:airport"]]
         ]
     ],
+    itemOperations: [
+        "get" => [
+            "method"                => "GET",
+            "normalization_context" => ["groups" => ["get:item:airport"]]
+        ]
+    ],
     attributes: [
         "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
-    "name" => "partial",
-    "city" => "partial",
+    "name"    => "partial",
+    "city"    => "partial",
     "country" => "partial",
 ])]
 class Airport
 {
+
     /**
      * @var int|null
      */
@@ -52,17 +60,31 @@ class Airport
      */
     #[ORM\Column(length: 255)]
     #[NotBlank]
+    #[Groups([
+        "get:item:airport",
+        "get:collection:airport"
+    ])]
     private ?string $name = null;
+
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[Groups([
+        "get:item:airport",
+        "get:collection:airport"
+    ])]
     private ?string $city = null;
+
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
     #[NotBlank]
+    #[Groups([
+        "get:item:airport",
+        "get:collection:airport"
+    ])]
     private ?string $country = null;
 
     /**
@@ -198,4 +220,5 @@ class Airport
 
         return $this;
     }
+
 }

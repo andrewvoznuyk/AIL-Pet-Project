@@ -3,6 +3,7 @@ import RegistrationPage from "../pages/registration/RegistrationPage";
 
 const HomePage = lazy(() => import("../pages/home/HomePage"));
 const LoginPage = lazy(() => import("../pages/login/LoginPage"));
+const CreateFlightsPage = lazy(() => import("../pages/flights/FlightsPage"));
 
 const routes = [
   {
@@ -16,6 +17,10 @@ const routes = [
   {
     path: "/register",
     element: <RegistrationPage />
+  },
+  {
+    path: "/flights",
+    element: <CreateFlightsPage />
   },
 ];
 

@@ -18,6 +18,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 abstract class AbstractCurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
+
     public const FIRST_ELEMENT_ARRAY = 0;
 
     public const ADMIN_ROLES = [
@@ -68,7 +69,7 @@ abstract class AbstractCurrentUserExtension implements QueryCollectionExtensionI
     {
         $token = $this->tokenStorage->getToken();
 
-        if(is_null($token)){
+        if (is_null($token)) {
             return true;
         }
 

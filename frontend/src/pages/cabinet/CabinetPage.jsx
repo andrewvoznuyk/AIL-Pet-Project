@@ -1,27 +1,32 @@
-import {Helmet} from "react-helmet-async";
-import {NavLink} from "react-router-dom";
-import {Button, ButtonGroup, Typography} from "@mui/material";
 import {useContext} from "react";
 import {AppContext} from "../../App";
-import eventBus from "../../utils/eventBus";
-import PlaneSelectForm from "../../components/planeSelect/PlaneSelectForm";
-import FlightContainer from "../../components/flight/FlightContainer";
+import {default as OwnerCabinetContainer} from "../../components/cabinet/owner/CabinetContainer";
+import {default as ManagerCabinetContainer} from "../../components/cabinet/owner/CabinetContainer";
+import { flights } from "../../rbac-consts";
+import Can from "../../components/elemets/can/Can";
+import NotFoundPage from "../notFound/NotFoundPage";
 
-const HomePage = () => {
-    const {authenticated} = useContext(AppContext);
+const CabinetPage = () => {
+  const { user } = useContext(AppContext);
+
+  if(!user){
+    return <NotFoundPage />
+  }
 
     return (
         <>
-            <Helmet>
-                <title>
-                    Cabinet
-                </title>
-
-                {/* TODO: if manager */}
-                <FlightContainer/>
-            </Helmet>
+          <Can
+            role={user.roles}
+            perform={flights.OWNER}
+            yes={() => <OwnerCabinetContainer />}
+          />
+          <Can
+            role={user.roles}
+            perform={flights.MANAGER}
+            yes={() => <ManagerCabinetContainer />}
+          />
         </>
     );
 };
 
-export default HomePage;
+export default CabinetPage;
