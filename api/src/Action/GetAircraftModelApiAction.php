@@ -11,7 +11,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class GetAirportApiAction
+class GetAircraftModelApiAction
 {
 
     /**
@@ -37,7 +37,7 @@ class GetAirportApiAction
      */
     public function __invoke(): JsonResponse
     {
-        $this->getAirportsData->airportsApiParse();
+        $this->getAirportsData->aircraftsApiParse();
 
         return new JsonResponse("Successfully done",ResponseAlias::HTTP_OK);
     }
