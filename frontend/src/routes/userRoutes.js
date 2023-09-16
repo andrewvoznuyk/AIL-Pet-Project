@@ -8,13 +8,13 @@ const CooperationPage = lazy(() => import("../pages/cooperation/CooperationPage"
 
 const userRoutes = [
   {
-    path: "/panel/goods",
-    element: <GoodsPage />
-  },
-  {
     path: "/panel/goods/cooperation",
     element: <CooperationPage />
   },
+  {
+    path: "/panel/goods",
+    element: <GoodsPage />
+  }
 ];
 
 const userRoutesConcat = userRoutes.concat(routes);

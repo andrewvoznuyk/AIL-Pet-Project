@@ -6,7 +6,8 @@ const goods = {
 const flights = {
   OWNER: "flights:owner",
   MANAGER: "flights:manager",
-  USER: "flights:client"
+  USER: "flights:client",
+  ADMIN: "flights:admin"
 };
 
 export {

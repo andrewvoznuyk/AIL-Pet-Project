@@ -55,7 +55,7 @@ const CooperationContainer = () => {
       fromAirport: fromAirport,
       toAirport: toAirport
     }, userAuthenticationConfig(false)).then(response => {
-      setNotification({ ...notification, visible: true, type: "success", message: "Company flight created!" });
+      setNotification({ ...notification, visible: true, type: "success", message: "Form has been sent!" });
     }).catch(error => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
     }).finally(() => {

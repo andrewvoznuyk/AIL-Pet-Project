@@ -2,8 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\EntityListener\CooperationFormEntityListener;
 use App\Repository\CooperationFormRepository;
+use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -15,6 +19,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     collectionOperations: [
         "get"  => [
             "method"                => "GET",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
             "normalization_context" => ["groups" => ["get:collection:cooperationForm"]]
         ],
         "post" => [
@@ -26,15 +31,21 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     itemOperations: [
         "get"    => [
             "method"                => "GET",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
             "normalization_context" => ["groups" => ["get:item:cooperationForm"]]
         ],
         "delete" => [
             "method"                => "DELETE",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
             "normalization_context" => ["groups" => ["get:item:cooperationForm"]]
         ],
     ],
     order: ['id' => 'DESC']
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    "email" => "partial"
+])]
+#[ORM\EntityListeners([CooperationFormEntityListener::class])]
 class CooperationForm
 {
 
@@ -84,7 +95,7 @@ class CooperationForm
     /**
      * @var Airport|null
      */
-    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "cooperationFrom")]
+    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "cooperationForm")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:cooperationForm",
@@ -96,7 +107,7 @@ class CooperationForm
     /**
      * @var Airport|null
      */
-    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "cooperationFrom")]
+    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "cooperationForm")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:cooperationForm",
@@ -126,6 +137,26 @@ class CooperationForm
         "get:item:cooperationForm"
     ])]
     private ?string $documents = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups([
+        "get:collection:cooperationForm",
+        "get:item:cooperationForm"
+    ])]
+    private ?string $status = null;
+
+    /**
+     * @var DateTimeInterface|null
+     */
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Groups([
+        "get:collection:cooperationForm",
+        "get:item:cooperationForm"
+    ])]
+    private ?DateTimeInterface $dateOfApplication = null;
 
     /**
      * @return int|null
@@ -264,6 +295,44 @@ class CooperationForm
     public function setFromAirport(?Airport $fromAirport): self
     {
         $this->fromAirport = $fromAirport;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     * @return $this
+     */
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getDateOfApplication(): ?DateTimeInterface
+    {
+        return $this->dateOfApplication;
+    }
+
+    /**
+     * @param DateTimeInterface|null $dateOfApplication
+     * @return $this
+     */
+    public function setDateOfApplication(?DateTimeInterface $dateOfApplication): self
+    {
+        $this->dateOfApplication = $dateOfApplication;
 
         return $this;
     }
