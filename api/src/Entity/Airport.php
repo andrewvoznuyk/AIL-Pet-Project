@@ -29,7 +29,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:airport"]],
             "normalization_context"   => ["groups" => ["get:item:airport"]],
-            "controller"              => GetApiDataService::class
+            "controller"              => GetAirportApiAction::class
         ]
     ],
     itemOperations: [
