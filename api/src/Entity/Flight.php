@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\FlightRepository;
+use App\Services\GetMilesService;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FlightRepository::class)]
@@ -24,12 +27,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "normalization_context"   => ["groups" => ["get:item:flight"]]
         ]
     ],
-    itemOperations:[
-        "get"  => [
+    itemOperations: [
+        "get" => [
             "method"                => "GET",
             "normalization_context" => ["groups" => ["get:item:flight"]]
         ],
-        "put"=>[
+        "put" => [
             "method"                  => "PUT",
             "security"                => "is_granted('" . User::ROLE_MANAGER . "')",
             "denormalization_context" => ["groups" => ["post:item:flight"]],
@@ -42,6 +45,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 class Flight
 {
+
     /**
      * @var int|null
      */
@@ -67,7 +71,7 @@ class Flight
     private ?Aircraft $aircraft = null;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups([
@@ -75,10 +79,10 @@ class Flight
         "get:collection:flight",
         "post:item:flight"
     ])]
-    private ?\DateTimeInterface $departure = null;
+    private ?DateTimeInterface $departure = null;
 
     /**
-     * @var \DateTimeInterface|null
+     * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     #[Groups([
@@ -86,7 +90,7 @@ class Flight
         "get:collection:flight",
         "post:item:flight"
     ])]
-    private ?\DateTimeInterface $arrival = null;
+    private ?DateTimeInterface $arrival = null;
 
     /**
      * @var bool|null
@@ -95,7 +99,7 @@ class Flight
     private bool $isCompleted = false;
 
     /**
-     * @var Collection|ArrayCollection
+     * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'flight', targetEntity: Ticket::class)]
     private Collection $tickets;
@@ -137,13 +141,23 @@ class Flight
     private array $initPrices = [];
 
     /**
-     *
+     * @var string|null
      */
-    public function __construct()
+    #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
+    private ?string $distance = null;
+
+
+    /**
+     * @param GetMilesService $getMilesService
+     * @throws Exception
+     */
+    public function __construct(GetMilesService $getMilesService)
     {
         $this->tickets = new ArrayCollection();
 
-        $this->isCompleted=false;
+        $this->isCompleted = false;
+
+        $this->distance = $getMilesService->getMilesFromCityAtoCityB($this->fromLocation->getId(), $this->toLocation->getId());
     }
 
     /**
@@ -174,18 +188,18 @@ class Flight
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getDeparture(): ?\DateTimeInterface
+    public function getDeparture(): ?DateTimeInterface
     {
         return $this->departure;
     }
 
     /**
-     * @param \DateTimeInterface $departure
+     * @param DateTimeInterface $departure
      * @return $this
      */
-    public function setDeparture(\DateTimeInterface $departure): self
+    public function setDeparture(DateTimeInterface $departure): self
     {
         $this->departure = $departure;
 
@@ -193,18 +207,18 @@ class Flight
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getArrival(): ?\DateTimeInterface
+    public function getArrival(): ?DateTimeInterface
     {
         return $this->arrival;
     }
 
     /**
-     * @param \DateTimeInterface $arrival
+     * @param DateTimeInterface $arrival
      * @return $this
      */
-    public function setArrival(\DateTimeInterface $arrival): self
+    public function setArrival(DateTimeInterface $arrival): self
     {
         $this->arrival = $arrival;
 
@@ -343,4 +357,24 @@ class Flight
 
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
+    public function getDistance(): ?string
+    {
+        return $this->distance;
+    }
+
+    /**
+     * @param string $distance
+     * @return $this
+     */
+    public function setDistance(string $distance): self
+    {
+        $this->distance = $distance;
+
+        return $this;
+    }
+
 }
