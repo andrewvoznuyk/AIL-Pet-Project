@@ -9,7 +9,6 @@ use Symfony\Component\Uid\Uuid;
 #[ORM\Entity(repositoryClass: WebsiteIncomeRepository::class)]
 class WebsiteIncome
 {
-
     /**
      * @var Uuid
      */

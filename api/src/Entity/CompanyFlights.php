@@ -46,9 +46,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     order: ['id' => 'DESC']
 )]
+
 class CompanyFlights
 {
-
     /**
      * @var int|null
      */
@@ -67,19 +67,7 @@ class CompanyFlights
         "post:collection:companyFlights",
         "get:item:companyFlights"
     ])]
-    private ?Airport $fromAirport = null;
-
-    /**
-     * @var Airport|null
-     */
-    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "companyFlights")]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups([
-        "get:collection:companyFlights",
-        "post:collection:companyFlights",
-        "get:item:companyFlights"
-    ])]
-    private ?Airport $toAirport = null;
+    private ?Airport $airport = null;
 
     /**
      * @var Company|null
@@ -123,37 +111,18 @@ class CompanyFlights
     /**
      * @return Airport|null
      */
-    public function getFromAirport(): ?Airport
+    public function getAirport(): ?Airport
     {
-        return $this->fromAirport;
+        return $this->airport;
     }
 
     /**
-     * @param Airport|null $fromAirport
+     * @param Airport|null $airport
      * @return CompanyFlights
      */
-    public function setFromAirport(?Airport $fromAirport): self
+    public function setAirport(?Airport $airport): self
     {
-        $this->fromAirport = $fromAirport;
-
-        return $this;
-    }
-
-    /**
-     * @return Airport|null
-     */
-    public function getToAirport(): ?Airport
-    {
-        return $this->toAirport;
-    }
-
-    /**
-     * @param Airport|null $toAirport
-     * @return CompanyFlights
-     */
-    public function setToAirport(?Airport $toAirport): self
-    {
-        $this->toAirport = $toAirport;
+        $this->airport = $airport;
 
         return $this;
     }

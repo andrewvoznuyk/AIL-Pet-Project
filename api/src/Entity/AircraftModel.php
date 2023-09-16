@@ -2,14 +2,15 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Core\Annotation\ApiResource;
+use App\Action\GetAircraftModelApiAction;
 use App\Repository\AircraftModelRepository;
-use App\Services\GetAirportsDataService;
+use App\Services\GetApiDataService;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: AircraftModelRepository::class)]
-#[\ApiPlatform\Core\Annotation\ApiResource(
+#[ApiResource(
     collectionOperations: [
         "get"  => [
             "method"                => "GET",
@@ -19,7 +20,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "method"                  => "POST",
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:model"]],
-            "normalization_context"   => ["groups" => ["get:item:model"]]
+            "normalization_context"   => ["groups" => ["get:item:model"]],
+            "controller"              => GetAircraftModelApiAction::class
         ]
     ],
     itemOperations: [
@@ -44,6 +46,10 @@ class AircraftModel
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "get:item:model",
+        "get:collection:model"
+    ])]
     private ?int $id = null;
 
     /**

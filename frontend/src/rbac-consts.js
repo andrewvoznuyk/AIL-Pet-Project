@@ -1,6 +1,8 @@
 const goods = {
   ADMIN: "goods:admin",
-  USER: "goods:client"
+  USER: "goods:client",
+  MANAGER: "goods:manager",
+  OWNER: "goods:owner"
 };
 
 const flights = {

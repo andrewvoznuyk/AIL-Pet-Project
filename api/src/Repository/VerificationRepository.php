@@ -16,13 +16,33 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class VerificationRepository extends ServiceEntityRepository
 {
-
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Verification::class);
     }
 
+//    /**
+//     * @return Verification[] Returns an array of Verification objects
+//     */
+//    public function findByExampleField($value): array
+//    {
+//        return $this->createQueryBuilder('v')
+//            ->andWhere('v.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->orderBy('v.id', 'ASC')
+//            ->setMaxResults(10)
+//            ->getQuery()
+//            ->getResult()
+//        ;
+//    }
+
+//    public function findOneBySomeField($value): ?Verification
+//    {
+//        return $this->createQueryBuilder('v')
+//            ->andWhere('v.exampleField = :val')
+//            ->setParameter('val', $value)
+//            ->getQuery()
+//            ->getOneOrNullResult()
+//        ;
+//    }
 }
