@@ -19,6 +19,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "method" => "GET",
             "normalization_context" => ["groups" => ["get:collection:aircraft"]]
         ]
+    ],
+    itemOperations: [
+        "get" => [
+            "method" => "GET",
+            "normalization_context" => ["groups" => ["get:item:aircraft"]]
+        ]
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
@@ -34,7 +40,10 @@ class Aircraft
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups([
-        "get:collection:aircraft"
+        "get:collection:aircraft",
+        "get:item:aircraft",
+        "get:collection:flight",
+        "get:item:flight"
     ])]
     private ?int $id = null;
 
@@ -44,7 +53,8 @@ class Aircraft
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
-        "get:collection:aircraft"
+        "get:collection:aircraft",
+        "get:item:aircraft"
     ])]
     private ?AircraftModel $model = null;
 
@@ -53,7 +63,10 @@ class Aircraft
      */
     #[ORM\Column(length: 255, unique: true)]
     #[Groups([
-        "get:collection:aircraft"
+        "get:collection:aircraft",
+        "get:item:aircraft",
+        "get:item:flight",
+        "get:collection:flight"
     ])]
     private ?string $serialNumber = null;
 
@@ -68,6 +81,12 @@ class Aircraft
      * @var array
      */
     #[ORM\Column]
+    #[Groups([
+        "get:collection:aircraft",
+        "get:item:aircraft",
+        "get:item:flight",
+        "get:collection:flight"
+    ])]
     private array $places = [];
 
     /**

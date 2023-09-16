@@ -74,7 +74,8 @@ class Company
     #[Groups([
         "get:collection:company",
         "post:collection:company",
-        "get:item:company"
+        "get:item:company",
+        "get:collection:companyFlights",
     ])]
     private ?string $name = null;
 

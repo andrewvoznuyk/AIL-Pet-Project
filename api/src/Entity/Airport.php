@@ -62,7 +62,12 @@ class Airport
     #[NotBlank]
     #[Groups([
         "get:item:airport",
-        "get:collection:airport"
+        "get:collection:airport",
+
+        "get:item:flight",
+        "get:collection:flight",
+
+        "get:collection:companyFlights"
     ])]
     private ?string $name = null;
 
@@ -72,7 +77,12 @@ class Airport
     #[ORM\Column(length: 255)]
     #[Groups([
         "get:item:airport",
-        "get:collection:airport"
+        "get:collection:airport",
+
+        "get:item:flight",
+        "get:collection:flight",
+
+        "get:collection:companyFlights",
     ])]
     private ?string $city = null;
 
@@ -83,7 +93,12 @@ class Airport
     #[NotBlank]
     #[Groups([
         "get:item:airport",
-        "get:collection:airport"
+        "get:collection:airport",
+
+        "get:item:flight",
+        "get:collection:flight",
+
+        "get:collection:companyFlights"
     ])]
     private ?string $country = null;
 
