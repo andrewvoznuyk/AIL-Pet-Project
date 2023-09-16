@@ -9,6 +9,13 @@ const flights = {
   USER: "flights:client"
 };
 
+const toolbar = {
+  ADMIN: "toolbar:admin",
+  OWNER: "toolbar:owner",
+  MANAGER: "toolbar:manager",
+  USER: "toolbar:client"
+};
+
 export {
-  goods, flights
+  goods, flights, toolbar
 };

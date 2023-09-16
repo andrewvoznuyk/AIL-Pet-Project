@@ -5,7 +5,7 @@ const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
 const CabinetPage = lazy(() => import("../pages/cabinet/CabinetPage"));
 const CreateFlightPage = lazy(() => import("../pages/flightsNew/FlightsNewPage"));
 
-const userRoutes = [
+const ownerRoutes = [
   {
     path: "/panel/goods",
     element: <GoodsPage />
@@ -14,8 +14,12 @@ const userRoutes = [
     path: "/cabinet",
     element: <CabinetPage />
   },
+  {
+    path: "/flights/new",
+    element: <CreateFlightPage />
+  },
 ];
 
-const userRoutesConcat = userRoutes.concat(routes);
+const ownerRoutesConcat = ownerRoutes.concat(routes);
 
-export default userRoutesConcat;
+export default ownerRoutesConcat;

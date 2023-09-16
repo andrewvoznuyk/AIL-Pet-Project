@@ -5,7 +5,7 @@ const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
 const CabinetPage = lazy(() => import("../pages/cabinet/CabinetPage"));
 const CreateFlightPage = lazy(() => import("../pages/flightsNew/FlightsNewPage"));
 
-const userRoutes = [
+const adminRoutes = [
   {
     path: "/panel/goods",
     element: <GoodsPage />
@@ -16,6 +16,6 @@ const userRoutes = [
   },
 ];
 
-const userRoutesConcat = userRoutes.concat(routes);
+const adminRoutesConcat = adminRoutes.concat(routes);
 
-export default userRoutesConcat;
+export default adminRoutesConcat;

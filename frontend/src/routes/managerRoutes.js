@@ -3,9 +3,10 @@ import routes from "./routes";
 
 const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
 const CabinetPage = lazy(() => import("../pages/cabinet/CabinetPage"));
+const FlightsPage = lazy(() => import("../pages/flights/FlightsPage"));
 const CreateFlightPage = lazy(() => import("../pages/flightsNew/FlightsNewPage"));
 
-const userRoutes = [
+const managerRoutes = [
   {
     path: "/panel/goods",
     element: <GoodsPage />
@@ -14,8 +15,16 @@ const userRoutes = [
     path: "/cabinet",
     element: <CabinetPage />
   },
+  {
+    path: "/flights",
+    element: <FlightsPage />
+  },
+  {
+    path: "/flights/new",
+    element: <CreateFlightPage />
+  },
 ];
 
-const userRoutesConcat = userRoutes.concat(routes);
+const managerRoutesConcat = managerRoutes.concat(routes);
 
-export default userRoutesConcat;
+export default managerRoutesConcat;

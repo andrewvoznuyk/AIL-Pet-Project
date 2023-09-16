@@ -5,12 +5,26 @@ import { default as ManagerFlightsContainer } from "../../components/flights/man
 import { AppContext } from "../../App";
 import { flights } from "../../rbac-consts";
 import NotFoundPage from "../notFound/NotFoundPage";
+import CabinetDefaultContainer from "../../components/elemets/cabinet/CabinetDefaultContainer";
+import ToolbarRoleSwitch from "../../components/elemets/cabinet/toolbars/ToolbarRoleSwitch";
 
 const FlightsPage = () => {
+
+  return (
+    <>
+      <CabinetDefaultContainer
+        Sidebar={<ToolbarRoleSwitch />}
+        Content={<ContentRoleSwitch />}
+      />
+    </>
+  );
+};
+
+const ContentRoleSwitch = () => {
   const { user } = useContext(AppContext);
 
-  if(!user){
-    return <NotFoundPage />
+  if (!user) {
+    return <NotFoundPage />;
   }
 
   return (

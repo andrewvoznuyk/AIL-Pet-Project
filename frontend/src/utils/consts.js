@@ -1,5 +1,7 @@
 const roles = {
   ADMIN: "ROLE_ADMIN",
+  OWNER: "ROLE_OWNER",
+  MANAGER: "ROLE_MANAGER",
   CLIENT: "ROLE_USER",
 };
 

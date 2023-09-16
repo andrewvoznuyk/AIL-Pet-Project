@@ -1,28 +1,35 @@
-import { goods, flights} from "./rbac-consts";
+import { goods, flights, toolbar } from "./rbac-consts";
 
 const rules = {
   ROLE_ADMIN: {
     static: [
-      goods.ADMIN
+      goods.ADMIN,
+      toolbar.ADMIN
     ],
     dynamic: {}
   },
+
   ROLE_USER: {
     static: [
       goods.USER,
-      flights.USER
+      flights.USER,
+      toolbar.USER
     ],
     dynamic: {}
   },
+
   ROLE_OWNER: {
     static: [
-      flights.OWNER
+      flights.OWNER,
+      toolbar.OWNER
     ],
     dynamic: {}
   },
+
   ROLE_MANAGER: {
     static: [
-      flights.MANAGER
+      flights.MANAGER,
+      toolbar.MANAGER
     ],
     dynamic: {}
   }

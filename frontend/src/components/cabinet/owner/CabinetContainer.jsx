@@ -13,6 +13,7 @@ const CabinetContainer = () => {
       </Helmet>
 
       {/* TODO: Owner cabinet */}
+      <div className="some-search-div"></div>
       <Button
         to="/flights"
         component={NavLink}
