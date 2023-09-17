@@ -4,7 +4,7 @@ const rules = {
   ROLE_ADMIN: {
     static: [
       goods.ADMIN,
-      toolbar.ADMIN
+      toolbar.ADMIN,
       flights.ADMIN
     ],
     dynamic: {}
@@ -22,7 +22,7 @@ const rules = {
   ROLE_OWNER: {
     static: [
       flights.OWNER,
-      toolbar.OWNER
+      toolbar.OWNER,
       goods.OWNER
     ],
     dynamic: {}
@@ -31,7 +31,7 @@ const rules = {
   ROLE_MANAGER: {
     static: [
       flights.MANAGER,
-      toolbar.MANAGER
+      toolbar.MANAGER,
       goods.MANAGER
     ],
     dynamic: {}
