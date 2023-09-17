@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     collectionOperations: [
         "get"  => [
             "method"                => "GET",
-            "normalization_context" => ["groups" => ["get:collection:companyFlights"]]
+            "normalization_context" => ["groups" => ["get:collection:companyFlights"]],
         ],
         "post" => [
             "method"                  => "POST",
@@ -26,25 +26,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: [
         "get"    => [
             "method"                => "GET",
-            "normalization_context" => ["groups" => ["get:item:companyFlights"]]
+           // "security"              => "(is_granted('" . User::ROLE_OWNER . "') and object.company.getOwner() == user) or
+               // ((is_granted('" . User::ROLE_MANAGER . "') and user.getManagerAtCompany() == object.company)",
+            "normalization_context" => ["groups" => ["get:collection:companyFlights"]]
         ],
         "put"    => [
             "method"                  => "PUT",
-            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
-            "denormalization_context" => ["groups" => ["post:collection:companyFlights"]],
+            //"security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "denormalization_context" => ["groups" => ["put:collection:companyFlights"]],
             "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
         ],
         "patch"  => [
             "method"                  => "PATCH",
-            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            //"security"                => "is_granted('" . User::ROLE_OWNER . "') && object.company.getOwner() == user",
             "denormalization_context" => ["groups" => ["post:collection:companyFlights"]],
             "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
         ],
         "delete" => [
             "method"                => "DELETE",
-            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
+            //"security"                => "is_granted('" . User::ROLE_OWNER . "') && object.company.getOwner() == user",
             "normalization_context" => ["groups" => ["get:item:companyFlights"]]
         ],
+    ],
+    attributes: [
+        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "') or is_granted('" . User::ROLE_MANAGER . "')"
     ],
     order: ['id' => 'DESC']
 )]
@@ -76,6 +81,7 @@ class CompanyFlights
     #[Groups([
         "get:collection:companyFlights",
         "post:collection:companyFlights",
+        "put:collection:companyFlights",
         "get:item:companyFlights",
 
         "get:item:flight",
