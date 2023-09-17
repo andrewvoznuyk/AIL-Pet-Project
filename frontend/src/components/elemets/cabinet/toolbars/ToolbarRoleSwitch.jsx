@@ -11,6 +11,10 @@ import { toolbar } from "../../../../rbac-consts";
 const ToolbarRoleSwitch = () => {
   const { user } = useContext(AppContext);
 
+  if (!user) {
+    return <></>;
+  }
+
   return <>
     <Can
       role={user.roles}
