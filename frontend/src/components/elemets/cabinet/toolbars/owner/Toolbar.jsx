@@ -52,13 +52,6 @@ const Toolbar = () => {
             <ListItemText primary="Companies" />
           </ListItemButton>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reports" />
-          </ListItemButton>
-
         </React.Fragment>
 
         <Divider sx={{ my: 1 }} />

@@ -46,13 +46,6 @@ const Toolbar = () => {
             <ListItemText primary="Reports" />
           </ListItemButton>
 
-          <ListItemButton>
-            <ListItemIcon>
-              <LayersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Integrations" />
-          </ListItemButton>
-
         </React.Fragment>
 
         <Divider sx={{ my: 1 }} />
@@ -67,13 +60,6 @@ const Toolbar = () => {
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Current month" />
-          </ListItemButton>
-
-          <ListItemButton>
-            <ListItemIcon>
-              <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Last quarter" />
           </ListItemButton>
 
         </React.Fragment>

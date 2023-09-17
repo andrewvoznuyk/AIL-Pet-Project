@@ -10,7 +10,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import ListSubheader from "@mui/material/ListSubheader";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import { FlightRounded, FlightTakeoffRounded } from "@mui/icons-material";
+import { AirplaneTicket, FlightRounded, FlightTakeoffRounded } from "@mui/icons-material";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -31,32 +31,18 @@ const Toolbar = () => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>
 
-          <ListItemButton onClick={() => goTo("aircrafts")}>
+          <ListItemButton>
             <ListItemIcon>
-              <FlightRounded/>
+              <AirplaneTicket/>
             </ListItemIcon>
-            <ListItemText primary="Aircrafts" />
+            <ListItemText primary="Tickets" />
           </ListItemButton>
 
           <ListItemButton onClick={() => goTo("/flights")}>
             <ListItemIcon>
               <FlightTakeoffRounded />
             </ListItemIcon>
-            <ListItemText primary="Flights" />
-          </ListItemButton>
-
-          <ListItemButton>
-            <ListItemIcon>
-              <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reports" />
-          </ListItemButton>
-
-          <ListItemButton>
-            <ListItemIcon>
-              <LayersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Integrations" />
+            <ListItemText primary="Active Flights" />
           </ListItemButton>
 
         </React.Fragment>
@@ -73,13 +59,6 @@ const Toolbar = () => {
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Current month" />
-          </ListItemButton>
-
-          <ListItemButton>
-            <ListItemIcon>
-              <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Last quarter" />
           </ListItemButton>
 
         </React.Fragment>
