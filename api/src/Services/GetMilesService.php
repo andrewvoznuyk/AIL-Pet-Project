@@ -2,37 +2,12 @@
 
 namespace App\Services;
 
-use App\Entity\AircraftModel;
 use App\Entity\Airport;
-use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GetMilesService
 {
-    private const EARTH_RADIUS = 6371.0088;
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
 
-    /**
-     * @param HttpClientInterface $client
-     * @param EntityManagerInterface $entityManager
-     * @param DenormalizerInterface $denormalizer
-     * @param ValidatorInterface $validator
-     */
-    public function __construct(HttpClientInterface $client, EntityManagerInterface $entityManager, DenormalizerInterface $denormalizer, ValidatorInterface $validator)
-    {
-        $this->entityManager = $entityManager;
-    }
+    private const EARTH_RADIUS = 6371.0088;
 
     /**
      * @param $lon1
@@ -54,31 +29,17 @@ class GetMilesService
         $a = sin($dLat / 2) * sin($dLat / 2) + cos($lat1) * cos($lat2) * sin($dLon / 2) * sin($dLon / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        return self::EARTH_RADIUS * $c;
+        return round(self::EARTH_RADIUS * $c,2);
     }
 
-
     /**
-     * @param $departureAirportId
-     * @param $arrivalAirportId
+     * @param Airport $departureAirportId
+     * @param Airport $arrivalAirportId
      * @return float
-     * @throws Exception
      */
-    public function getMilesFromCityAtoCityB($departureAirportId, $arrivalAirportId): float
+    public function getMilesFromCityAtoCityB(Airport $departureAirportId, Airport $arrivalAirportId): float
     {
-        $departurePoint = $this->entityManager->getRepository(Airport::class, true)->findOneBy($departureAirportId);
-
-        if (!$departurePoint) {
-            throw new Exception("{$departureAirportId} does not exist");
-        }
-
-        $arrivalPoint = $this->entityManager->getRepository(Airport::class, true)->findOneBy($arrivalAirportId);
-
-        if (!$arrivalPoint) {
-            throw new Exception("{$arrivalAirportId} does not exist");
-        }
-
-        return $this->countkilometers($departurePoint->getLon(), $departurePoint->getLat(), $arrivalPoint->getLon(), $arrivalPoint->getLat());
+        return $this->countkilometers($departureAirportId->getLon(), $departureAirportId->getLat(), $arrivalAirportId->getLon(), $arrivalAirportId->getLat());
     }
 
 }
