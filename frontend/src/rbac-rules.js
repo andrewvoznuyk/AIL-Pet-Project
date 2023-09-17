@@ -5,6 +5,7 @@ const rules = {
     static: [
       goods.ADMIN,
       toolbar.ADMIN
+      flights.ADMIN
     ],
     dynamic: {}
   },
@@ -22,6 +23,7 @@ const rules = {
     static: [
       flights.OWNER,
       toolbar.OWNER
+      goods.OWNER
     ],
     dynamic: {}
   },
@@ -30,6 +32,7 @@ const rules = {
     static: [
       flights.MANAGER,
       toolbar.MANAGER
+      goods.MANAGER
     ],
     dynamic: {}
   }

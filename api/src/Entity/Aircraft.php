@@ -18,6 +18,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "get" => [
             "method" => "GET",
             "normalization_context" => ["groups" => ["get:collection:aircraft"]]
+        ],
+        "post" => [
+            "method"                  => "POST",
+            "security"                => "is_granted('" . User::ROLE_OWNER . "')",
+            "denormalization_context" => ["groups" => ["post:collection:aircraft"]],
+            "normalization_context"   => ["groups" => ["get:item:aircraft"]]
         ]
     ],
     itemOperations: [

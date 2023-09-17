@@ -56,7 +56,6 @@ const HomePage = () => {
                         </Button>
                     }
                 </ButtonGroup>
-                <PlaneSelectForm/>
             </div>
         </>
     );

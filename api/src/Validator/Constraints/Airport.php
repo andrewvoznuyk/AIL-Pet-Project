@@ -2,12 +2,13 @@
 
 namespace App\Validator\Constraints;
 
+use Attribute;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
  */
-#[\Attribute] class Airport extends Constraint
+#[Attribute] class Airport extends Constraint
 {
 
     /**

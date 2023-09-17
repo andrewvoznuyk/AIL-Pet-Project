@@ -6,7 +6,11 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Action\GetAirportApiAction;
 use App\Repository\AirportRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use App\Services\GetApiDataService;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -26,7 +30,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             "method"                  => "POST",
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:airport"]],
-            "normalization_context"   => ["groups" => ["get:item:airport"]]
+            "normalization_context"   => ["groups" => ["get:item:airport"]],
+            "controller"              => GetAirportApiAction::class
         ]
     ],
     itemOperations: [
@@ -113,6 +118,20 @@ class Airport
      */
     #[ORM\Column(nullable: true)]
     private ?float $lat = null;
+
+    /**
+     * @var Collection
+     */
+    #[ORM\OneToMany(mappedBy: "airport", targetEntity: CooperationForm::class)]
+    private Collection $cooperationForm;
+
+    /**
+     * Airport constructor
+     */
+    public function __construct()
+    {
+        $this->cooperationForm = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -232,6 +251,25 @@ class Airport
     public function setLat(?float $lat): self
     {
         $this->lat = $lat;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCooperationForm(): Collection
+    {
+        return $this->cooperationForm;
+    }
+
+    /**
+     * @param Collection $cooperationForm
+     * @return $this
+     */
+    public function setCooperationForm(Collection $cooperationForm): self
+    {
+        $this->cooperationForm = $cooperationForm;
 
         return $this;
     }

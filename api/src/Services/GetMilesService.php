@@ -17,7 +17,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class GetMilesService
 {
-
+    private const EARTH_RADIUS = 6371.0088;
     /**
      * @var EntityManagerInterface
      */
@@ -54,9 +54,7 @@ class GetMilesService
         $a = sin($dLat / 2) * sin($dLat / 2) + cos($lat1) * cos($lat2) * sin($dLon / 2) * sin($dLon / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
-        $earthRadius = 6371.0088;
-
-        return $earthRadius * $c;
+        return self::EARTH_RADIUS * $c;
     }
 
 
