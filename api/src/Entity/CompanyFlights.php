@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\CompanyFlightsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -46,26 +48,38 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     order: ['id' => 'DESC']
 )]
-
+#[ApiFilter(SearchFilter::class, properties: [
+    "airport.name"    => "partial",
+    "airport.country" => "partial",
+    "airport.city"    => "partial",
+])]
 class CompanyFlights
 {
+
     /**
      * @var int|null
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight"
+    ])]
     private ?int $id = null;
 
     /**
      * @var Airport|null
      */
-    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "companyFlights")]
+    #[ORM\ManyToOne(targetEntity: Airport::class)]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:companyFlights",
         "post:collection:companyFlights",
-        "get:item:companyFlights"
+        "get:item:companyFlights",
+
+        "get:item:flight",
+        "get:collection:flight"
     ])]
     private ?Airport $airport = null;
 

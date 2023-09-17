@@ -1,14 +1,14 @@
 import { useContext } from "react";
-import { AppContext } from "../../App";
-import { default as OwnerCabinetContainer } from "../../components/cabinet/owner/CabinetContainer";
-import { default as ManagerCabinetContainer } from "../../components/cabinet/owner/CabinetContainer";
-import { flights } from "../../rbac-consts";
 import Can from "../../components/elemets/can/Can";
+import { default as OwnerFlightsContainer } from "../../components/flightsNew/owner/FlightsContainer";
+import { default as ManagerFlightsContainer } from "../../components/flightsNew/manager/FlightsContainer";
+import { AppContext } from "../../App";
+import { flights } from "../../rbac-consts";
 import NotFoundPage from "../notFound/NotFoundPage";
 import CabinetDefaultContainer from "../../components/elemets/cabinet/CabinetDefaultContainer";
 import ToolbarRoleSwitch from "../../components/elemets/cabinet/toolbars/ToolbarRoleSwitch";
 
-const CabinetPage = () => {
+const FlightsNewPage = () => {
 
   return (
     <>
@@ -27,18 +27,20 @@ const ContentRoleSwitch = () => {
     return <NotFoundPage />;
   }
 
-  return <>
-    <Can
-      role={user.roles}
-      perform={flights.OWNER}
-      yes={() => <OwnerCabinetContainer />}
-    />
-    <Can
-      role={user.roles}
-      perform={flights.MANAGER}
-      yes={() => <ManagerCabinetContainer />}
-    />
-  </>;
+  return (
+    <>
+      <Can
+        role={user.roles}
+        perform={flights.OWNER}
+        yes={() => <OwnerFlightsContainer />}
+      />
+      <Can
+        role={user.roles}
+        perform={flights.MANAGER}
+        yes={() => <ManagerFlightsContainer />}
+      />
+    </>
+  );
 };
 
-export default CabinetPage;
+export default FlightsNewPage;

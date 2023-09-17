@@ -1,14 +1,18 @@
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {Helmet} from "react-helmet-async";
 import Notification from "../../elemets/notification/Notification";
 import {responseStatus} from "../../../utils/consts";
-import CreateFlightForm from "./CreateFlightForm";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
+import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
+import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import FlightsTable from "./FlightsTable";
+import { Button, Pagination, TableCell, TableRow } from "@mui/material";
+import TableGenerator from "../../elemets/table/TableGenerator";
 
 const FlightContainer = () => {
 
-    const [error, setError] = useState(null);
+    const navigate = useNavigate();
     const [requestData, setRequestData] = useState();
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState({
@@ -17,26 +21,44 @@ const FlightContainer = () => {
         message: ""
     });
 
+    const [flights, setFlights] = useState(null);
+    const [searchParams] = useSearchParams();
+
+    const [paginationInfo, setPaginationInfo] = useState({
+        totalItems: null,
+        totalPageCount: null,
+        itemsPerPage: 10
+    });
+
+    const [filterData, setFilterData] = useState({
+        "page": checkFilterItem(searchParams, "page", 1, true),
+    });
+
     const sendRequest = () => {
+        let filterUrl = fetchFilterData(filterData);
+        navigate(filterUrl)
 
-        if (!requestData) {
-            return;
-        }
-
-        axios.post(`/api/flights`, requestData, userAuthenticationConfig(false)).then(response => {
-            console.log(response);
-            if (response.status === responseStatus.HTTP_CREATED) {
-                setNotification({...notification, visible: true, type: "success", message: "Flight created!"});
+        axios.get("/api/flights" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
+            if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
+                setFlights(response.data["hydra:member"]);
+                setPaginationInfo({
+                    ...paginationInfo,
+                    totalItems: response.data["hydra:totalItems"],
+                    totalPageCount: Math.ceil(response.data["hydra:totalItems"] / paginationInfo.itemsPerPage)
+                })
             }
         }).catch(error => {
-            setError(error.response.data.detail);
-            setNotification({...notification, visible: true, type: "error", message: error.response.data.detail});
-        }).finally(() => setLoading(false));
+            console.log("error");
+        });
     }
 
     useEffect(() => {
         sendRequest();
-    }, [requestData]);
+    }, [requestData, filterData]);
+
+    const onChangePage = (event, page) => {
+        setFilterData({...filterData, page: page});
+    };
 
     return (
         <>
@@ -48,13 +70,20 @@ const FlightContainer = () => {
             }
             <Helmet>
                 <title>
-                    Create account
+                    Flights
                 </title>
             </Helmet>
-            <CreateFlightForm
-                setData={setRequestData}
-                loading={loading}
-            />
+
+            <Button to="/flights/new" component={NavLink}>Create flight</Button>
+
+            <FlightsTable fetchedData={flights}/>
+            {paginationInfo.totalPageCount > 1 &&
+              <Pagination
+                count={paginationInfo.totalPageCount}
+                shape="rounded"
+                page={filterData.page}
+                onChange={(event, page) => onChangePage(event, page)}
+              />}
         </>
     );
 };

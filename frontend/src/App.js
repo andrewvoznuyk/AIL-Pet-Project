@@ -11,6 +11,10 @@ import eventBus from "./utils/eventBus";
 import "nprogress/nprogress.css";
 import "./assets/css/main.css";
 import MenuAppBar from "./components/elemets/global/menu/MenuAppBar";
+import { roles } from "./utils/consts";
+import managerRoutesConcat from "./routes/managerRoutes";
+import ownerRoutesConcat from "./routes/ownerRoutes";
+import adminRoutesConcat from "./routes/adminRoutes";
 
 export const AppContext = createContext({});
 
@@ -28,11 +32,42 @@ function App () {
         ))
       );
     } else {
-      return (
-        userRoutesConcat.map((route, index) => (
-          <Route key={index} path={route.path} element={route.element} />
-        ))
-      );
+      const userInfo = getUserInfo();
+
+      if (userInfo) {
+        //if user logged in
+        const userRoles = userInfo.roles;
+
+        //USER
+        if (userRoles.includes(roles.CLIENT)) {
+          return (
+            userRoutesConcat.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            )));
+        }
+        //MANAGER
+        else if (userRoles.includes(roles.MANAGER)) {
+          return (
+            managerRoutesConcat.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            )));
+        }
+        //OWNER
+        else if (userRoles.includes(roles.OWNER)) {
+          return (
+            ownerRoutesConcat.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            )));
+        }
+        //ADMIN
+        else if (userRoles.includes(roles.ADMIN)) {
+          return (
+            adminRoutesConcat.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            )));
+        }
+
+      }
     }
   };
 
@@ -67,7 +102,7 @@ function App () {
         user: getUserInfo()
       }}
     >
-      <MenuAppBar/>
+      <MenuAppBar />
       <HelmetProvider>
         <div className="container">
           <Suspense fallback={<CircularProgress />}>
