@@ -133,6 +133,10 @@ class GetApiDataService
             }
 
             $aircraft = $this->denormalize->denormalize($requestData[$i], AircraftModel::class, "array");
+
+            /** @var AircraftModel $aircraft */
+            $aircraft->setPassengerCapacity($requestData[$i]['passenger_capacity']);
+            $aircraft->setCruiseSpeedKmph($requestData[$i]['cruise_speed_kmph']);
             $errors = $this->validator->validate($requestData[$i]);
 
             $this->entityManager->persist($aircraft);
