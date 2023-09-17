@@ -60,7 +60,8 @@ class Aircraft
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:aircraft",
-        "get:item:aircraft"
+        "get:item:aircraft",
+        "post:collection:aircraft"
     ])]
     private ?AircraftModel $model = null;
 
@@ -72,7 +73,8 @@ class Aircraft
         "get:collection:aircraft",
         "get:item:aircraft",
         "get:item:flight",
-        "get:collection:flight"
+        "get:collection:flight",
+        "post:collection:aircraft"
     ])]
     private ?string $serialNumber = null;
 
@@ -81,6 +83,13 @@ class Aircraft
      */
     #[ORM\ManyToOne(inversedBy: 'aircrafts')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups([
+        "get:collection:aircraft",
+        "get:item:aircraft",
+        "get:item:flight",
+        "get:collection:flight",
+        "post:collection:aircraft"
+    ])]
     private ?Company $company = null;
 
     /**
@@ -91,7 +100,8 @@ class Aircraft
         "get:collection:aircraft",
         "get:item:aircraft",
         "get:item:flight",
-        "get:collection:flight"
+        "get:collection:flight",
+        "post:collection:aircraft"
     ])]
     private array $places = [];
 
@@ -99,6 +109,13 @@ class Aircraft
      * @var array
      */
     #[ORM\Column(type: Types::JSON)]
+    #[Groups([
+        "get:collection:aircraft",
+        "get:item:aircraft",
+        "get:item:flight",
+        "get:collection:flight",
+        "post:collection:aircraft"
+    ])]
     private array $columns = [];
 
     /**
