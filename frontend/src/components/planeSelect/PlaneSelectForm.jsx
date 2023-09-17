@@ -7,16 +7,23 @@ import PlaneForm from "./PlaneForm";
 
 const PlaneSelectForm = () => {
     const [planes, setPlanes] = useState(null);
-    const [currentPlane, setCurrentPlane] = useState(null);
+    const [currentPlane, setCurrentPlane] = useState({
+        id:""
+    });
     const [companyList, setCompanyList] = useState(null);
-    const [currentCompany, setCurrentCompany] = useState(null);
+    const [currentCompany, setCurrentCompany] = useState({
+        id:""
+    });
     const [data,setData]=useState({
-        serialNumber:null,
+        model:"",
+        serialNumber:"",
+        company:"",
     })
-    useEffect(() => {
+
+    useEffect(()=>{
         request();
         requestCompany();
-    }, []);
+    },[]);
     const request=()=>{
         axios.get("/api/aircraft-models?page=1&itemsPerPage=1000", userAuthenticationConfig()).then(response => {
             if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
@@ -26,9 +33,9 @@ const PlaneSelectForm = () => {
             console.log("error");
         });
     };
+
     const requestCompany=()=>{
-        axios.get("/api/get-company-list", userAuthenticationConfig()).then(response => {
-            console.log(response.data);
+        axios.get("/api/user-company", userAuthenticationConfig()).then(response => {
             if (response.status === responseStatus.HTTP_OK && response.data) {
                 setCompanyList(response.data);
             }
@@ -36,19 +43,21 @@ const PlaneSelectForm = () => {
             console.log("error");
         });
     };
+
     const SendData=(event)=>{
         event.preventDefault();
-
-        //setData({...data, model: currentPlane.id, company: currentCompany.id});
-        console.log(currentPlane.name);
-        axios.post("", {data}, userAuthenticationConfig()).then(response => {
-            alert("Data sended!");
+        console.log(currentPlane);
+        setData({...data, model: "/api/aircraft-models/"+currentPlane.id, company: "/api/companies/"+currentCompany.id});
+        console.log(data);
+        axios.post("/api/aircraft",data,userAuthenticationConfig()).then(response => {
             if (response.status === responseStatus.HTTP_CREATED) {
+                alert("Aircraft is added!");
             }
         }).catch(error => {
-            console.log("error");
+            alert("There are same number in Database!");
         });
     };
+
     return (
         <>
             <form onSubmit={SendData}>
@@ -60,7 +69,7 @@ const PlaneSelectForm = () => {
                         label="Company List"
                     >
                         {companyList && companyList.map((item, key) => (
-                            <MenuItem key={key} value={item.name} onClick={()=>{setCurrentCompany(item)}}>{item.name}</MenuItem>
+                            <MenuItem key={key} value={item.name} onClick={()=>{setCurrentCompany(item);setData({...data, company: "/api/companies/"+item.id});}}>{item.name}</MenuItem>
                         ))}
                     </Select>
 
@@ -71,10 +80,10 @@ const PlaneSelectForm = () => {
                         label="Aiplanes"
                     >
                         {planes && planes.map((item, key) => (
-                            <MenuItem key={key} value={item.plane} onClick={()=>{setCurrentPlane(item)}}>{item.plane}</MenuItem>
+                            <MenuItem key={key} value={item.plane} onClick={()=>{setCurrentPlane(item);setData({...data, model: "/api/aircraft-models/"+item.id});}}>{item.plane}</MenuItem>
                         ))}
                     </Select>
-                    {currentPlane && <PlaneForm currentPlane={currentPlane}/>}
+                    {currentPlane.plane && <PlaneForm currentPlane={currentPlane}  data={data} setData={setData}/>}
                 </FormControl>
             </form>
         </>
