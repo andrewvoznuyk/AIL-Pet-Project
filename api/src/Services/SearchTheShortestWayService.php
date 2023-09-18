@@ -2,21 +2,10 @@
 
 namespace App\Services;
 
-use App\Entity\AircraftModel;
-use App\Entity\Airport;
 use App\Entity\Flight;
 use App\Services\SearchingModel\Dijkstra;
 use App\Services\SearchingModel\Graph;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SearchTheShortestWayService
 {
@@ -32,19 +21,12 @@ class SearchTheShortestWayService
     private GetMilesService $getMilesService;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
      * @param GetMilesService $getMilesService
-     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(GetMilesService $getMilesService, EntityManagerInterface $entityManager)
+    public function __construct(GetMilesService $getMilesService)
     {
         $this->graph = new Graph();
         $this->getMilesService = $getMilesService;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -68,10 +50,10 @@ class SearchTheShortestWayService
         for ($i = 0; $i < count($flights); $i++) {
             /** @var Flight $flight */
             $flight = $flights[$i];
-            $frAirport = $this->entityManager->getRepository(Airport::class)->findOneBy(["name" => $flight->getFromLocation()]);
-            $toAirport = $this->entityManager->getRepository(Airport::class)->findOneBy(["name" => $flight->getToLocation()]);
 
-            $this->graph->addWay($frAirport->getName(), $toAirport->getName(), $this->getMilesService->getMilesFromCityAtoCityB($frAirport->getId(), $toAirport->getId()));
+            $frAirport = $flight->getFromLocation()->getAirport();
+            $toAirport = $flight->getToLocation()->getAirport();
+            $this->graph->addWay($frAirport, $toAirport, $this->getMilesService->getMilesFromCityAtoCityB($frAirport, $toAirport));
         }
     }
 
@@ -81,14 +63,43 @@ class SearchTheShortestWayService
      * @return string
      * @throws Exception
      */
-    function getWay(array $airports, array $flights): string
+    public function getWay(array $flights): array
     {
-        $this->addAirportsToGraph($airports);
+        $this->addAirportsToGraph($this->getAirports($flights));
         $this->addWays($flights);
 
         $dijkstra = new Dijkstra($this->graph);
 
-        return $dijkstra->getShortestPath('A', "B");
+/*        return $dijkstra->getShortestPath('A Coruna Airport', "Aalborg Airport");*/
+        return $this->returnFlights($dijkstra->getShortestPath('A Coruna Airport', "Aalborg Airport"), $flights);
+    }
+
+    private function returnFlights(array $airportsNames, array $flights): array
+    {
+        $neededFlights = [];
+
+        for ($i = 0; $i < count($flights); $i++) {
+            for ($j = 0; $j < count($airportsNames); $j++){
+                if ($flights[$i]->getToLocation()->getAirport()->getName() === $airportsNames[$j] && $flights[$i]->getToLocation()->getAirport()->getName() === $airportsNames[$j++])
+                {
+                    $neededFlights[] = $flights[$i];
+                }
+            }
+        }
+
+        return $neededFlights;
+    }
+
+    private function getAirports(array $flights): array
+    {
+        $airports = [];
+
+        /** @var Flight $flight */
+        foreach ($flights as $flight) {
+            $airports[] = $flight->getToLocation()->getAirport();
+            $airports[] = $flight->getFromLocation()->getAirport();
+        }
+        return $airports;
     }
 
 }

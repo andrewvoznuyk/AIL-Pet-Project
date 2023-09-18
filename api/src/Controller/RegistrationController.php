@@ -19,6 +19,9 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+/**
+ * @deprecated Use ApiResource (post to /users) instead.
+ */
 class RegistrationController extends AbstractController
 {
 
@@ -63,7 +66,6 @@ class RegistrationController extends AbstractController
 
     /**
      * @throws ExceptionInterface
-     * @deprecated Use ApiResource (post to /users) instead.
      */
     #[Route('/register', name: 'app_register', methods: ['POST'])]
     public function registration(Request $request): JsonResponse

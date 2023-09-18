@@ -5,14 +5,16 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\EntityListener\FlightEntityListener;
 use App\Repository\FlightRepository;
-use App\Services\GetMilesService;
+use App\Validator\Constraints\FlightConstraint;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FlightRepository::class)]
@@ -49,7 +51,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     "fromLocation" => "partial",
     "toLocation" => "partial",
 ])]
-class Flight
+#[FlightConstraint]
+#[ORM\EntityListeners([FlightEntityListener::class])]
+class Flight implements JsonSerializable
 {
 
     /**
@@ -72,7 +76,7 @@ class Flight
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:item:flight"
+        "post:collection:flight"
     ])]
     private ?Aircraft $aircraft = null;
 
@@ -83,7 +87,7 @@ class Flight
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:item:flight"
+        "post:collection:flight"
     ])]
     private ?DateTimeInterface $departure = null;
 
@@ -94,7 +98,8 @@ class Flight
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:item:flight"
+        "post:item:flight",
+        "post:collection:flight"
     ])]
     private ?DateTimeInterface $arrival = null;
 
@@ -102,6 +107,11 @@ class Flight
      * @var bool|null
      */
     #[ORM\Column]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:collection:flight"
+    ])]
     private bool $isCompleted = false;
 
     /**
@@ -118,7 +128,7 @@ class Flight
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:item:flight"
+        "post:collection:flight"
     ])]
     private ?CompanyFlights $fromLocation = null;
 
@@ -130,7 +140,7 @@ class Flight
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:item:flight"
+        "post:collection:flight"
     ])]
     private ?CompanyFlights $toLocation = null;
 
@@ -138,32 +148,39 @@ class Flight
      * @var array
      */
     #[ORM\Column]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:collection:flight"
+    ])]
     private array $placesCoefs = [];
 
     /**
      * @var array
      */
     #[ORM\Column]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:collection:flight"
+    ])]
     private array $initPrices = [];
 
     /**
-     * @var string|null
+     * @var string
      */
     #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
-    private ?string $distance = null;
+    private string $distance;
 
 
     /**
-     * @param GetMilesService $getMilesService
-     * @throws Exception
+     *
      */
-    public function __construct(GetMilesService $getMilesService)
+    public function __construct()
     {
         $this->tickets = new ArrayCollection();
 
         $this->isCompleted = false;
-
-        $this->distance = $getMilesService->getMilesFromCityAtoCityB($this->fromLocation->getId(), $this->toLocation->getId());
     }
 
     /**
@@ -373,7 +390,6 @@ class Flight
     }
 
     /**
-     * @param string $distance
      * @return $this
      */
     public function setDistance(string $distance): self
@@ -381,6 +397,16 @@ class Flight
         $this->distance = $distance;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->getId(),
+            "fromLocation" => $this->getFromLocation()->getAirport()->getName(),
+            "toLocation" => $this->getToLocation()->getAirport()->getName(),
+            "distance" => $this->getDistance()
+        ];
     }
 
 }

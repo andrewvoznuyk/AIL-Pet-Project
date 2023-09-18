@@ -86,6 +86,8 @@ class Aircraft
     #[Groups([
         "get:collection:aircraft",
         "get:item:aircraft",
+        "get:item:flight",
+        "get:collection:flight",
         "post:collection:aircraft"
     ])]
     private ?Company $company = null;
@@ -110,6 +112,8 @@ class Aircraft
     #[Groups([
         "get:collection:aircraft",
         "get:item:aircraft",
+        "get:item:flight",
+        "get:collection:flight",
         "post:collection:aircraft"
     ])]
     private array $columns = [];

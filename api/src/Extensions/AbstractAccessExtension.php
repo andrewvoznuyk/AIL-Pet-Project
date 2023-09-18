@@ -15,18 +15,30 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class AbstractCurrentUserExtension
  * @package App\Extension
- * @deprecated use separate extensions for each role instead.
  */
-abstract class AbstractCurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
+abstract class AbstractAccessExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {
 
     public const FIRST_ELEMENT_ARRAY = 0;
+    public const GET = "get";
+    public const POST = "post";
+    public const PUT = "put";
+    public const PATCH = "patch";
+    public const DELETE = "delete";
 
-    public const ADMIN_ROLES = [
-        User::ROLE_ADMIN,
-        User::ROLE_OWNER,
-        User::ROLE_MANAGER
-    ];
+    /*public const AFFECTED_ROLES = [ // ...a long time ago here was ADMIN_ROLES
+        User::ROLE_OWNER
+    ];*/
+
+    /**
+     * @return array
+     */
+    public abstract function getAffectedRoles(): array;
+
+    /**
+     * @return array
+     */
+    public abstract function getAffectedMethods(): array;
 
     /**
      * @var TokenStorageInterface
@@ -75,7 +87,7 @@ abstract class AbstractCurrentUserExtension implements QueryCollectionExtensionI
         }
 
         return !$this->apply($operationName) ||
-            count(array_intersect(self::ADMIN_ROLES, $token->getRoleNames())) ||
+            !count(array_intersect($this->getAffectedRoles(), $token->getRoleNames())) || //if has selected role
             $resourceClass !== $this->getResourceClass();
     }
 
@@ -85,7 +97,8 @@ abstract class AbstractCurrentUserExtension implements QueryCollectionExtensionI
      */
     protected function apply($operationName): bool
     {
-        return !is_bool(strpos($operationName, "get"));
+        //return !is_bool(strpos($operationName, "get"));
+        return in_array($operationName, $this->getAffectedMethods());
     }
 
     /**
