@@ -5,6 +5,7 @@ import {useContext} from "react";
 import {AppContext} from "../../App";
 import eventBus from "../../utils/eventBus";
 import PlaneSelectForm from "../../components/planeSelect/PlaneSelectForm";
+import FlightsContainer from "../../components/searchMainForm/FlightsContainer";
 
 const HomePage = () => {
     const {authenticated} = useContext(AppContext);
@@ -57,6 +58,7 @@ const HomePage = () => {
                     }
                 </ButtonGroup>
             </div>
+            <FlightsContainer/>
         </>
     );
 };

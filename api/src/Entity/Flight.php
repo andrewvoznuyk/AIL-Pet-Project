@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\FlightRepository;
 use App\Services\GetMilesService;
 use DateTimeInterface;
@@ -43,6 +45,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
         //"security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    "fromLocation" => "partial",
+    "toLocation" => "partial",
+])]
 class Flight
 {
 

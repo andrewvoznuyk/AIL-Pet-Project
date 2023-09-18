@@ -55,6 +55,7 @@ const PlaneSelectForm = () => {
             }
         }).catch(error => {
             alert("There are same number in Database!");
+            console.log(error.response)
         });
     };
 
