@@ -3,19 +3,10 @@ import {
   Box,
   Button, Card, CardContent,
   FormControl, Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel, Link,
   TextField,
   Typography
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
-import InputCustom from "../../elemets/input/InputCustom";
-import InputPassword from "../../elemets/input/InputPassword";
-import InputPhoneNumber from "../../elemets/input/InputPhoneNumber";
 import InputDataLoader from "../../elemets/input/InputDataLoader";
-import InputAddRemove from "../../elemets/input/InputAddRemove";
 
 const CreateFlightForm = ({ setData, loading }) => {
 
@@ -25,6 +16,10 @@ const CreateFlightForm = ({ setData, loading }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    if (!plane || !airportFrom || !airportTo) {
+      return;
+    }
 
     const data = {
       aircraft: plane.id,
@@ -42,8 +37,8 @@ const CreateFlightForm = ({ setData, loading }) => {
       }
     };
 
-    //setData(data);
-    console.log(data);
+    setData(data);
+    //console.log(data);
   };
 
   return (
@@ -154,9 +149,9 @@ const CreateFlightForm = ({ setData, loading }) => {
               <InputDataLoader
                 name="fromLocation"
                 label="From"
-                url="/api/airports"
+                url="/api/company-flights"
                 searchWord="name"
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => `${option.airport.name} (${option.airport.city})`}
                 onChange={(e, v) => setAirportFrom(v)}
               />
 
@@ -165,9 +160,9 @@ const CreateFlightForm = ({ setData, loading }) => {
               <InputDataLoader
                 name="toLocation"
                 label="To"
-                url="/api/airports"
+                url="/api/company-flights"
                 searchWord="name"
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => option.airport.name}
                 onChange={(e, v) => setAirportTo(v)}
               />
 
@@ -175,11 +170,12 @@ const CreateFlightForm = ({ setData, loading }) => {
 
               <TextField
                 name="departure"
-                type="date"
+                type="datetime-local"
                 InputLabelProps={{
                   shrink: true
                 }}
                 label="Departure"
+                required={true}
               />
 
               <p></p>
