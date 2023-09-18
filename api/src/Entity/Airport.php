@@ -72,6 +72,7 @@ class Airport
         "get:item:flight",
         "get:collection:flight",
 
+        "get:item:companyFlights",
         "get:collection:companyFlights"
     ])]
     private ?string $name = null;
@@ -87,6 +88,7 @@ class Airport
         "get:item:flight",
         "get:collection:flight",
 
+        "get:item:companyFlights",
         "get:collection:companyFlights",
     ])]
     private ?string $city = null;
@@ -103,6 +105,7 @@ class Airport
         "get:item:flight",
         "get:collection:flight",
 
+        "get:item:companyFlights",
         "get:collection:companyFlights"
     ])]
     private ?string $country = null;
