@@ -63,23 +63,39 @@ class SearchTheShortestWayService
      * @return string
      * @throws Exception
      */
-    function getWay(array $flights): string
+    public function getWay(array $flights): array
     {
         $this->addAirportsToGraph($this->getAirports($flights));
         $this->addWays($flights);
 
         $dijkstra = new Dijkstra($this->graph);
 
-        return $dijkstra->getShortestPath('Aachen Merzbruck Airport', "A Coruna Airport");
+/*        return $dijkstra->getShortestPath('A Coruna Airport', "Aalborg Airport");*/
+        return $this->returnFlights($dijkstra->getShortestPath('A Coruna Airport', "Aalborg Airport"), $flights);
     }
 
-    private function getAirports(array $flights) : array
+    private function returnFlights(array $airportsNames, array $flights): array
+    {
+        $neededFlights = [];
+
+        for ($i = 0; $i < count($flights); $i++) {
+            for ($j = 0; $j < count($airportsNames); $j++){
+                if ($flights[$i]->getToLocation()->getAirport()->getName() === $airportsNames[$j] && $flights[$i]->getToLocation()->getAirport()->getName() === $airportsNames[$j++])
+                {
+                    $neededFlights[] = $flights[$i];
+                }
+            }
+        }
+
+        return $neededFlights;
+    }
+
+    private function getAirports(array $flights): array
     {
         $airports = [];
 
         /** @var Flight $flight */
-        foreach ($flights as $flight)
-        {
+        foreach ($flights as $flight) {
             $airports[] = $flight->getToLocation()->getAirport();
             $airports[] = $flight->getFromLocation()->getAirport();
         }
