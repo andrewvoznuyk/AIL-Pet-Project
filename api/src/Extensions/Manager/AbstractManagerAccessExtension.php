@@ -3,15 +3,8 @@
 
 namespace App\Extensions\Manager;
 
-
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\User;
 use App\Extensions\AbstractAccessExtension;
-use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
 
 /**
  * Class AbstractCurrentUserExtension
@@ -23,13 +16,6 @@ abstract class AbstractManagerAccessExtension extends AbstractAccessExtension
     {
         return [
             User::ROLE_MANAGER
-        ];
-    }
-
-    public function getAffectedMethods(): array
-    {
-        return [
-            self::GET
         ];
     }
 

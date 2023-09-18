@@ -5,8 +5,6 @@ namespace App\Extensions\Owner;
 
 use App\Entity\User;
 use App\Extensions\AbstractAccessExtension;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
 
 /**
  * Class AbstractCurrentUserExtension

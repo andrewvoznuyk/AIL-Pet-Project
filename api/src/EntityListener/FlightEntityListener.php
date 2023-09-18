@@ -17,12 +17,9 @@ class FlightEntityListener
     public function prePersist(Flight $flight, LifecycleEventArgs $eventArgs): void
     {
         //TODO: add real flight duration
-        $arrivalDate = date_add(
-            $flight->getDeparture(),
-            date_interval_create_from_date_string('1 day')
-        );
-
+        $arrivalDate = $flight->getDeparture();
         $flight->setArrival($arrivalDate);
+
         $getMilesService = new GetMilesService();
         $distance = $getMilesService->getMilesFromCityAtoCityB($flight->getFromLocation()->getAirport(), $flight->getToLocation()->getAirport());
         $flight->setDistance($distance);

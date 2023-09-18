@@ -19,6 +19,16 @@ class CompanyFlightsManagerExtension extends AbstractManagerAccessExtension
     }
 
     /**
+     * @return array
+     */
+    public function getAffectedMethods(): array
+    {
+        return [
+            self::GET
+        ];
+    }
+
+    /**
      * @param QueryBuilder $queryBuilder
      * @return void
      */
@@ -31,11 +41,12 @@ class CompanyFlightsManagerExtension extends AbstractManagerAccessExtension
         $binaryId = $currentUser->getId()->toBinary();
 
         $queryBuilder
-            ->innerJoin($rootAlias.".company", "c")
+            ->innerJoin($rootAlias . ".company", "c")
             ->leftJoin("c.managers", "u")
             ->andWhere('u = :user')
             ->setParameter('user', $binaryId);
 
         //dd($queryBuilder->getQuery()->getSQL());
     }
+
 }

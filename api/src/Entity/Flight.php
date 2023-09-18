@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\EntityListener\FlightEntityListener;
 use App\Repository\FlightRepository;
+use App\Validator\Constraints\FlightConstraint;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -43,6 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         //"security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
     ]
 )]
+#[FlightConstraint]
 #[ORM\EntityListeners([FlightEntityListener::class])]
 class Flight
 {

@@ -15,6 +15,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 /**
  * Class AbstractCurrentUserExtension
  * @package App\Extension
+ * @deprecated use separate extensions for each role instead.
  */
 abstract class AbstractCurrentUserExtension implements QueryCollectionExtensionInterface, QueryItemExtensionInterface
 {

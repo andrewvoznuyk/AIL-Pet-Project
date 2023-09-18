@@ -4,6 +4,9 @@ namespace App\Extensions;
 
 use Doctrine\ORM\QueryBuilder;
 
+/**
+ * @deprecated use User folded extensions instead.
+ */
 abstract class UserRelationExtension extends AbstractCurrentUserExtension
 {
 
