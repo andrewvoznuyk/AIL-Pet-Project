@@ -10,6 +10,17 @@ class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
 {
 
     /**
+     * @return array
+     */
+    public function getAffectedMethods(): array
+    {
+        return [
+            self::GET,
+            self::DELETE,
+        ];
+    }
+
+    /**
      * @return string
      */
     public function getResourceClass(): string

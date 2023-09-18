@@ -20,6 +20,11 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
 {
 
     public const FIRST_ELEMENT_ARRAY = 0;
+    public const GET = "get";
+    public const POST = "post";
+    public const PUT = "put";
+    public const PATCH = "patch";
+    public const DELETE = "delete";
 
     /*public const AFFECTED_ROLES = [ // ...a long time ago here was ADMIN_ROLES
         User::ROLE_OWNER
@@ -29,6 +34,11 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
      * @return array
      */
     public abstract function getAffectedRoles(): array;
+
+    /**
+     * @return array
+     */
+    public abstract function getAffectedMethods(): array;
 
     /**
      * @var TokenStorageInterface
@@ -87,8 +97,8 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
      */
     protected function apply($operationName): bool
     {
-        return !is_bool(strpos($operationName, "get"));
-        //return $operationName === "get";
+        //return !is_bool(strpos($operationName, "get"));
+        return in_array($operationName, $this->getAffectedMethods());
     }
 
     /**

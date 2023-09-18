@@ -26,4 +26,11 @@ abstract class AbstractManagerAccessExtension extends AbstractAccessExtension
         ];
     }
 
+    public function getAffectedMethods(): array
+    {
+        return [
+            self::GET
+        ];
+    }
+
 }

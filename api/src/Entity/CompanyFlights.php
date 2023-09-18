@@ -28,24 +28,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "method"                => "GET",
            // "security"              => "(is_granted('" . User::ROLE_OWNER . "') and object.company.getOwner() == user) or
                // ((is_granted('" . User::ROLE_MANAGER . "') and user.getManagerAtCompany() == object.company)",
-            "normalization_context" => ["groups" => ["get:collection:companyFlights"]]
-        ],
-        "put"    => [
-            "method"                  => "PUT",
-            //"security"                => "is_granted('" . User::ROLE_OWNER . "')",
-            "denormalization_context" => ["groups" => ["put:collection:companyFlights"]],
-            "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
-        ],
-        "patch"  => [
-            "method"                  => "PATCH",
-            //"security"                => "is_granted('" . User::ROLE_OWNER . "') && object.company.getOwner() == user",
-            "denormalization_context" => ["groups" => ["post:collection:companyFlights"]],
-            "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
+            "normalization_context" => ["groups" => ["get:item:companyFlights"]]
         ],
         "delete" => [
             "method"                => "DELETE",
             //"security"                => "is_granted('" . User::ROLE_OWNER . "') && object.company.getOwner() == user",
             "normalization_context" => ["groups" => ["get:item:companyFlights"]]
+            //TODO: delete related company-flights
         ],
     ],
     attributes: [
@@ -60,7 +49,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 ])]
 class CompanyFlights
 {
-
     /**
      * @var int|null
      */
@@ -68,8 +56,8 @@ class CompanyFlights
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups([
-        "get:item:flight",
-        "get:collection:flight"
+        "get:item:companyFlights",
+        "get:collection:companyFlights"
     ])]
     private ?int $id = null;
 
@@ -81,7 +69,6 @@ class CompanyFlights
     #[Groups([
         "get:collection:companyFlights",
         "post:collection:companyFlights",
-        "put:collection:companyFlights",
         "get:item:companyFlights",
 
         "get:item:flight",
@@ -95,9 +82,9 @@ class CompanyFlights
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: "companyFlights")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
-        "get:collection:companyFlights",
+        //"get:collection:companyFlights",
         "post:collection:companyFlights",
-        "get:item:companyFlights"
+        //"get:item:companyFlights"
     ])]
     private ?Company $company = null;
 

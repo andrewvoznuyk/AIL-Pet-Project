@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Extensions\Owner;
+namespace App\Extensions\User;
 
 use App\Entity\User;
 use App\Extensions\AbstractAccessExtension;
@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * Class AbstractCurrentUserExtension
  * @package App\Extension
  */
-abstract class AbstractOwnerAccessExtension extends AbstractAccessExtension
+abstract class AbstractUserAccessExtension extends AbstractAccessExtension
 {
 
     /**
@@ -21,7 +21,7 @@ abstract class AbstractOwnerAccessExtension extends AbstractAccessExtension
     public function getAffectedRoles(): array
     {
         return [
-            User::ROLE_OWNER
+            User::ROLE_USER
         ];
     }
 }
