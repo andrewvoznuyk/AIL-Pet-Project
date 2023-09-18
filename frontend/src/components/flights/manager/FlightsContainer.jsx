@@ -74,7 +74,14 @@ const FlightContainer = () => {
                 </title>
             </Helmet>
 
-            <Button to="/flights/new" component={NavLink}>Create flight</Button>
+            <Button to="/flights/new"
+                    component={NavLink}
+                    variant="outlined"
+            >
+                Create flight
+            </Button>
+
+            <p></p>
 
             <FlightsTable fetchedData={flights}/>
             {paginationInfo.totalPageCount > 1 &&

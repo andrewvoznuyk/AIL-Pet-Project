@@ -34,11 +34,12 @@ const CreateFlightForm = ({ setData, loading }) => {
         "business": event.target.businessCoef.value,
         "econom": event.target.economCoef.value,
         "standard": event.target.standardCoef.value
-      }
+      },
+      departure: event.target.departure.value
     };
 
     setData(data);
-    //console.log(data);
+    console.log(data);
   };
 
   return (
