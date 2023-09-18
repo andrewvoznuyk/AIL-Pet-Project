@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\EntityListener\FlightEntityListener;
 use App\Repository\FlightRepository;
-use App\Services\GetMilesService;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -90,6 +89,8 @@ class Flight
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
+        "post:item:flight",
+        "post:collection:flight"
     ])]
     private ?DateTimeInterface $arrival = null;
 
@@ -97,6 +98,11 @@ class Flight
      * @var bool|null
      */
     #[ORM\Column]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:flight",
+        "post:collection:flight"
+    ])]
     private bool $isCompleted = false;
 
     /**
@@ -152,23 +158,20 @@ class Flight
     private array $initPrices = [];
 
     /**
-     * @var string|null
+     * @var string
      */
     #[ORM\Column(type: Types::DECIMAL, precision: 30, scale: 2)]
-    private ?string $distance = null;
+    private string $distance;
 
 
     /**
-     * @param GetMilesService $getMilesService
-     * @throws Exception
+     *
      */
-    public function __construct(GetMilesService $getMilesService)
+    public function __construct()
     {
         $this->tickets = new ArrayCollection();
 
         $this->isCompleted = false;
-
-        $this->distance = $getMilesService->getMilesFromCityAtoCityB($this->fromLocation->getId(), $this->toLocation->getId());
     }
 
     /**
@@ -378,7 +381,6 @@ class Flight
     }
 
     /**
-     * @param string $distance
      * @return $this
      */
     public function setDistance(string $distance): self

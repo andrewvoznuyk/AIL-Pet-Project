@@ -2,14 +2,13 @@
 
 namespace App\EntityListener;
 
-use App\Entity\Company;
 use App\Entity\Flight;
 use App\Entity\User;
+use App\Services\GetMilesService;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class FlightEntityListener
 {
-
     /**
      * @param Flight $flight
      * @param LifecycleEventArgs $eventArgs
@@ -24,6 +23,9 @@ class FlightEntityListener
         );
 
         $flight->setArrival($arrivalDate);
+        $getMilesService = new GetMilesService();
+        $distance = $getMilesService->getMilesFromCityAtoCityB($flight->getFromLocation()->getAirport(), $flight->getToLocation()->getAirport());
+        $flight->setDistance($distance);
     }
 
 }
