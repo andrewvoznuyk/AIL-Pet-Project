@@ -12,6 +12,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FlightRepository::class)]
@@ -46,7 +47,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 #[FlightConstraint]
 #[ORM\EntityListeners([FlightEntityListener::class])]
-class Flight
+class Flight implements JsonSerializable
 {
 
     /**
@@ -390,6 +391,16 @@ class Flight
         $this->distance = $distance;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->getId(),
+            "fromLocation" => $this->getFromLocation()->getAirport()->getName(),
+            "toLocation" => $this->getToLocation()->getAirport()->getName(),
+            "distance" => $this->getDistance()
+        ];
     }
 
 }

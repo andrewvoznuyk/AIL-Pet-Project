@@ -12,15 +12,20 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity(repositoryClass: AircraftModelRepository::class)]
 #[ApiResource(
     collectionOperations: [
-        "get"  => [
+        "get"           => [
             "method"                => "GET",
             "normalization_context" => ["groups" => ["get:collection:model"]]
         ],
-        "post" => [
+        "post"          => [
             "method"                  => "POST",
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:model"]],
             "normalization_context"   => ["groups" => ["get:item:model"]],
+        ],
+        "post-aircraft" => [
+            "method"                  => "POST",
+            "path"                    => "get-aircrafts",
+            "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "controller"              => GetAircraftModelApiAction::class
         ]
     ],
@@ -59,7 +64,8 @@ class AircraftModel
     #[Groups([
         "get:item:model",
         "get:collection:model",
-        "post:item:model"
+        "post:item:model",
+        "post:collection:model"
     ])]
     private ?string $plane = null;
 
@@ -70,7 +76,8 @@ class AircraftModel
     #[Groups([
         "get:item:model",
         "get:collection:model",
-        "post:item:model"
+        "post:item:model",
+        "post:collection:model"
     ])]
     private ?string $brand = null;
 
@@ -81,7 +88,8 @@ class AircraftModel
     #[Groups([
         "get:item:model",
         "get:collection:model",
-        "post:item:model"
+        "post:item:model",
+        "post:collection:model"
     ])]
     private ?int $passenger_capacity = null;
 
@@ -92,7 +100,8 @@ class AircraftModel
     #[Groups([
         "get:item:model",
         "get:collection:model",
-        "post:item:model"
+        "post:item:model",
+        "post:collection:model"
     ])]
     private ?int $cruise_speed_kmph = null;
 
@@ -103,7 +112,8 @@ class AircraftModel
     #[Groups([
         "get:item:model",
         "get:collection:model",
-        "post:item:model"
+        "post:item:model",
+        "post:collection:model"
     ])]
     private ?string $engine = null;
 
@@ -114,7 +124,8 @@ class AircraftModel
     #[Groups([
         "get:item:model",
         "get:collection:model",
-        "post:item:model"
+        "post:item:model",
+        "post:collection:model"
     ])]
     private ?string $imgThumb = null;
 
