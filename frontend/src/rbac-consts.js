@@ -19,6 +19,10 @@ const toolbar = {
   USER: "toolbar:client"
 };
 
+const buyTickets = {
+  USER: "buyTicket:client",
+};
+
 export {
-  goods, flights, toolbar
+  goods, flights, toolbar, buyTickets
 };
