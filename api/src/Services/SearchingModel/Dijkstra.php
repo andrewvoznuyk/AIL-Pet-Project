@@ -40,7 +40,7 @@ class Dijkstra
      * @param string $toAirport
      * @return string
      */
-    public function getShortestPath(string $fromAirport, string $toAirport): string
+    public function getShortestPath(string $fromAirport, string $toAirport): array
     {
         $this->init();
         $this->waySums[$fromAirport] = 0;
@@ -102,12 +102,12 @@ class Dijkstra
      * @param string $toAirport
      * @return string
      */
-    private function restorePath(string $fromAirport, string $toAirport): string
+    private function restorePath(string $fromAirport, string $toAirport): array
     {
-        $path = $toAirport;
+        $path[] = $toAirport;
         while ($toAirport != $fromAirport) {
             $toAirport = $this->path[$toAirport];
-            $path = $toAirport . $path;
+            $path[] = $toAirport;
         }
 
         return $path;

@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Action\CancelFlightAction;
 use App\Action\FinishFlightAction;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EntityListener\FlightEntityListener;
 use App\Repository\FlightRepository;
 use App\Validator\Constraints\FlightConstraint;
@@ -14,6 +16,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: FlightRepository::class)]
@@ -56,9 +59,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
         //"security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
     ]
 )]
+#[ApiFilter(SearchFilter::class, properties: [
+    "fromLocation" => "partial",
+    "toLocation" => "partial",
+])]
 #[FlightConstraint]
 #[ORM\EntityListeners([FlightEntityListener::class])]
-class Flight
+class Flight implements JsonSerializable
 {
 
     /**
@@ -403,6 +410,16 @@ class Flight
         $this->distance = $distance;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "id" => $this->getId(),
+            "fromLocation" => $this->getFromLocation()->getAirport()->getName(),
+            "toLocation" => $this->getToLocation()->getAirport()->getName(),
+            "distance" => $this->getDistance()
+        ];
     }
 
 }
