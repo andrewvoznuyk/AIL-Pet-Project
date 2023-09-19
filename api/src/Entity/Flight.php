@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Action\CancelFlightAction;
+use App\Action\FinishFlightAction;
 use App\EntityListener\FlightEntityListener;
 use App\Repository\FlightRepository;
 use App\Validator\Constraints\FlightConstraint;
@@ -33,11 +35,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "method"                => "GET",
             "normalization_context" => ["groups" => ["get:item:flight"]]
         ],
-        "put" => [
+        "finish" => [
             "method"                  => "PUT",
-            "security"                => "is_granted('" . User::ROLE_MANAGER . "')",
-            "denormalization_context" => ["groups" => ["post:item:flight"]],
-            "normalization_context"   => ["groups" => ["get:item:flight"]]
+            "path"                    => "/flight/{id}/finish",
+            "security"                => "is_granted('" . User::ROLE_MANAGER . "') && object.getAircraft().getCompany() == user.getManagerAtCompany()",
+            "denormalization_context" => ["groups" => ["flight:empty"]],
+            "normalization_context"   => ["groups" => ["finish:item:flight"]],
+            "controller" => FinishFlightAction::class
+        ],
+        "cancel" => [
+            "method"                  => "PUT",
+            "path"                    => "/flight/{id}/cancel",
+            "security"                => "is_granted('" . User::ROLE_MANAGER . "') && object.getAircraft().getCompany() == user.getManagerAtCompany()",
+            "denormalization_context" => ["groups" => ["flight:empty"]],
+            "normalization_context"   => ["groups" => ["finish:item:flight"]],
+            "controller" => CancelFlightAction::class
         ]
     ],
     attributes: [
@@ -103,7 +115,8 @@ class Flight
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:collection:flight"
+        "post:collection:flight",
+        "finish:item:flight"
     ])]
     private bool $isCompleted = false;
 

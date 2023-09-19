@@ -5,6 +5,7 @@ namespace App\Validator\Constraints;
 use App\Entity\Airport;
 use App\Entity\Flight;
 use App\Validator\Constraints\Airport as AirportConstraint;
+use DateTime;
 use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -33,6 +34,7 @@ class FlightConstraintValidator extends ConstraintValidator
         }
 
         //TODO: check if plane belongs to the same company
+        //TODO: check if flight planned to the future
         //TODO: check if plane wouldn't be in another flight at the same time
     }
 
