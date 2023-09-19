@@ -70,7 +70,7 @@ class SearchTheShortestWayService
         $this->addAirportsToGraph($this->getAirports($flights));
         $this->addWays($flights);
 
-        return $this->returnFlights(array_reverse($dijkstra->getShortestPath("1", "3")), $flights);
+        return $this->returnFlights(array_reverse($dijkstra->getShortestPath("{$fromAirport->getId()}", "{$toAirport->getId()}")), $flights);
     }
 
     /**
