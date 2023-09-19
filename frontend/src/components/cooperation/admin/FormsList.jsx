@@ -1,7 +1,14 @@
 import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import FormsItem from "./FormsItem";
+import { useState } from "react";
 
 const FormsList = ({ forms }) => {
+  const [disabledRows, setDisabledRows] = useState([]);
+
+  const handleCancelClick = (index) => {
+    setDisabledRows([...disabledRows, index]);
+  };
+
   return <>
     <Paper>
       <Table>
@@ -12,16 +19,21 @@ const FormsList = ({ forms }) => {
             <TableCell>Company name</TableCell>
             <TableCell>Documents</TableCell>
             <TableCell>About</TableCell>
-            <TableCell>Flights from</TableCell>
-            <TableCell>Flights to</TableCell>
+            <TableCell>Main airport</TableCell>
             <TableCell>Date</TableCell>
             <TableCell>Status</TableCell>
+            <TableCell>Option</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {
             forms && forms.map((item, index) => (
-              <FormsItem key={index} form={item} />
+              <FormsItem
+                key={index}
+                form={item}
+                isDisabled={disabledRows.includes(index)}
+                onCancelClick={() => handleCancelClick(index)}
+              />
             ))
           }
         </TableBody>
