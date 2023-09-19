@@ -2,10 +2,12 @@
 
 namespace App\Services;
 
+use App\Entity\Airport;
 use App\Entity\Flight;
 use App\Services\SearchingModel\Dijkstra;
 use App\Services\SearchingModel\Graph;
 use Exception;
+use phpDocumentor\Reflection\Types\Array_;
 
 class SearchTheShortestWayService
 {
@@ -43,7 +45,6 @@ class SearchTheShortestWayService
     /**
      * @param array $flights
      * @return void
-     * @throws Exception
      */
     private function addWays(array $flights): void
     {
@@ -58,30 +59,54 @@ class SearchTheShortestWayService
     }
 
     /**
-     * @param array $airports
      * @param array $flights
-     * @return string
-     * @throws Exception
+     * @param Airport $fromAirport
+     * @param Airport $toAirport
+     * @param Dijkstra $dijkstra
+     * @return array
      */
-    public function getWay(array $flights): array
+    private function getWays(array $flights, Airport $fromAirport, Airport $toAirport, Dijkstra $dijkstra): array
     {
         $this->addAirportsToGraph($this->getAirports($flights));
         $this->addWays($flights);
 
-        $dijkstra = new Dijkstra($this->graph);
-
-/*        return $dijkstra->getShortestPath('A Coruna Airport', "Aalborg Airport");*/
-        return $this->returnFlights($dijkstra->getShortestPath('A Coruna Airport', "Aalborg Airport"), $flights);
+        return $this->returnFlights(array_reverse($dijkstra->getShortestPath("1", "3")), $flights);
     }
 
-    private function returnFlights(array $airportsNames, array $flights): array
+    /**
+     * @param array $fromCity
+     * @param array $toCity
+     * @param array $flights
+     * @return string[]
+     */
+    public function getArrayOfWays(array $fromCity, array $toCity, array $flights): array
+    {
+        $dijkstra = new Dijkstra($this->graph);
+        $arr = ["city"];
+        for ($i = 0; $i < count($fromCity); $i++) {
+            for ($j = 0; $j < count($toCity); $j++) {
+                $way = $this->getWays($flights, $fromCity[$i], $toCity[$j], $dijkstra);
+                if ($way != []) {
+                    $arr["flights"] = $way;
+                }
+            }
+        }
+        return $arr;
+    }
+
+    /**
+     * @param array $airportsId
+     * @param array $flights
+     * @return array
+     */
+    private function returnFlights(array $airportsId, array $flights): array
     {
         $neededFlights = [];
+        $airportsId[] = [""];
 
         for ($i = 0; $i < count($flights); $i++) {
-            for ($j = 0; $j < count($airportsNames); $j++){
-                if ($flights[$i]->getToLocation()->getAirport()->getName() === $airportsNames[$j] && $flights[$i]->getToLocation()->getAirport()->getName() === $airportsNames[$j++])
-                {
+            for ($j = 0; $j < count($airportsId); $j++) {
+                if ($flights[$i]->getFromLocation()->getAirport()->getId() == $airportsId[$j] && $flights[$i]->getToLocation()->getAirport()->getId() == $airportsId[$j + 1]) {
                     $neededFlights[] = $flights[$i];
                 }
             }
@@ -90,14 +115,18 @@ class SearchTheShortestWayService
         return $neededFlights;
     }
 
+    /**
+     * @param array $flights
+     * @return array
+     */
     private function getAirports(array $flights): array
     {
         $airports = [];
 
         /** @var Flight $flight */
         foreach ($flights as $flight) {
-            $airports[] = $flight->getToLocation()->getAirport();
             $airports[] = $flight->getFromLocation()->getAirport();
+            $airports[] = $flight->getToLocation()->getAirport();
         }
         return $airports;
     }

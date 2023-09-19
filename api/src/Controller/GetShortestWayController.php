@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Airport;
 use App\Entity\Company;
 use App\Entity\Flight;
 use App\Services\SearchTheShortestWayService;
@@ -16,6 +17,7 @@ use Symfony\Component\Security\Core\Security;
 
 class GetShortestWayController extends AbstractController
 {
+
     private EntityManagerInterface $entityManager;
     private SearchTheShortestWayService $searchTheShortestWayService;
 
@@ -31,9 +33,20 @@ class GetShortestWayController extends AbstractController
     #[Route('/find-way', name: 'get_shortest_way', methods: ['GET'])]
     public function getOwnerCompany(Request $request): JsonResponse
     {
+        $requestData = json_decode($request->getContent(), true);
+        if (!isset(
+            $requestData["fromLocation"],
+            $requestData["toLocation"]
+        )){
+            throw new Exception();
+        }
+
+        $fromCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$requestData["fromLocation"]]);
+        $toCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$requestData["toLocation"]]);
+
         $flights = $this->entityManager->getRepository(Flight::class)->findAll();
 
-        $way = $this->searchTheShortestWayService->getWay($flights);
+        $way = $this->searchTheShortestWayService->getArrayOfWays($fromCity, $toCity, $flights);
 
         return new JsonResponse($way, Response::HTTP_OK);
     }
