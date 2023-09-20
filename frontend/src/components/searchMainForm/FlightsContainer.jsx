@@ -57,14 +57,16 @@ const FlightsContainer = () => {
         Search Tickets
       </Typography>
       <FlightsFilter filterData={filterData} setFilterData={setFilterData} fetchProducts={fetchProducts}/>
+
       <FlightsList flights={flights}/>
-      {paginationInfo.totalPageCount &&
-          <Pagination
-              count={paginationInfo.totalPageCount}
-              shape="rounded"
-              page={filterData.page}
-              onChange={(event, page) => onChangePage(event, page)}
-          />}
+
+      {/*{paginationInfo.totalPageCount &&*/}
+      {/*    <Pagination*/}
+      {/*        count={paginationInfo.totalPageCount}*/}
+      {/*        shape="rounded"*/}
+      {/*        page={filterData.page}*/}
+      {/*        onChange={(event, page) => onChangePage(event, page)}*/}
+      {/*    />}*/}
     </>
   );
 

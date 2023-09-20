@@ -1,4 +1,4 @@
-import { goods, flights, toolbar, buyTickets } from "./rbac-consts";
+import { goods, flights, toolbar, buyTickets, aircrafts } from "./rbac-consts";
 
 const rules = {
   ROLE_ADMIN: {
@@ -24,7 +24,8 @@ const rules = {
     static: [
       flights.OWNER,
       toolbar.OWNER,
-      goods.OWNER
+      goods.OWNER,
+      aircrafts.OWNER
     ],
     dynamic: {}
   },
