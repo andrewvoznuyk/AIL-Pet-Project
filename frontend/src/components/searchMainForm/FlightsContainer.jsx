@@ -11,9 +11,7 @@ import FlightsFilter from "./FlightsFilter";
 
 const FlightsContainer = () => {
 
-  const [flights, setFlights] = useState({
-      flights:[]
-  });
+  const [flights, setFlights] = useState([]);
 
   const navigate=useNavigate();
 
@@ -40,8 +38,7 @@ const FlightsContainer = () => {
     ).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data) {
         setFlights(response.data);
-        console.log(flights);
-        //setPaginationInfo({...paginationInfo,totalItems: response.data["hydra:totalItems"],totalPageCount: Math.ceil(response.data["hydra:totalItems"]/paginationInfo.itemsPerPage)});
+        setPaginationInfo({...paginationInfo,totalItems: response.data["hydra:totalItems"],totalPageCount: Math.ceil(response.data["hydra:totalItems"]/paginationInfo.itemsPerPage)});
       }
       else{
       }

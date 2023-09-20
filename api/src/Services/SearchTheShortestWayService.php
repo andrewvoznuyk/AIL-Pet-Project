@@ -73,12 +73,12 @@ class SearchTheShortestWayService
     public function getArrayOfWays(array $fromCity, array $toCity, array $flights): array
     {
         $dijkstra = new Dijkstra($this->graph);
-        $arr = ["city"];
+        $arr = [];
         for ($i = 0; $i < count($fromCity); $i++) {
             for ($j = 0; $j < count($toCity); $j++) {
                 $way = $this->getWays($flights, $fromCity[$i], $toCity[$j], $dijkstra);
                 if ($way != []) {
-                    $arr["flights"] = $way;
+                    $arr[] = $way;
                 }
             }
         }

@@ -6,7 +6,6 @@ const FlightsFilter = ({filterData,setFilterData,fetchProducts}) => {
         event.preventDefault();
         let{name,value}=event.target;
         setFilterData({...filterData,[name]:value})
-        console.log(filterData);
     };
 
   return (
