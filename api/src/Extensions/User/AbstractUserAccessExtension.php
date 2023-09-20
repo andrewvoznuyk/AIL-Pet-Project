@@ -14,7 +14,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  */
 abstract class AbstractUserAccessExtension extends AbstractAccessExtension
 {
-
     /**
      * @return array
      */
