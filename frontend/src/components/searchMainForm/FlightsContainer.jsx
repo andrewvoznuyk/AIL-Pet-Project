@@ -53,17 +53,6 @@ const FlightsContainer = () => {
   console.log(paginationInfo);
   return (
     <>
-      <Helmet>
-        <title>
-          Sign in
-        </title>
-      </Helmet>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link component={NavLink} underline="hover" color="inherit" to="/">
-          Home
-        </Link>
-        <Typography color="text.primary">Goods</Typography>
-      </Breadcrumbs>
       <Typography variant="h4" component="h1" mt={1}>
         Search Tickets
       </Typography>
