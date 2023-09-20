@@ -5,18 +5,16 @@ const FlightsList = ({flights}) => {
 
   return (
       <div>
-          <ul>
               {flights.map((flightGroup, index) => (
-                  <li key={index}>
-                      <h2>Група польотів #{index + 1}</h2>
-                      <ul>
+                  <div key={index}>
+                      <h2 style={{marginLeft:10}}>Flight number {index + 1}</h2>
+                      <div style={{display:"flex",flexDirection:"row"}}>
                           {flightGroup.map(flight => (
                               <FlightsItem flight={flight}/>
                           ))}
-                      </ul>
-                  </li>
+                      </div>
+                  </div>
               ))}
-          </ul>
       </div>
   );
 };

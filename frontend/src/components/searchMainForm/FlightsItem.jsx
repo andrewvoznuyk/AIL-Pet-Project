@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, Link, Paper, Typography} from "@mui/material";
+import {NavLink} from "react-router-dom";
+import {AppContext} from "../../App";
 const FlightsItem = ({flight}) => {
+    const {authenticated} = useContext(AppContext);
   return (
-      <Card sx={{ maxWidth: 1600 }} style={{border:2,borderStyle:"solid", color:"black", margin:10, marginTop:30,backgroundColor:"azure"}}>
+      <Card sx={{ maxWidth: 400 }} style={{color:"black", margin:10, marginTop:30,boxShadow:25,padding:10,border:2,borderColor:"grey",borderStyle:"solid"}}>
           <CardContent>
               <Typography gutterBottom variant="h5" component="div">
                   From: {flight.fromLocation.name}
@@ -21,7 +24,11 @@ const FlightsItem = ({flight}) => {
               </Typography>
           </CardContent>
           <CardActions>
-              <Button style={{color:"white",backgroundColor:"black",padding:10}}>Buy ticket now!</Button>
+              <Button style={{color:"white",backgroundColor:"black",padding:10}}
+                      to={authenticated ? "/panel/buy-ticket" : "/login"}
+                      component={NavLink}
+              >Buy ticket now!
+              </Button>
           </CardActions>
       </Card>
   );

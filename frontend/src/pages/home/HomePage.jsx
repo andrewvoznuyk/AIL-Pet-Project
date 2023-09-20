@@ -12,52 +12,6 @@ const HomePage = () => {
 
     return (
         <>
-            <Helmet>
-                <title>
-                    Welcome
-                </title>
-            </Helmet>
-            <div style={{textAlign: "center"}}>
-                <Typography variant="h3" component="h1" mb={3}>
-                    Welcome!
-                </Typography>
-                <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                    {authenticated &&
-                    <Button
-                        to="/flights"
-                        component={NavLink}
-                    >
-                        Flights
-                    </Button>
-                    }
-                    <Button
-                        to={authenticated ? "/panel/goods" : "/login"}
-                        component={NavLink}
-                    >
-                        {authenticated ? "Goods" : "Sign in"}
-                    </Button>
-
-                    {!authenticated &&
-                        <Button
-                            variant="outlined"
-                            to="register"
-                            component={NavLink}
-                        >
-                            Sign up
-                        </Button>
-                    }
-
-                    {authenticated &&
-                        <Button
-                            variant="outlined"
-                            onClick={() => eventBus.dispatch("logout")}
-                            component={NavLink}
-                        >
-                            Log out
-                        </Button>
-                    }
-                </ButtonGroup>
-            </div>
             <FlightsContainer/>
         </>
     );
