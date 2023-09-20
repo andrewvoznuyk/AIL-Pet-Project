@@ -419,15 +419,20 @@ class Flight implements JsonSerializable
     {
         return [
             "id" => $this->getId(),
+            "company"=>$this->getFromLocation()->getCompany()->getName(),
             "fromLocation" => [
                 "fromId" => $this->getFromLocation()->getAirport()->getId(),
-                "name" => $this->getFromLocation()->getAirport()->getName()
+                "name" => $this->getFromLocation()->getAirport()->getName(),
+                "city"=>$this->getFromLocation()->getAirport()->getCity(),
             ],
             "toLocation" => [
                 "toId" => $this->getToLocation()->getAirport()->getId(),
-                "name" => $this->getToLocation()->getAirport()->getName()
+                "name" => $this->getToLocation()->getAirport()->getName(),
+                "city"=>$this->getToLocation()->getAirport()->getCity()
             ],
-            "distance" => $this->getDistance()
+            "distance" => $this->getDistance(),
+            "aircraftNumber"=>$this->getAircraft()->getSerialNumber(),
+            "aircraftModel"=>$this->getAircraft()->getModel()->getPlane()
         ];
     }
 
