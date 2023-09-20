@@ -17,18 +17,9 @@ class SearchTheShortestWayService
      */
     private Graph $graph;
 
-    /**
-     * @var GetMilesService
-     */
-    private GetMilesService $getMilesService;
-
-    /**
-     * @param GetMilesService $getMilesService
-     */
-    public function __construct(GetMilesService $getMilesService)
+    public function __construct()
     {
         $this->graph = new Graph();
-        $this->getMilesService = $getMilesService;
     }
 
     /**
@@ -54,7 +45,7 @@ class SearchTheShortestWayService
 
             $frAirport = $flight->getFromLocation()->getAirport();
             $toAirport = $flight->getToLocation()->getAirport();
-            $this->graph->addWay($frAirport, $toAirport, $this->getMilesService->getMilesFromCityAtoCityB($frAirport, $toAirport));
+            $this->graph->addWay($frAirport, $toAirport, $flight->getDistance());
         }
     }
 
@@ -107,10 +98,24 @@ class SearchTheShortestWayService
         for ($i = 0; $i < count($flights); $i++) {
             for ($j = 0; $j < count($airportsId); $j++) {
                 if ($flights[$i]->getFromLocation()->getAirport()->getId() == $airportsId[$j] && $flights[$i]->getToLocation()->getAirport()->getId() == $airportsId[$j + 1]) {
+
                     $neededFlights[] = $flights[$i];
                 }
             }
         }
+
+/*        for ($i = 0; $i < count($flights); $i++) {
+            for ($j = 0; $j < count($airportsId); $j++) {
+                for($k = 0; $k < count($flights); $k++){
+                    if ($flights[$i]->getFromLocation()->getAirport()->getId() == $airportsId[$j] && $flights[$i]->getToLocation()->getAirport()->getId() == $airportsId[$j+1]){
+                        $holeArray[$k] = $flights[$i];
+                        if($holeArray->getDistance()) {
+                            $neededFlights[] = $flights[$i];
+                        }
+                    }
+                }
+            }
+        }*/
 
         return $neededFlights;
     }
