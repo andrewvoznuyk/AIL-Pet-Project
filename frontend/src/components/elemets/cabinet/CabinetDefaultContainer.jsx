@@ -20,6 +20,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
+import PlaneSelectForm from "../../planeSelect/PlaneSelectForm";
 
 function Copyright(props) {
   return <></>
@@ -115,6 +116,7 @@ export default function CabinetDefaultContainer({Sidebar, Content}) {
         >
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {Content}
+            <PlaneSelectForm/>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>

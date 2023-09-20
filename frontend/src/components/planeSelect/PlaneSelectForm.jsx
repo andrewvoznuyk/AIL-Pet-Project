@@ -61,7 +61,7 @@ const PlaneSelectForm = () => {
 
     return (
         <>
-            <form onSubmit={SendData}>
+            <form onSubmit={SendData} style={{marginTop:20}}>
                 <FormControl style={{width:600}}>
                     <InputLabel id="company-select-label">Company List</InputLabel>
                     <Select
@@ -73,8 +73,6 @@ const PlaneSelectForm = () => {
                             <MenuItem key={key} value={item.name} onClick={()=>{setCurrentCompany(item);setData({...data, company: "/api/companies/"+item.id});}}>{item.name}</MenuItem>
                         ))}
                     </Select>
-
-                    <InputLabel id="demo-simple-select-label">AirPlanes</InputLabel>
                     <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
