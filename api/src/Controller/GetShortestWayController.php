@@ -33,16 +33,17 @@ class GetShortestWayController extends AbstractController
     #[Route('/find-way', name: 'get_shortest_way', methods: ['GET'])]
     public function getOwnerCompany(Request $request): JsonResponse
     {
-        $requestData = json_decode($request->getContent(), true);
+        $fromLocation = $request->query->get('fromLocation');
+        $toLocation = $request->query->get('toLocation');
         if (!isset(
-            $requestData["fromLocation"],
-            $requestData["toLocation"]
+            $fromLocation,
+            $toLocation
         )){
             throw new Exception();
         }
 
-        $fromCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$requestData["fromLocation"]]);
-        $toCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$requestData["toLocation"]]);
+        $fromCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$fromLocation]);
+        $toCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$toLocation]);
 
         $flights = $this->entityManager->getRepository(Flight::class)->findAll();
 
