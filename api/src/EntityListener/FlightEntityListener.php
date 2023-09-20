@@ -16,7 +16,6 @@ class FlightEntityListener
      */
     public function prePersist(Flight $flight, LifecycleEventArgs $eventArgs): void
     {
-        //TODO: add real flight duration
         $arrivalDate = $flight->getDeparture();
         $flight->setArrival($arrivalDate);
 

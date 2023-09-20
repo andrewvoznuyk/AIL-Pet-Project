@@ -74,14 +74,16 @@ class SearchTheShortestWayService
     {
         $dijkstra = new Dijkstra($this->graph);
         $arr = [];
+
         for ($i = 0; $i < count($fromCity); $i++) {
             for ($j = 0; $j < count($toCity); $j++) {
                 $way = $this->getWays($flights, $fromCity[$i], $toCity[$j], $dijkstra);
-                if ($way != []) {
+                if (!empty($way)) {
                     $arr[] = $way;
                 }
             }
         }
+
         return $arr;
     }
 
@@ -103,19 +105,6 @@ class SearchTheShortestWayService
                 }
             }
         }
-
-/*        for ($i = 0; $i < count($flights); $i++) {
-            for ($j = 0; $j < count($airportsId); $j++) {
-                for($k = 0; $k < count($flights); $k++){
-                    if ($flights[$i]->getFromLocation()->getAirport()->getId() == $airportsId[$j] && $flights[$i]->getToLocation()->getAirport()->getId() == $airportsId[$j+1]){
-                        $holeArray[$k] = $flights[$i];
-                        if($holeArray->getDistance()) {
-                            $neededFlights[] = $flights[$i];
-                        }
-                    }
-                }
-            }
-        }*/
 
         return $neededFlights;
     }
