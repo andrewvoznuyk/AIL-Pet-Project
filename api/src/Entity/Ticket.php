@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Action\CancelFlightAction;
+use App\Action\FinishFlightAction;
 use App\Repository\TicketRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -10,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
-#[ApiResource]
 class Ticket
 {
 

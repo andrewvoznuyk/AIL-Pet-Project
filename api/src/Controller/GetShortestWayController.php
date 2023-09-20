@@ -45,7 +45,11 @@ class GetShortestWayController extends AbstractController
         $fromCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$fromLocation]);
         $toCity = $this->entityManager->getRepository(Airport::class)->findBy(["city"=>$toLocation]);
 
-        $flights = $this->entityManager->getRepository(Flight::class)->findAll();
+        if ($fromCity === $toCity){
+            throw new Exception("Invalid data");
+        }
+
+        $flights = $this->entityManager->getRepository(Flight::class)->findBy(["isCompleted" => 0]);
 
         $way = $this->searchTheShortestWayService->getArrayOfWays($fromCity, $toCity, $flights);
 

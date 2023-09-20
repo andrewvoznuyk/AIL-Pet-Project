@@ -5,6 +5,7 @@ namespace App\EntityListener;
 use App\Entity\Flight;
 use App\Entity\User;
 use App\Services\GetMilesService;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class FlightEntityListener

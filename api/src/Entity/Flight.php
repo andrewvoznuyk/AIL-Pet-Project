@@ -56,7 +56,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ],
     attributes: [
-        //"security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
+        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
