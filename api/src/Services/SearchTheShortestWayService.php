@@ -17,18 +17,9 @@ class SearchTheShortestWayService
      */
     private Graph $graph;
 
-    /**
-     * @var GetMilesService
-     */
-    private GetMilesService $getMilesService;
-
-    /**
-     * @param GetMilesService $getMilesService
-     */
-    public function __construct(GetMilesService $getMilesService)
+    public function __construct()
     {
         $this->graph = new Graph();
-        $this->getMilesService = $getMilesService;
     }
 
     /**
