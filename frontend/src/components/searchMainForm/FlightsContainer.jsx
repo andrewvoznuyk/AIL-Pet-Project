@@ -11,7 +11,9 @@ import FlightsFilter from "./FlightsFilter";
 
 const FlightsContainer = () => {
 
-  const [flights, setFlights] = useState(null);
+  const [flights, setFlights] = useState({
+      flights:[]
+  });
 
   const navigate=useNavigate();
 
@@ -36,9 +38,10 @@ const FlightsContainer = () => {
 
     axios.get("/api/find-way" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()
     ).then(response => {
-      if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
-        setFlights(response.data["hydra:member"]);
-        setPaginationInfo({...paginationInfo,totalItems: response.data["hydra:totalItems"],totalPageCount: Math.ceil(response.data["hydra:totalItems"]/paginationInfo.itemsPerPage)});
+      if (response.status === responseStatus.HTTP_OK && response.data) {
+        setFlights(response.data);
+        console.log(flights);
+        //setPaginationInfo({...paginationInfo,totalItems: response.data["hydra:totalItems"],totalPageCount: Math.ceil(response.data["hydra:totalItems"]/paginationInfo.itemsPerPage)});
       }
       else{
       }

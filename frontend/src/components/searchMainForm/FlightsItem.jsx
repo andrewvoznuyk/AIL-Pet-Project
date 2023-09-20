@@ -4,8 +4,8 @@ const FlightsItem = ({flight}) => {
   return (
       <div>
           <Paper variant="outlined" style={{paddingLeft:20,margin:10,backgroundColor:"silver"}}>
-              <h3>Name: {flight.id}</h3>
-
+              <h3>From: {flight.fromLocation.name}</h3>
+              <h3>To: {flight.toLocation.name}</h3>
           </Paper>
       </div>
   );
