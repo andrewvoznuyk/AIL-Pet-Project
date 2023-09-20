@@ -11,9 +11,9 @@ const HomePage = () => {
     const {authenticated} = useContext(AppContext);
 
     return (
-        <>
+        <div>
             <FlightsContainer/>
-        </>
+        </div>
     );
 };
 

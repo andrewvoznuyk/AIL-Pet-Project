@@ -9,11 +9,12 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import Menu from "@mui/material/Menu";
 import DropdownLogged from "./DropdownLogged";
 import DropdownUnlogged from "./DropdownUnlogged";
-import { Button } from "@mui/material";
+import { Button, rgbToHex } from "@mui/material";
 import eventBus from "../../../../utils/eventBus";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../../../../App";
+import { display, width } from "@mui/system";
 
 export default function MenuAppBar () {
 
@@ -36,9 +37,9 @@ export default function MenuAppBar () {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      <AppBar position="static" style={{display:"flex",width:"100%" , justifyContent:"space-between", alignItems:"center", color:"black", backgroundColor: 'rgba(0, 0, 255, 0)' , opacity:100, boxShadow: 'none'}}>
+        <Toolbar style={{width:'100%', maxWidth:"1200px"}}>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} style={{fontSize:"25px", fontWeight:900}}>
             AIL
           </Typography>
           {(
