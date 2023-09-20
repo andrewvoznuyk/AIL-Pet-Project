@@ -27,7 +27,7 @@ class Graph
      */
     public function addAirport(Airport $airport): void
     {
-        $this->ways[$airport->getName()] = [];
+        $this->ways[$airport->getId()] = [];
     }
 
     /**
@@ -38,8 +38,8 @@ class Graph
      */
     public function addWay(Airport $initialAirport, Airport $terminalAirport, string $distance): void
     {
-        $this->ways[$initialAirport->getName()][$terminalAirport->getName()] = $distance;
-        $this->ways[$terminalAirport->getName()][$initialAirport->getName()] = $distance;
+        $this->ways[$initialAirport->getId()][$terminalAirport->getId()] = $distance;
+        $this->ways[$terminalAirport->getId()][$initialAirport->getId()] = $distance;
     }
 
     /**

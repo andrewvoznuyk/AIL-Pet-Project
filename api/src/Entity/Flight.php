@@ -412,12 +412,21 @@ class Flight implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return [
             "id" => $this->getId(),
-            "fromLocation" => $this->getFromLocation()->getAirport()->getName(),
-            "toLocation" => $this->getToLocation()->getAirport()->getName(),
+            "fromLocation" => [
+                "fromId" => $this->getFromLocation()->getAirport()->getId(),
+                "name" => $this->getFromLocation()->getAirport()->getName()
+            ],
+            "toLocation" => [
+                "toId" => $this->getToLocation()->getAirport()->getId(),
+                "name" => $this->getToLocation()->getAirport()->getName()
+            ],
             "distance" => $this->getDistance()
         ];
     }

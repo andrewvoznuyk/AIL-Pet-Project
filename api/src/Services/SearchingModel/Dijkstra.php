@@ -2,6 +2,9 @@
 
 namespace App\Services\SearchingModel;
 
+
+use Exception;
+
 class Dijkstra
 {
 
@@ -106,8 +109,10 @@ class Dijkstra
     {
         $path[] = $toAirport;
         while ($toAirport != $fromAirport) {
-            $toAirport = $this->path[$toAirport];
-            $path[] = $toAirport;
+            try {
+                $toAirport = $this->path[$toAirport];
+                $path[] = $toAirport;
+            }catch(Exception $e){return [];}
         }
 
         return $path;
