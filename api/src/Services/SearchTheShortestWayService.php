@@ -74,14 +74,16 @@ class SearchTheShortestWayService
     {
         $dijkstra = new Dijkstra($this->graph);
         $arr = [];
+
         for ($i = 0; $i < count($fromCity); $i++) {
             for ($j = 0; $j < count($toCity); $j++) {
                 $way = $this->getWays($flights, $fromCity[$i], $toCity[$j], $dijkstra);
-                if ($way != []) {
-                    $arr[$i] = $way;
+                if (!empty($way)) {
+                    $arr[] = $way;
                 }
             }
         }
+
         return $arr;
     }
 
