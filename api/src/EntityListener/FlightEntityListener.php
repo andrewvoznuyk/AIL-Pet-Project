@@ -5,6 +5,7 @@ namespace App\EntityListener;
 use App\Entity\Flight;
 use App\Entity\User;
 use App\Services\GetMilesService;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
 
 class FlightEntityListener
@@ -16,7 +17,6 @@ class FlightEntityListener
      */
     public function prePersist(Flight $flight, LifecycleEventArgs $eventArgs): void
     {
-        //TODO: add real flight duration
         $arrivalDate = $flight->getDeparture();
         $flight->setArrival($arrivalDate);
 

@@ -22,7 +22,10 @@ const toolbar = {
 const buyTickets = {
   USER: "buyTicket:client",
 };
+const aircrafts = {
+  OWNER: "aircrafts:owner",
+};
 
 export {
-  goods, flights, toolbar, buyTickets
+  goods, flights, toolbar, buyTickets,aircrafts
 };

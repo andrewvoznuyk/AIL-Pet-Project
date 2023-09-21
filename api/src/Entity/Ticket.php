@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Action\CancelFlightAction;
+use App\Action\FinishFlightAction;
 use App\Repository\TicketRepository;
 use App\Validator\Constraints\TicketConstraint;
 use DateTimeInterface;
@@ -21,10 +23,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
         "get" => [
             "method"   => "GET",
             "security" => "is_granted('" . User::ROLE_USER . "')",
-            "normalization_context"   => ["groups" => ["get:collection:ticket"]],
-        ],
-        "post" => [
-            "method"   => "POST",
             "normalization_context"   => ["groups" => ["get:collection:ticket"]],
         ]
     ],

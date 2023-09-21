@@ -56,7 +56,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ],
     attributes: [
-        //"security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
+        "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_USER . "') or is_granted('" . User::ROLE_MANAGER . "') or is_granted('" . User::ROLE_OWNER . "')"
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
@@ -415,13 +415,27 @@ class Flight implements JsonSerializable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize()
     {
         return [
             "id" => $this->getId(),
-            "fromLocation" => $this->getFromLocation()->getAirport()->getName(),
-            "toLocation" => $this->getToLocation()->getAirport()->getName(),
-            "distance" => $this->getDistance()
+            "company"=>$this->getFromLocation()->getCompany()->getName(),
+            "fromLocation" => [
+                "fromId" => $this->getFromLocation()->getAirport()->getId(),
+                "name" => $this->getFromLocation()->getAirport()->getName(),
+                "city"=>$this->getFromLocation()->getAirport()->getCity(),
+            ],
+            "toLocation" => [
+                "toId" => $this->getToLocation()->getAirport()->getId(),
+                "name" => $this->getToLocation()->getAirport()->getName(),
+                "city"=>$this->getToLocation()->getAirport()->getCity()
+            ],
+            "distance" => $this->getDistance(),
+            "aircraftNumber"=>$this->getAircraft()->getSerialNumber(),
+            "aircraftModel"=>$this->getAircraft()->getModel()->getPlane()
         ];
     }
 
