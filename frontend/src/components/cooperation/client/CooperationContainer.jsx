@@ -31,8 +31,7 @@ const CooperationContainer = () => {
   const [companyName, setCompanyName] = useState("");
   const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
-  const [fromAirport, setFromAirport] = useState(null);
-  const [toAirport, setToAirport] = useState(null);
+  const [airport, setAirport] = useState(null);
   const [about, setAbout] = useState("");
   const [documents, setDocuments] = useState("");
 
@@ -52,8 +51,7 @@ const CooperationContainer = () => {
       email: email,
       about: about,
       documents: documents,
-      fromAirport: fromAirport,
-      toAirport: toAirport
+      airport: airport
     }, userAuthenticationConfig(false)).then(response => {
       setNotification({ ...notification, visible: true, type: "success", message: "Form has been sent!" });
     }).catch(error => {
@@ -76,8 +74,6 @@ const CooperationContainer = () => {
   useEffect(() => {
     fetchAirports();
   }, []);
-
-  const availableToAirports = airportList.filter(item => item["@id"] !== fromAirport);
 
   return (
     <>
@@ -146,40 +142,20 @@ const CooperationContainer = () => {
             </FormControl>
           </div>
           <br />
-          <p>Main flight (from-to): </p>
+          <p>Main airport: </p>
           <div>
             <FormControl style={{ width: 500 }}>
-              <InputLabel id="fromL">From</InputLabel>
+              <InputLabel id="airportM">Airport</InputLabel>
               <Select
-                labelId="fromL"
-                id="from"
-                label="From"
+                labelId="airportM"
+                id="airport"
+                label="Airport"
                 required
               >
                 {airportList && airportList.map((item, key) => (
                   <MenuItem
                     key={key} value={item.name} onClick={() => {
-                    setFromAirport(item["@id"]);
-                  }}
-                  >{item.name} ({item.city}, {item.country})</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </div>
-          <br />
-          <div>
-            <FormControl style={{ width: 500 }}>
-              <InputLabel id="toL">To</InputLabel>
-              <Select
-                labelId="toL"
-                id="to"
-                label="To"
-                required
-              >
-                {availableToAirports && availableToAirports.map((item, key) => (
-                  <MenuItem
-                    key={key} value={item.name} onClick={() => {
-                    setToAirport(item["@id"]);
+                    setAirport(item["@id"]);
                   }}
                   >{item.name} ({item.city}, {item.country})</MenuItem>
                 ))}

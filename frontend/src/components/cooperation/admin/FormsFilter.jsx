@@ -10,8 +10,8 @@ const FormsFilter = ({ filterData, setFilterData }) => {
 
   return <>
     <div>
-      <label htmlFor="name">Name: </label>
-      <input id="name" type="text" name="name" defaultValue={filterData.name ?? ""} onChange={onChangeFilterData} />
+      <label htmlFor="email">Email: </label>
+      <input id="email" type="text" name="email" defaultValue={filterData.email ?? ""} onChange={onChangeFilterData} />
     </div>
   </>;
 };

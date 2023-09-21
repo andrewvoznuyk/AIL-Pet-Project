@@ -41,10 +41,9 @@ const CooperationContainer = () => {
     "fullname": checkFilterItem(searchParams, "fullname", null),
     "email": checkFilterItem(searchParams, "email", null),
     "about": checkFilterItem(searchParams, "about", null),
-    "fromAirport": checkFilterItem(searchParams, "fromAirport", null),
-    "toAirport": checkFilterItem(searchParams, "toAirport", null),
+    "airport": checkFilterItem(searchParams, "airport", null),
     "documents": checkFilterItem(searchParams, "documents", null),
-    "date": checkFilterItem(searchParams, "date", null),
+    "dateOfApplication": checkFilterItem(searchParams, "dateOfApplication", null),
     "status": checkFilterItem(searchParams, "status", null)
   });
 

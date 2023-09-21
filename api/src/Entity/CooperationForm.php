@@ -34,6 +34,12 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
             "normalization_context" => ["groups" => ["get:item:cooperationForm"]]
         ],
+        "put"    => [
+            "method"                => "put",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
+            "denormalization_context" => ["groups" => ["put:item:cooperationForm"]],
+            "normalization_context" => ["groups" => ["get:item:cooperationForm"]]
+        ],
         "delete" => [
             "method"                => "DELETE",
             "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
@@ -102,19 +108,7 @@ class CooperationForm
         "post:collection:cooperationForm",
         "get:item:cooperationForm"
     ])]
-    private ?Airport $fromAirport = null;
-
-    /**
-     * @var Airport|null
-     */
-    #[ORM\ManyToOne(targetEntity: Airport::class, inversedBy: "cooperationForm")]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups([
-        "get:collection:cooperationForm",
-        "post:collection:cooperationForm",
-        "get:item:cooperationForm"
-    ])]
-    private ?Airport $toAirport = null;
+    private ?Airport $airport = null;
 
     /**
      * @var string|null
@@ -144,7 +138,8 @@ class CooperationForm
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups([
         "get:collection:cooperationForm",
-        "get:item:cooperationForm"
+        "get:item:cooperationForm",
+        "put:item:cooperationForm"
     ])]
     private ?string $status = null;
 
@@ -264,37 +259,18 @@ class CooperationForm
     /**
      * @return Airport|null
      */
-    public function getToAirport(): ?Airport
+    public function getAirport(): ?Airport
     {
-        return $this->toAirport;
+        return $this->airport;
     }
 
     /**
-     * @param Airport|null $toAirport
+     * @param Airport|null $airport
      * @return CooperationForm
      */
-    public function setToAirport(?Airport $toAirport): self
+    public function setAirport(?Airport $airport): self
     {
-        $this->toAirport = $toAirport;
-
-        return $this;
-    }
-
-    /**
-     * @return Airport|null
-     */
-    public function getFromAirport(): ?Airport
-    {
-        return $this->fromAirport;
-    }
-
-    /**
-     * @param Airport|null $fromAirport
-     * @return $this
-     */
-    public function setFromAirport(?Airport $fromAirport): self
-    {
-        $this->fromAirport = $fromAirport;
+        $this->airport = $airport;
 
         return $this;
     }
