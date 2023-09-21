@@ -6,9 +6,9 @@ import NotFoundPage from "../notFound/NotFoundPage";
 import CabinetDefaultContainer from "../../components/elemets/cabinet/CabinetDefaultContainer";
 import ToolbarRoleSwitch from "../../components/elemets/cabinet/toolbars/ToolbarRoleSwitch";
 import PlaneSelectForm from "../../components/planeSelect/PlaneSelectForm";
-import AircraftsContainer from "../../components/aircrafts/owner/AircraftsContainer";
+import AircraftsNewContainer from "../../components/aircraftsNew/owner/AircraftsNewContainer";
 
-const AircraftsPage = () => {
+const AircraftsNewPage = () => {
 
   return (
     <>
@@ -32,10 +32,10 @@ const ContentRoleSwitch = () => {
       <Can
         role={user.roles}
         perform={aircrafts.OWNER}
-        yes={() => <AircraftsContainer/>}
+        yes={() => <AircraftsNewContainer/>}
       />
     </>
   );
 };
 
-export default AircraftsPage;
+export default AircraftsNewPage;

@@ -16,11 +16,11 @@ const managerRoutes = [
     element: <CabinetPage />
   },
   {
-    path: "/flights",
+    path: "/cabinet/flights",
     element: <FlightsPage />
   },
   {
-    path: "/flights/new",
+    path: "/cabinet/flights/new",
     element: <CreateFlightPage />
   },
 ];

@@ -29,11 +29,12 @@ const FlightsCreate = () => {
   const flushFlights = () => {
     setLoading(true);
 
-    axios.post("api/company-flights", {
+    const data = {
       company: company,
-      fromAirport: fromAirport,
-      toAirport: toAirport
-    }, userAuthenticationConfig(false)).then(response => {
+      airport: fromAirport,
+    }
+
+    axios.post("/api/company-flights", data, userAuthenticationConfig(false)).then(response => {
       setNotification({ ...notification, visible: true, type: "success", message: "Company flight created!" });
     }).catch(error => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
@@ -107,27 +108,7 @@ const FlightsCreate = () => {
               {airportList && airportList.map((item, key) => (
                 <MenuItem
                   key={key} value={item.name} onClick={() => {
-                  setFromAirport(item["@id"]);
-                }}
-                >{item.name} ({item.city}, {item.country})</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </div>
-        <br />
-        <div>
-          <FormControl style={{ width: 500 }}>
-            <InputLabel id="toInput">To</InputLabel>
-            <Select
-              labelId="toInput"
-              id="to"
-              label="to"
-              required
-            >
-              {availableToAirports && availableToAirports.map((item, key) => (
-                <MenuItem
-                  key={key} value={item.name} onClick={() => {
-                  setToAirport(item["@id"]);
+                  setFromAirport(item.id);
                 }}
                 >{item.name} ({item.city}, {item.country})</MenuItem>
               ))}

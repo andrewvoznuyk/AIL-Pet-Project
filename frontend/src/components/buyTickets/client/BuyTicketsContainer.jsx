@@ -6,6 +6,7 @@ import InitTicketSearch from "../../elemets/input/inputGroup/InitTicketSearch";
 import axios from "axios";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import { responseStatus } from "../../../utils/consts";
+import Sidebar from "./Sidebar";
 
 const BuyTicketsContainer = () => {
 
@@ -32,15 +33,20 @@ const BuyTicketsContainer = () => {
         <>
             <Helmet>
                 <title>
-                    Goods
+                    Buy tickets
                 </title>
             </Helmet>
 
             <Typography variant="h4" component="h1" mt={1}>
-                Goods
+                Buy ticket
             </Typography>
             <Grid container>
+              <Grid item xs={8}>
 
+              </Grid>
+              <Grid item xs={4}>
+
+              </Grid>
             </Grid>
         </>
     );
