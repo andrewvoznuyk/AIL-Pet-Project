@@ -10,6 +10,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EntityListener\FlightEntityListener;
 use App\Repository\FlightRepository;
 use App\Validator\Constraints\FlightConstraint;
+use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -435,7 +436,7 @@ class Flight implements JsonSerializable
             ],
             "distance" => $this->getDistance(),
             "aircraftNumber"=>$this->getAircraft()->getSerialNumber(),
-            "aircraftModel"=>$this->getAircraft()->getModel()->getPlane()
+            "aircraftModel"=>$this->getAircraft()->getModel()->getPlane(),
         ];
     }
 

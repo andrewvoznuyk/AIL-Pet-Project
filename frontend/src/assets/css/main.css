@@ -28,3 +28,9 @@ a {
   background-color: rgba(211, 211, 211, 0.3);
   border-radius: 4px;
 }
+
+.disabled-row {
+  background-color: #ccc;
+  color: #666;
+  pointer-events: none;
+}
