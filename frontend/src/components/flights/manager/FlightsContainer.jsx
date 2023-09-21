@@ -78,7 +78,7 @@ const FlightContainer = () => {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Button
-            to="/flights/new"
+            to="/cabinet/flights/new"
             component={NavLink}
             variant="outlined"
           >

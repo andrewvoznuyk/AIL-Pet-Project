@@ -27,5 +27,5 @@ const aircrafts = {
 };
 
 export {
-  goods, flights, toolbar, buyTickets,aircrafts
+  goods, flights, toolbar, buyTickets, aircrafts
 };

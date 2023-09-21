@@ -32,7 +32,7 @@ const Toolbar = () => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>
 
-          <ListItemButton onClick={() => goTo("/flights")}>
+          <ListItemButton onClick={() => goTo("/cabinet/flights")}>
             <ListItemIcon>
               <FlightTakeoffRounded />
             </ListItemIcon>

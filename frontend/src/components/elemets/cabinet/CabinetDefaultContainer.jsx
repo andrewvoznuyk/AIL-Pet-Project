@@ -116,7 +116,6 @@ export default function CabinetDefaultContainer({Sidebar, Content}) {
         >
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             {Content}
-            <PlaneSelectForm/>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
