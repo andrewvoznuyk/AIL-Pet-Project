@@ -40,7 +40,7 @@ export default function MenuAppBar () {
       <AppBar position="static" style={{display:"flex",width:"100%" , justifyContent:"space-between", alignItems:"center", color:"black", backgroundColor: 'rgba(0, 0, 255, 0)' , opacity:100, boxShadow: 'none'}}>
         <Toolbar style={{width:'100%', maxWidth:"1200px"}}>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} style={{fontSize:"25px", fontWeight:900}}>
-            <IconButton onClick={() => goTo("/")} sx={{color: "white"}}>
+            <IconButton onClick={() => goTo("/")} sx={{color: "Black"}}>
               AIL
               </IconButton>
           </Typography>
