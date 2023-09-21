@@ -24,8 +24,8 @@ class CalculateTicketPriceService
      */
     public function calculateTicketPrice(Flight $flight) : int
     {
-        $departureAirportId = $flight->getFromLocation()->getAirport()->getId();
-        $arrivalAirportId = $flight->getToLocation()->getAirport()->getId();
+        $departureAirportId = $flight->getFromLocation()->getAirport();
+        $arrivalAirportId = $flight->getToLocation()->getAirport();
 
         $km =  $this->getMilesService->getMilesFromCityAtoCityB($departureAirportId, $arrivalAirportId);
 

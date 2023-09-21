@@ -15,8 +15,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[UniqueEntity('serialNumber')]
 #[ApiResource(
     collectionOperations: [
-        "get" => [
-            "method" => "GET",
+        "get"  => [
+            "method"                => "GET",
             "normalization_context" => ["groups" => ["get:collection:aircraft"]]
         ],
         "post" => [
@@ -28,17 +28,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ],
     itemOperations: [
         "get" => [
-            "method" => "GET",
+            "method"                => "GET",
             "normalization_context" => ["groups" => ["get:item:aircraft"]]
         ]
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
     "aircraftModel" => "partial",
-    "serialNumber" => "partial",
+    "serialNumber"  => "partial",
 ])]
 class Aircraft
 {
+
     /**
      * @var int|null
      */
@@ -220,4 +221,13 @@ class Aircraft
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getPlacesCount(): int
+    {
+        return array_sum($this->places);
+    }
+
 }
