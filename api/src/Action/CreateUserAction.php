@@ -44,6 +44,7 @@ class CreateUserAction
 
     public function __invoke(User $data): User
     {
+        /** @var User $currentUser */
         $currentUser = $this->security->getUser();
 
         //if unauthorized

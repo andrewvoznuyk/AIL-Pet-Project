@@ -2,12 +2,18 @@ import { Button, TableCell, TableRow } from "@mui/material";
 import React, { useState } from "react";
 import updateFormData from "../../../utils/updateFormData";
 
-const FormsItem = ({ form, isDisabled, onCancelClick, updateFormStatus }) => {
+const FormsItem = ({ form, isDisabled, onCancelClick, openRegisterForm }) => {
   const [isRegistered, setIsRegistered] = useState(false);
 
   const handleRegisterClick = () => {
-    updateFormData(form["@id"], { status: 'registered' });
+    updateFormData(form["@id"], { status: "registered" });
     setIsRegistered(true);
+
+    openRegisterForm();
+  };
+
+  const handleCancelClick = () => {
+    updateFormData(form["@id"], { status: "canceled" });
   };
 
   return <>
@@ -21,13 +27,13 @@ const FormsItem = ({ form, isDisabled, onCancelClick, updateFormStatus }) => {
       <TableCell>{form.dateOfApplication}</TableCell>
       <TableCell>{form.status}</TableCell>
       <TableCell>
-        {form.status === 'registered' ? (
-          <span style={{ color: 'green' }}>Registered</span>
+        {form.status === "registered" ? (
+          <span style={{ color: "green" }}>Registered</span>
         ) : (
           <>
             {isRegistered ? (
-              <span style={{ color: 'green' }}>Registered</span>
-            ) : (
+              <span style={{ color: "green" }}>Registered</span>
+            ) : (!isDisabled && form.status !== "canceled" &&
               <Button
                 onClick={handleRegisterClick}
                 disabled={isRegistered || isDisabled}
@@ -35,8 +41,15 @@ const FormsItem = ({ form, isDisabled, onCancelClick, updateFormStatus }) => {
                 Register
               </Button>
             )}
-            {!isDisabled && (
-              <Button onClick={() => onCancelClick(form)} disabled={isDisabled}>
+            {form.status === "canceled" ? (
+              <span style={{ color: "grey" }}>Canceled</span>
+            ) : (!isRegistered &&
+              <Button
+                onClick={() => {
+                  onCancelClick(form);
+                  handleCancelClick();
+                }} disabled={isDisabled}
+              >
                 Cancel
               </Button>
             )}

@@ -1,12 +1,30 @@
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import {
+  Button, Dialog, DialogActions, DialogContent, DialogTitle,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow
+} from "@mui/material";
 import FormsItem from "./FormsItem";
 import { useState } from "react";
+import WorkerRegistrationForm from "../../registration/WorkerRegistrationForm";
 
 const FormsList = ({ forms }) => {
   const [disabledRows, setDisabledRows] = useState([]);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
 
   const handleCancelClick = (index) => {
     setDisabledRows([...disabledRows, index]);
+  };
+
+  const openRegisterForm = () => {
+    setShowRegisterForm(true);
+  };
+
+  const closeRegisterForm = () => {
+    setShowRegisterForm(false);
   };
 
   return <>
@@ -33,12 +51,27 @@ const FormsList = ({ forms }) => {
                 form={item}
                 isDisabled={disabledRows.includes(index)}
                 onCancelClick={() => handleCancelClick(index)}
+                openRegisterForm={openRegisterForm}
               />
             ))
           }
         </TableBody>
       </Table>
     </Paper>
+
+    {showRegisterForm && (
+      <Dialog open={showRegisterForm} onClose={closeRegisterForm}>
+        <DialogTitle>Register Form</DialogTitle>
+        <DialogContent>
+          <WorkerRegistrationForm />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={closeRegisterForm} color="primary">
+            X
+          </Button>
+        </DialogActions>
+      </Dialog>
+    )}
   </>;
 };
 
