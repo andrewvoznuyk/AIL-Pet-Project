@@ -6,12 +6,30 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Action\CancelFlightAction;
 use App\Action\FinishFlightAction;
 use App\Repository\TicketRepository;
+use App\Validator\Constraints\TicketConstraint;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints\GreaterThan;
+use Symfony\Component\Validator\Constraints\GreaterThanOrEqual;
+use Symfony\Component\Validator\Constraints\GroupSequence;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: TicketRepository::class)]
+#[ApiResource(
+    collectionOperations: [
+        "get" => [
+            "method"   => "GET",
+            "security" => "is_granted('" . User::ROLE_USER . "')",
+            "normalization_context"   => ["groups" => ["get:collection:ticket"]],
+        ]
+    ],
+    itemOperations: []
+)]
+#[GroupSequence(["Ticket", "constraint:last"])]
+#[TicketConstraint(groups: ["constraint:last"])]
 class Ticket
 {
 
@@ -29,6 +47,7 @@ class Ticket
      */
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
+    #[NotBlank]
     private ?User $user = null;
 
     /**
@@ -36,55 +55,73 @@ class Ticket
      */
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
+    #[NotBlank]
     private ?Flight $flight = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column]
+    #[Groups([
+        "get:item:flight",
+        "get:collection:ticket"
+    ])]
+    #[NotBlank]
     private ?int $place = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[Groups([
+        "get:collection:ticket"
+    ])]
+    #[NotBlank]
     private ?string $class = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column]
+    #[NotBlank]
+    #[GreaterThan(0)]
     private ?int $price = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[NotBlank]
     private ?string $name = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[NotBlank]
     private ?string $surname = null;
 
     /**
      * @var string|null
      */
     #[ORM\Column(length: 255)]
+    #[NotBlank]
     private ?string $documentId = null;
 
     /**
      * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[NotBlank]
     private ?DateTimeInterface $birthDate = null;
 
     /**
      * @var int|null
      */
     #[ORM\Column]
-    private ?int $luggageMass = null;
+    #[NotBlank]
+    #[GreaterThanOrEqual(0)]
+    private ?int $luggageMass = 0;
 
     /**
      * @return Uuid|null

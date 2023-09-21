@@ -131,6 +131,9 @@ class Flight implements JsonSerializable
      * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'flight', targetEntity: Ticket::class)]
+    #[Groups([
+        "get:item:flight"
+    ])]
     private Collection $tickets;
 
     /**

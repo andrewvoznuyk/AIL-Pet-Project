@@ -7,6 +7,7 @@ const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
 const CooperationPage = lazy(() => import("../pages/cooperation/CooperationPage"));
 const CabinetPage = lazy(() => import("../pages/cabinet/CabinetPage"));
 const CreateFlightPage = lazy(() => import("../pages/flightsNew/FlightsNewPage"));
+const BuyTicketsPage = lazy(() => import("../pages/buyTicket/BuyTicketsPage"));
 
 const userRoutes = [
   {
@@ -20,6 +21,10 @@ const userRoutes = [
   {
     path: "/cabinet",
     element: <CabinetPage />
+  },
+  {
+    path: "/flight/:flightId/buy",
+    element: <BuyTicketsPage />
   },
 ];
 

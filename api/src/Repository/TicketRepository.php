@@ -2,8 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Flight;
 use App\Entity\Ticket;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -25,4 +27,36 @@ class TicketRepository extends ServiceEntityRepository
         parent::__construct($registry, Ticket::class);
     }
 
+    /**
+     * @param Flight $flight
+     * @return int|null
+     * @throws NonUniqueResultException
+     */
+    public function getTotalLuggageMassOf(Flight $flight) : ?int
+    {
+        return $this->createQueryBuilder("ticket")
+                ->select("SUM(ticket.luggageMass) AS weight")
+            ->where("ticket.flight = :flight")
+            ->setParameter("flight", $flight)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * @param int $place
+     * @param Flight $flight
+     * @return int|null
+     * @throws NonUniqueResultException
+     */
+    public function getTicketByPlace(int $place, Flight $flight) : ?Ticket
+    {
+        return $this->createQueryBuilder("ticket")
+            ->select("ticket")
+            ->where("ticket.flight = :flight")
+            ->andWhere("ticket.place = :place")
+            ->setParameter("flight", $flight)
+            ->setParameter("place", $place)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
