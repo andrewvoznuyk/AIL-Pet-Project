@@ -38,9 +38,13 @@ export default function MenuAppBar () {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            AIL
-          </Typography>
+
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <IconButton onClick={() => goTo("/")} sx={{color: "white"}}>
+              AIL
+              </IconButton>
+            </Typography>
+
           {(
             <div>
               <IconButton
@@ -69,10 +73,10 @@ export default function MenuAppBar () {
                 onClose={handleClose}
               >
                 {authenticated &&
-                  <DropdownLogged goTo={goTo}/>
+                  <DropdownLogged goTo={goTo} />
                 }
                 {!authenticated &&
-                  <DropdownUnlogged goTo={goTo}/>
+                  <DropdownUnlogged goTo={goTo} />
                 }
               </Menu>
             </div>
