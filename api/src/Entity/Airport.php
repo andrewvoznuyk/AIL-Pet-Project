@@ -58,6 +58,9 @@ class Airport
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups([
+        "get:collection:airport"
+    ])]
     private ?int $id = null;
 
     /**
