@@ -38,6 +38,7 @@ const FlightsContainer = () => {
     ).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data) {
         setFlights(response.data);
+        console.log(response.data);
         setPaginationInfo({...paginationInfo,totalItems: response.data["hydra:totalItems"],totalPageCount: Math.ceil(response.data["hydra:totalItems"]/paginationInfo.itemsPerPage)});
       }
       else{
