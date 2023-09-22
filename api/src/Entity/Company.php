@@ -64,6 +64,7 @@ class Company
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups([
+        "get:collection:company",
         "get:collection:companyFlights",
         "get:collection:user",
         "get:item:companyFlights",
