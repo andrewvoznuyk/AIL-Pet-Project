@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import List from "@mui/material/List";
 import * as React from "react";
@@ -6,8 +6,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ListItemText from "@mui/material/ListItemText";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
 import ListSubheader from "@mui/material/ListSubheader";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { Business, FlightRounded, FlightTakeoffRounded } from "@mui/icons-material";
@@ -17,7 +15,7 @@ const Toolbar = () => {
 
   const goTo = (route) => {
     navigate(route);
-  }
+  };
   return (
     <>
       <List component="nav">
@@ -33,7 +31,7 @@ const Toolbar = () => {
 
           <ListItemButton onClick={() => goTo("/cabinet/aircrafts")}>
             <ListItemIcon>
-              <FlightRounded/>
+              <FlightRounded />
             </ListItemIcon>
             <ListItemText primary="Aircrafts" />
           </ListItemButton>
@@ -45,7 +43,7 @@ const Toolbar = () => {
             <ListItemText primary="Flights" />
           </ListItemButton>
 
-          <ListItemButton>
+          <ListItemButton onClick={() => goTo("/cabinet/companies")}>
             <ListItemIcon>
               <Business />
             </ListItemIcon>

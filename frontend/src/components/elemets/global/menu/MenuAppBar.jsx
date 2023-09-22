@@ -15,6 +15,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AppContext } from "../../../../App";
 import { display, width } from "@mui/system";
+import CooperationPage from "../../../../pages/cooperation/CooperationPage";
 
 export default function MenuAppBar () {
 
@@ -44,6 +45,14 @@ export default function MenuAppBar () {
               AIL
               </IconButton>
           </Typography>
+          {authenticated &&
+            <Button
+              to="/cooperation"
+              component={NavLink}
+            >
+              Cooperation
+            </Button>
+          }
           {(
             <div>
               <IconButton

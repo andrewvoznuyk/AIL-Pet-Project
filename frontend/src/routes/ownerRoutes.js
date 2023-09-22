@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import React, { lazy } from "react";
 import routes from "./routes";
 
 const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
@@ -7,6 +7,9 @@ const FlightsPage = lazy(() => import("../pages/flights/FlightsPage"));
 const CreateFlightPage = lazy(() => import("../pages/flightsNew/FlightsNewPage"));
 const AircraftsPage = lazy(() => import("../pages/aircrafts/AircraftsPage"));
 const AircraftsNewPage = lazy(() => import("../pages/aircraftsNew/AircraftsNewPage"));
+const CooperationPage = lazy(() => import("../pages/cooperation/CooperationPage"));
+const CompanyPage = lazy(() => import("../pages/company/CompanyPage"));
+const CreateCompanyPage = lazy(() => import("../pages/companiesNew/CompaniesNewPage"));
 
 const ownerRoutes = [
   {
@@ -16,6 +19,18 @@ const ownerRoutes = [
   {
     path: "/cabinet",
     element: <CabinetPage />
+  },
+  {
+    path: "/cooperation",
+    element: <CooperationPage />
+  },
+  {
+    path: "/cabinet/companies",
+    element: <CompanyPage />
+  },
+  {
+    path: "/cabinet/companies/new",
+    element: <CreateCompanyPage />
   },
   {
     path: "/cabinet/flights",
@@ -32,7 +47,7 @@ const ownerRoutes = [
   {
     path: "/cabinet/aircrafts/new",
     element: <AircraftsNewPage />
-  },
+  }
 ];
 
 const ownerRoutesConcat = ownerRoutes.concat(routes);

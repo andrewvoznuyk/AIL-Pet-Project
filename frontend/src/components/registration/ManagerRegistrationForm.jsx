@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
-import { Box, Breadcrumbs, Button, Grid, Link, Typography } from "@mui/material";
+import { Box, Button, Grid, InputLabel, Link, MenuItem, Select, Typography } from "@mui/material";
 import Notification from "../elemets/notification/Notification";
 import { responseStatus } from "../../utils/consts";
-import InputCustom from "../elemets/input/InputCustom";
-import InputPhoneNumber from "../elemets/input/InputPhoneNumber";
-import InputPassword from "../elemets/input/InputPassword";
 import UserAuthenticationConfig from "../../utils/userAuthenticationConfig";
 import GlobalRegistrationItems from "./GlobalRegistrationItems";
+import userAuthenticationConfig from "../../utils/userAuthenticationConfig";
+import InputDataLoader from "../elemets/input/InputDataLoader";
 
-const WorkerRegistrationForm = () => {
+const ManagerRegistrationForm = () => {
+  const [company, setCompany] = useState("");
+  const [companiesList, setCompaniesList] = useState([]);
 
   const [authData, setAuthData] = useState();
   const [error, setError] = useState(null);
@@ -21,16 +22,30 @@ const WorkerRegistrationForm = () => {
     message: ""
   });
 
+  const fetchCompanies = () => {
+    axios.get("/api/user-company", userAuthenticationConfig()).then(response => {
+      if (response.status === responseStatus.HTTP_OK && response.data) {
+        setCompaniesList(response.data);
+      }
+    }).catch(error => {
+      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
+    });
+  };
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
+
   const registrationRequest = () => {
 
     if (!authData) {
       return;
     }
-
+    console.log("authData");
+    console.log(authData);
     setLoading(true);
 
     axios.post(`/api/users`, authData, UserAuthenticationConfig()).then(response => {
-      console.log(response);
       if (response.status === responseStatus.HTTP_CREATED) {
         setNotification({ ...notification, visible: true, type: "success", message: "done" });
       }
@@ -52,9 +67,9 @@ const WorkerRegistrationForm = () => {
       password: event.target.password.value,
       name: event.target.name.value,
       surname: event.target.surname.value,
-      phoneNumber: event.target.phoneNumber.value
+      phoneNumber: event.target.phoneNumber.value,
+      company: company
     };
-
     setAuthData(data);
   };
 
@@ -88,6 +103,14 @@ const WorkerRegistrationForm = () => {
 
               <GlobalRegistrationItems />
 
+              <InputDataLoader
+                name="company"
+                label="Company"
+                url="/api/companies"
+                getOptionLabel={(option) => option.name}
+                onChange={(e, v) => setCompany(v)}
+              />
+
               <Button
                 variant="contained"
                 type="submit"
@@ -103,4 +126,4 @@ const WorkerRegistrationForm = () => {
   );
 };
 
-export default WorkerRegistrationForm;
+export default ManagerRegistrationForm;
