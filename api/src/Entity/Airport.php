@@ -71,10 +71,8 @@ class Airport
     #[Groups([
         "get:item:airport",
         "get:collection:airport",
-
         "get:item:flight",
         "get:collection:flight",
-
         "get:item:companyFlights",
         "get:collection:companyFlights"
     ])]
@@ -87,12 +85,10 @@ class Airport
     #[Groups([
         "get:item:airport",
         "get:collection:airport",
-
         "get:item:flight",
         "get:collection:flight",
-
         "get:item:companyFlights",
-        "get:collection:companyFlights",
+        "get:collection:companyFlights"
     ])]
     private ?string $city = null;
 
@@ -104,10 +100,8 @@ class Airport
     #[Groups([
         "get:item:airport",
         "get:collection:airport",
-
         "get:item:flight",
         "get:collection:flight",
-
         "get:item:companyFlights",
         "get:collection:companyFlights"
     ])]

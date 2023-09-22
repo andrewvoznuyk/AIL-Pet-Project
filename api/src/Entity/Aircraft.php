@@ -57,7 +57,7 @@ class Aircraft
     /**
      * @var AircraftModel|null
      */
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: AircraftModel::class)]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:aircraft",
@@ -82,7 +82,7 @@ class Aircraft
     /**
      * @var Company|null
      */
-    #[ORM\ManyToOne(inversedBy: 'aircrafts')]
+    #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: 'aircrafts')]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
         "get:collection:aircraft",

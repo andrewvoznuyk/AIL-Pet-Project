@@ -36,6 +36,10 @@ class TicketPurchaseController extends AbstractController
      * @var DenormalizerInterface
      */
     private DenormalizerInterface $denormalizer;
+
+    /**
+     * @var CalculateTicketPriceService
+     */
     private CalculateTicketPriceService $calculateTicketPriceService;
 
     /**

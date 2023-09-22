@@ -18,9 +18,20 @@ use Symfony\Component\Security\Core\Security;
 class GetShortestWayController extends AbstractController
 {
 
+    /**
+     * @var EntityManagerInterface
+     */
     private EntityManagerInterface $entityManager;
+
+    /**
+     * @var SearchTheShortestWayService
+     */
     private SearchTheShortestWayService $searchTheShortestWayService;
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param SearchTheShortestWayService $searchTheShortestWayService
+     */
     public function __construct(EntityManagerInterface $entityManager, SearchTheShortestWayService $searchTheShortestWayService)
     {
         $this->entityManager = $entityManager;

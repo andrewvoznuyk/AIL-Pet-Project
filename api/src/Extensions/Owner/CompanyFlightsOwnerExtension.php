@@ -16,7 +16,7 @@ class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
     {
         return [
             self::GET,
-            self::DELETE,
+            self::DELETE
         ];
     }
 
@@ -44,7 +44,6 @@ class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
             ->innerJoin($rootAlias.".company", "oCompany")
             ->andWhere('oCompany.owner = :user')
             ->setParameter('user', $binaryId);
-        //dump($queryBuilder->getQuery()->getSQL());
     }
 
 
