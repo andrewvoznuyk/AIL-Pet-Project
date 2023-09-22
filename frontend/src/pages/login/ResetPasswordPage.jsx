@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, Modal } from "@mui/material";
 import InputPassword from "../../components/elemets/input/InputPassword";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -12,10 +12,7 @@ import { authentication } from "../../utils/authenticationRequest";
 import { useNavigate } from "react-router-dom";
 
 const ResetPasswordPage = () => {
-  const [authData, setAuthData] = useState({
-    email: "",
-    password: ""
-  });
+  const [authData, setAuthData] = useState("");
   const [loading, setLoading] = useState(false);
   const { authenticated, setAuthenticated } = useContext(AppContext);
   const navigate = useNavigate();
@@ -26,6 +23,9 @@ const ResetPasswordPage = () => {
     message: ""
   });
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false); // Додайте змінну для відстеження статусу підтвердження пошти
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -35,29 +35,47 @@ const ResetPasswordPage = () => {
     };
 
     setAuthData(data);
+
+    axios.post("/api/confirm-email", data).then(response => {
+      if (response.status === responseStatus.HTTP_OK) {
+        setIsEmailConfirmed(true);
+        setModalOpen(true);
+      }
+    }).catch(error => {
+      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.detail });
+    });
+
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setIsEmailConfirmed(false);
   };
 
   const resetPassword = () => {
     setLoading(true);
+
+    if (!isEmailConfirmed) {
+      setNotification({ ...notification, visible: true, type: "error", message: "Email is not confirmed" });
+      setLoading(false);
+      return;
+    }
 
     axios.put(`/api/reset-password`, authData, UserAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK) {
         //login immediately after registration
         loginRequest(authData,
           () => {
-            setAuthenticated(true);
+            navigate("/login");
           });
       }
     }).catch(error => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.detail });
-    }).finally(() => setLoading(false));
+    }).finally(() => {
+      setLoading(false);
+      setModalOpen(false);
+    });
   };
-
-  useEffect(() => {
-    if (authData.email && authData.password) {
-      resetPassword();
-    }
-  }, [authData]);
 
   useEffect(() => {
     authentication(navigate, authenticated);
@@ -91,6 +109,20 @@ const ResetPasswordPage = () => {
           Reset Password
         </Button>
       </form>
+
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <div className="modal-container">
+          <div className="modal-content">
+            <h2>Confirm Email</h2>
+            <Button variant="contained" color="primary" onClick={resetPassword}>
+              Confirm
+            </Button>
+            <Button variant="contained" color="inherit" onClick={handleCloseModal}>
+              Not my email
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
