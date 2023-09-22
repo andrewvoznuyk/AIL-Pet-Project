@@ -65,7 +65,9 @@ class Company
     #[ORM\Column]
     #[Groups([
         "get:collection:companyFlights",
+        "get:collection:user",
         "get:item:companyFlights",
+        "get:item:user"
     ])]
     private ?int $id = null;
 

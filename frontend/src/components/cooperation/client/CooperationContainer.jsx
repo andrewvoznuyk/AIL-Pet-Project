@@ -87,13 +87,10 @@ const CooperationContainer = () => {
         <Link component={NavLink} underline="hover" color="inherit" to="/">
           Home
         </Link>
-        <Link component={NavLink} underline="hover" color="inherit" to="/panel/goods">
-          Goods
-        </Link>
         <Typography color="text.primary">Cooperation</Typography>
       </Breadcrumbs>
       <Typography variant="h4" component="h1" mt={1}>
-        Cooperation
+        Cooperation Form
       </Typography>
       <Grid container>
         <form onSubmit={handleSubmit}>

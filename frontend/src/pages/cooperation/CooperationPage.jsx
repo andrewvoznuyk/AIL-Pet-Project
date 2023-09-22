@@ -4,6 +4,7 @@ import { default as ClientCooperationContainer } from "../../components/cooperat
 import { default as AdminCooperationContainer } from "../../components/cooperation/admin/CooperationContainer";
 import { AppContext } from "../../App";
 import { flights } from "../../rbac-consts";
+import CreateManagerForm from "../../components/cooperation/owner/CreateManagerForm";
 
 const CooperationPage = () => {
   const { user } = useContext(AppContext);
@@ -19,6 +20,11 @@ const CooperationPage = () => {
         role={user.roles}
         perform={flights.USER}
         yes={() => <ClientCooperationContainer />}
+      />
+      <Can
+        role={user.roles}
+        perform={flights.OWNER}
+        yes={() => <CreateManagerForm />}
       />
     </>
   );

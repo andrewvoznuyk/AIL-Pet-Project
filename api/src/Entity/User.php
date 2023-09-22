@@ -166,6 +166,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection
      */
     #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Company::class)]
+    #[Groups([
+        "post:collection:user"
+    ])]
     private Collection $companies;
 
     /**
