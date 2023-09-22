@@ -68,8 +68,9 @@ const ManagerRegistrationForm = () => {
       name: event.target.name.value,
       surname: event.target.surname.value,
       phoneNumber: event.target.phoneNumber.value,
-      company: company
+      managerAtCompany: company["@id"]
     };
+
     setAuthData(data);
   };
 
