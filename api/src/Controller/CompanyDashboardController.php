@@ -39,6 +39,11 @@ class CompanyDashboardController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param User|null $user
+     * @return JsonResponse
+     * @throws ExceptionInterface
+     */
     #[Route('/company-flights-test', name: 'get_company_flights', methods: ["GET"])]
     #[Security("is_granted(" . User::ROLE_OWNER . ") or is_granted(" . User::ROLE_MANAGER . ")")]
     public function getCompanyFlights(#[CurrentUser] ?User $user): JsonResponse

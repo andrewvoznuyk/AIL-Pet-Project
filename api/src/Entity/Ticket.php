@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
         "get" => [
             "method"   => "GET",
             "security" => "is_granted('" . User::ROLE_USER . "')",
-            "normalization_context"   => ["groups" => ["get:collection:ticket"]],
+            "normalization_context"   => ["groups" => ["get:collection:ticket"]]
         ]
     ],
     itemOperations: []

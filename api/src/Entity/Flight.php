@@ -62,7 +62,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 )]
 #[ApiFilter(SearchFilter::class, properties: [
     "fromLocation" => "partial",
-    "toLocation" => "partial",
+    "toLocation" => "partial"
 ])]
 #[FlightConstraint]
 #[ORM\EntityListeners([FlightEntityListener::class])]
@@ -191,13 +191,11 @@ class Flight implements JsonSerializable
 
 
     /**
-     *
+     * Flight constructor
      */
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
-
-        $this->isCompleted = false;
     }
 
     /**

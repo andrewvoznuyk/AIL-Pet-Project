@@ -49,7 +49,5 @@ class FlightsManagerExtension extends AbstractManagerAccessExtension
             ->leftJoin("comp.managers", "u")
             ->andWhere('u = :user')
             ->setParameter('user', $binaryId);
-
-        //dd($queryBuilder->getQuery()->getSQL());
     }
 }

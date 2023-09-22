@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     collectionOperations: [
         "get"  => [
             "method"                => "GET",
-            "normalization_context" => ["groups" => ["get:collection:companyFlights"]],
+            "normalization_context" => ["groups" => ["get:collection:companyFlights"]]
         ],
         "post" => [
             "method"                  => "POST",
@@ -70,7 +70,6 @@ class CompanyFlights
         "get:collection:companyFlights",
         "post:collection:companyFlights",
         "get:item:companyFlights",
-
         "get:item:flight",
         "get:collection:flight"
     ])]
@@ -82,9 +81,7 @@ class CompanyFlights
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: "companyFlights")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
-        //"get:collection:companyFlights",
-        "post:collection:companyFlights",
-        //"get:item:companyFlights"
+        "post:collection:companyFlights"
     ])]
     private ?Company $company = null;
 

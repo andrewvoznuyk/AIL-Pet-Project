@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "method"                  => "POST",
             "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["post:collection:model"]],
-            "normalization_context"   => ["groups" => ["get:item:model"]],
+            "normalization_context"   => ["groups" => ["get:item:model"]]
         ],
         "post-aircraft" => [
             "method"                  => "POST",

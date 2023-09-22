@@ -17,7 +17,7 @@ class UsersTicketExtension extends AbstractUserAccessExtension
     public function getAffectedMethods(): array
     {
         return [
-            self::GET,
+            self::GET
         ];
     }
 
@@ -44,7 +44,6 @@ class UsersTicketExtension extends AbstractUserAccessExtension
         $queryBuilder
             ->andWhere($rootAlias.'.user = :user')
             ->setParameter('user', $binaryId);
-/*        dump($queryBuilder->getQuery()->getSQL());*/
     }
 
 
