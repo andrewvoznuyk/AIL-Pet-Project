@@ -4,6 +4,7 @@ import RegistrationPage from "../pages/registration/RegistrationPage";
 const HomePage = lazy(() => import("../pages/home/HomePage"));
 const LoginPage = lazy(() => import("../pages/login/LoginPage"));
 const CreateFlightsPage = lazy(() => import("../pages/flights/FlightsPage"));
+const ResetPasswordPage = lazy(() => import("../pages/login/ResetPasswordPage"));
 
 const routes = [
   {
@@ -19,9 +20,13 @@ const routes = [
     element: <RegistrationPage />
   },
   {
+    path: "/reset-password",
+    element: <ResetPasswordPage />
+  },
+  {
     path: "/flights",
     element: <CreateFlightsPage />
-  },
+  }
 ];
 
 export default routes;
