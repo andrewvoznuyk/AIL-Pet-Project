@@ -10,6 +10,7 @@ import Notification from "../../components/elemets/notification/Notification";
 import loginRequest from "../../utils/loginRequest";
 import { authentication } from "../../utils/authenticationRequest";
 import { useNavigate } from "react-router-dom";
+import ModalConfirmEmail from "../../components/elemets/modalForConfirm/ModalConfirmEmail";
 
 const ResetPasswordPage = () => {
   const [authData, setAuthData] = useState("");
@@ -110,19 +111,12 @@ const ResetPasswordPage = () => {
         </Button>
       </form>
 
-      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-        <div className="modal-container">
-          <div className="modal-content">
-            <h2>Confirm Email</h2>
-            <Button variant="contained" color="primary" onClick={resetPassword}>
-              Confirm
-            </Button>
-            <Button variant="contained" color="inherit" onClick={handleCloseModal}>
-              Not my email
-            </Button>
-          </div>
-        </div>
-      </Modal>
+      <ModalConfirmEmail
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={resetPassword}
+        onNotMyEmail={handleCloseModal}
+      />
     </>
   );
 };
