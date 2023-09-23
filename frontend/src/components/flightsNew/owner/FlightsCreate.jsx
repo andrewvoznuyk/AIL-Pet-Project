@@ -4,12 +4,12 @@ import { responseStatus } from "../../../utils/consts";
 import { Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import Notification from "../../elemets/notification/Notification";
+import InputDataLoader from "../../elemets/input/InputDataLoader";
 
 const FlightsCreate = () => {
 
   const [company, setCompany] = useState("");
   const [fromAirport, setFromAirport] = useState(null);
-  const [toAirport, setToAirport] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
@@ -30,8 +30,8 @@ const FlightsCreate = () => {
     setLoading(true);
 
     const data = {
-      company: company,
-      airport: fromAirport,
+      company: company.id,
+      airport: fromAirport.id,
     }
 
     axios.post("/api/company-flights", data, userAuthenticationConfig(false)).then(response => {
@@ -43,32 +43,6 @@ const FlightsCreate = () => {
     });
   };
 
-  const fetchCompanies = () => {
-    axios.get("/api/user-company", userAuthenticationConfig()).then(response => {
-      if (response.status === responseStatus.HTTP_OK && response.data) {
-        setCompaniesList(response.data);
-      }
-    }).catch(error => {
-      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
-    });
-  };
-
-  const fetchAirports = () => {
-    axios.get("/api/airports", userAuthenticationConfig()).then(response => {
-      if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
-        setAirportList(response.data["hydra:member"]);
-      }
-    }).catch(error => {
-      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
-    });
-  };
-
-  useEffect(() => {
-    fetchCompanies();
-    fetchAirports();
-  }, []);
-
-  const availableToAirports = airportList.filter(item => item["@id"] !== fromAirport);
 
   return (
     <>
@@ -77,43 +51,25 @@ const FlightsCreate = () => {
       }
       <form onSubmit={handleSubmit}>
         <div>
-          <FormControl style={{ width: 500 }}>
-            <InputLabel id="companyId">Company ID:</InputLabel>
-            <Select
-              labelId="companyId"
-              id="company"
-              label="company"
-              required
-            >
-              {companiesList && companiesList.map((item, key) => (
-                <MenuItem
-                  key={key} value={item.name} onClick={() => {
-                  setCompany(item.id);
-                }}
-                >{item.name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <InputDataLoader
+            name="company"
+            label="Company"
+            url="/api/companies"
+            searchWord="name"
+            getOptionLabel={(item) => `${item.name}`}
+            onChange={(e, v) => setCompany(v)}
+          />
         </div>
         <br />
         <div>
-          <FormControl style={{ width: 500 }}>
-            <InputLabel id="fromInput">From</InputLabel>
-            <Select
-              labelId="fromInput"
-              id="from"
-              label="from"
-              required
-            >
-              {airportList && airportList.map((item, key) => (
-                <MenuItem
-                  key={key} value={item.name} onClick={() => {
-                  setFromAirport(item.id);
-                }}
-                >{item.name} ({item.city}, {item.country})</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <InputDataLoader
+            name="fromInput"
+            label="Airport"
+            url="/api/airports"
+            searchWord="name"
+            getOptionLabel={(item) => `${item.name} (${item.city}, ${item.country})`}
+            onChange={(e, v) => setFromAirport(v)}
+          />
         </div>
         <br />
         <Button variant="contained" type="submit">

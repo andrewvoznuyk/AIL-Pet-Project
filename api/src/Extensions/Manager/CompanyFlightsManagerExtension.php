@@ -41,9 +41,10 @@ class CompanyFlightsManagerExtension extends AbstractManagerAccessExtension
         $binaryId = $currentUser->getId()->toBinary();
 
         $queryBuilder
-            ->innerJoin($rootAlias . ".company", "c")
-            ->leftJoin("c.managers", "u")
-            ->andWhere('u = :user')
+            ->innerJoin($rootAlias . ".company", "mComp")
+            ->leftJoin("mComp.managers", "man")
+            ->andWhere('man = :user')
+            ->andWhere($rootAlias . '.isDeleted = false')
             ->setParameter('user', $binaryId);
     }
 

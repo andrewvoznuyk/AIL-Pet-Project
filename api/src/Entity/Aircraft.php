@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Action\DeleteDeletableAction;
 use App\Repository\AircraftRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,17 +28,26 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ],
     itemOperations: [
-        "get" => [
+        "get"    => [
             "method"                => "GET",
             "normalization_context" => ["groups" => ["get:item:aircraft"]]
+        ],
+        "softDelete" => [
+            "method"     => "PUT",
+            "path"       => "aircraft/delete/{id}",
+            "security"   => "is_granted('" . User::ROLE_OWNER . "')",
+            "normalization_context" => ["groups" => ["aircraft:empty"]],
+            "controller" => DeleteDeletableAction::class
         ]
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
     "aircraftModel" => "partial",
     "serialNumber"  => "partial",
+    "model.plane"  => "partial",
+    "company.name"  => "partial",
 ])]
-class Aircraft
+class Aircraft extends DeletableEntity
 {
 
     /**

@@ -82,7 +82,8 @@ class Company
         "get:collection:company",
         "post:collection:company",
         "get:item:company",
-        "get:collection:companyFlights"
+        "get:collection:companyFlights",
+        "get:collection:aircraft"
     ])]
     private ?string $name = null;
 

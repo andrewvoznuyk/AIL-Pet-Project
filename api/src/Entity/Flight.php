@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Doctrine\Odm\Filter\RangeFilter;
 use App\Action\CancelFlightAction;
 use App\Action\FinishFlightAction;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -61,9 +62,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
-    "fromLocation" => "partial",
-    "toLocation" => "partial"
+    "aircraft.serialNumber" => "partial",
+    "fromLocation.airport.name" => "partial",
+    "toLocation.airport.name" => "partial"
 ])]
+#[ApiFilter(RangeFilter::class, properties: ["departure"])]
 #[FlightConstraint]
 #[ORM\EntityListeners([FlightEntityListener::class])]
 class Flight implements JsonSerializable

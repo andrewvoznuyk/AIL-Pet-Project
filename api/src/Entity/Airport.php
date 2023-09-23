@@ -73,6 +73,7 @@ class Airport
         "get:collection:airport",
         "get:item:flight",
         "get:collection:flight",
+        "get:collection:companyFlights",
         "get:item:companyFlights",
         "get:collection:companyFlights"
     ])]

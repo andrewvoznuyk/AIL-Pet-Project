@@ -163,7 +163,7 @@ const CreateFlightForm = ({ setData, loading }) => {
                 label="To"
                 url="/api/company-flights"
                 searchWord="name"
-                getOptionLabel={(option) => option.airport.name}
+                getOptionLabel={(option) => `${option.airport.name} (${option.airport.city})`}
                 onChange={(e, v) => setAirportTo(v)}
               />
 

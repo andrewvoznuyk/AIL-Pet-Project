@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Action\DeleteCompanyFlightAction;
+use App\Action\DeleteDeletableAction;
 use App\Repository\CompanyFlightsRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -26,16 +28,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
     itemOperations: [
         "get"    => [
             "method"                => "GET",
-           // "security"              => "(is_granted('" . User::ROLE_OWNER . "') and object.company.getOwner() == user) or
-               // ((is_granted('" . User::ROLE_MANAGER . "') and user.getManagerAtCompany() == object.company)",
+            // "security"              => "(is_granted('" . User::ROLE_OWNER . "') and object.company.getOwner() == user) or
+            // ((is_granted('" . User::ROLE_MANAGER . "') and user.getManagerAtCompany() == object.company)",
             "normalization_context" => ["groups" => ["get:item:companyFlights"]]
         ],
-        "delete" => [
-            "method"                => "DELETE",
-            //"security"                => "is_granted('" . User::ROLE_OWNER . "') && object.company.getOwner() == user",
-            "normalization_context" => ["groups" => ["get:item:companyFlights"]]
-            //TODO: delete related company-flights
-        ],
+        "softDelete" => [
+            "method"     => "PUT",
+            "path"       => "company-flights/delete/{id}",
+            "security"   => "is_granted('" . User::ROLE_OWNER . "')",
+            "normalization_context" => ["groups" => ["aircraft:empty"]],
+            "controller" => DeleteDeletableAction::class
+        ]
     ],
     attributes: [
         "security" => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "') or is_granted('" . User::ROLE_MANAGER . "')"
@@ -46,9 +49,11 @@ use Symfony\Component\Serializer\Annotation\Groups;
     "airport.name"    => "partial",
     "airport.country" => "partial",
     "airport.city"    => "partial",
+    "company.name"    => "partial"
 ])]
-class CompanyFlights
+class CompanyFlights extends DeletableEntity
 {
+
     /**
      * @var int|null
      */
@@ -81,6 +86,7 @@ class CompanyFlights
     #[ORM\ManyToOne(targetEntity: Company::class, inversedBy: "companyFlights")]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups([
+        "get:collection:companyFlights",
         "post:collection:companyFlights"
     ])]
     private ?Company $company = null;
@@ -130,5 +136,4 @@ class CompanyFlights
 
         return $this;
     }
-
 }

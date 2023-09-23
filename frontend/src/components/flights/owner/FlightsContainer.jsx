@@ -9,7 +9,8 @@ import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import { responseStatus } from "../../../utils/consts";
 import Notification from "../../elemets/notification/Notification";
 import Grid from "@mui/material/Grid";
-import FlightsTable from "../manager/FlightsTable";
+import FlightsTable from "./FlightsTable";
+import FilterGroup from "./FilterGroup";
 
 const FlightsContainer = () => {
 
@@ -42,6 +43,7 @@ const FlightsContainer = () => {
     axios.get("/api/company-flights" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
         setFlights(response.data["hydra:member"]);
+        console.log(response.data["hydra:member"])
         setPaginationInfo({
           ...paginationInfo,
           totalItems: response.data["hydra:totalItems"],
@@ -91,6 +93,18 @@ const FlightsContainer = () => {
         <Grid item xs={12}>
 
         </Grid>
+        <FilterGroup filterData={filterData} setFilterData={setFilterData}/>
+
+        <p></p>
+
+        <FlightsTable fetchedData={flights} reloadData={loadFlights} />
+        {paginationInfo.totalPageCount > 1 &&
+          <Pagination
+            count={paginationInfo.totalPageCount}
+            shape="rounded"
+            page={filterData.page}
+            onChange={(event, page) => onChangePage(event, page)}
+          />}
       </Grid>
     </>
   );

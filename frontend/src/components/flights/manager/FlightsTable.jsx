@@ -49,7 +49,7 @@ const FlightsTable = ({ fetchedData, reloadData }) => {
   const cancelFlight = () => {
     //post
     axios.put(`/api/flight/${selectedFlight}/cancel`, {}, userAuthenticationConfig(false)).then(response => {
-      console.log(response);
+
       if (response.status === responseStatus.HTTP_OK) {
       }
     }).catch(error => {

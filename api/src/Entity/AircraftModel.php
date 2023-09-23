@@ -65,7 +65,8 @@ class AircraftModel
         "get:item:model",
         "get:collection:model",
         "post:item:model",
-        "post:collection:model"
+        "post:collection:model",
+        "get:collection:aircraft"
     ])]
     private ?string $plane = null;
 
@@ -77,7 +78,8 @@ class AircraftModel
         "get:item:model",
         "get:collection:model",
         "post:item:model",
-        "post:collection:model"
+        "post:collection:model",
+        "get:collection:aircraft"
     ])]
     private ?string $brand = null;
 
