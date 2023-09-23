@@ -35,7 +35,7 @@ const AircraftsContainer = () => {
     "page": checkFilterItem(searchParams, "page", 1, true),
     "serialNumber": checkFilterItem(searchParams, "serialNumber", ""),
     "model.plane": checkFilterItem(searchParams, "model.plane", ""),
-    "company.name": checkFilterItem(searchParams, "company.name", ""),
+    "company.name": checkFilterItem(searchParams, "company.name", "")
   });
 
   const loadFlights = () => {
