@@ -29,7 +29,8 @@ class MailerTestController extends AbstractController
     #[Route('/send-mail', name: 'send_mail')]
     public function getOwnerCompany(): JsonResponse
     {
-        $this->mailerService->SendMailFunc();
+        //I will use hardcode for test
+        $this->mailerService->SendMailFunc("Kyiv","Barcelona","04.11.2004","Boening 750");
         return new JsonResponse("Data sended via mailtrap!");
     }
 
