@@ -8,8 +8,9 @@ import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import FlightsTable from "./FlightsTable";
 import { Button, Pagination, TableCell, TableRow } from "@mui/material";
-import TableGenerator from "../../elemets/table/TableGenerator";
 import Grid from "@mui/material/Grid";
+import SearchFilterDefault from "../../elemets/searchFilter/SearchFilterDefault";
+import FilterGroup from "./FilterGroup";
 
 const FlightContainer = () => {
 
@@ -28,11 +29,15 @@ const FlightContainer = () => {
   const [paginationInfo, setPaginationInfo] = useState({
     totalItems: null,
     totalPageCount: null,
-    itemsPerPage: 10
+    itemsPerPage: 5
   });
 
   const [filterData, setFilterData] = useState({
-    "page": checkFilterItem(searchParams, "page", 1, true)
+    "page": checkFilterItem(searchParams, "page", 1, true),
+    "fromLocation.airport.name": checkFilterItem(searchParams, "fromLocation.airport.name", ""),
+    "toLocation.airport.name": checkFilterItem(searchParams, "toLocation.airport.name", ""),
+    "departure[gte]": checkFilterItem(searchParams, "departure[gte]", null),
+    "aircraft.serialNumber": checkFilterItem(searchParams, "aircraft.serialNumber", "")
   });
 
   const loadFlights = () => {
@@ -88,9 +93,11 @@ const FlightContainer = () => {
 
         <p></p>
 
-        <Grid item xs={12}>
+        <FilterGroup
+          filterData={filterData} setFilterData={setFilterData}
+        />
 
-        </Grid>
+        <p></p>
 
         <FlightsTable fetchedData={flights} reloadData={loadFlights} />
         {paginationInfo.totalPageCount > 1 &&

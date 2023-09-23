@@ -7,6 +7,7 @@ const FlightsPage = lazy(() => import("../pages/flights/FlightsPage"));
 const CreateFlightPage = lazy(() => import("../pages/flightsNew/FlightsNewPage"));
 const AircraftsPage = lazy(() => import("../pages/aircrafts/AircraftsPage"));
 const AircraftsNewPage = lazy(() => import("../pages/aircraftsNew/AircraftsNewPage"));
+const AircraftsEditPage = lazy(() => import("../pages/aircraftsEdit/AircraftsEditPage"));
 const CooperationPage = lazy(() => import("../pages/cooperation/CooperationPage"));
 const CompanyPage = lazy(() => import("../pages/company/CompanyPage"));
 const CreateCompanyPage = lazy(() => import("../pages/companiesNew/CompaniesNewPage"));
@@ -47,7 +48,11 @@ const ownerRoutes = [
   {
     path: "/cabinet/aircrafts/new",
     element: <AircraftsNewPage />
-  }
+  },
+  {
+    path: "/cabinet/aircrafts/edit/:flightId",
+    element: <AircraftsEditPage />
+  },
 ];
 
 const ownerRoutesConcat = ownerRoutes.concat(routes);

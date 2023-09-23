@@ -6,12 +6,9 @@ const FlightRowItem = ({ align = "left", flight, openModalFinishFlight, openModa
   const isFlightInPast = () => {
     const now = Date.now();
     const arrival = (Date.parse(flight.arrival));
-    //console.log("arr " + arrival)
-    //console.log("now " + now)
+
     return arrival < now;
   };
-
-  console.log(flight.isCompleted);
 
   const onFlightCancel = () => {
     openModalCancelFlight(flight.id);
