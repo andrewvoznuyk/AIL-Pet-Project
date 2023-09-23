@@ -2,11 +2,13 @@
 
 namespace App\Extensions\Owner;
 
+use App\Entity\Aircraft;
+use App\Entity\Company;
 use App\Entity\CompanyFlights;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 
-class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
+class AircraftOwnerExtension extends AbstractOwnerAccessExtension
 {
 
     /**
@@ -16,7 +18,7 @@ class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
     {
         return [
             self::GET,
-            self::PUT,
+            self::PUT
         ];
     }
 
@@ -25,7 +27,7 @@ class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
      */
     public function getResourceClass(): string
     {
-        return CompanyFlights::class;
+        return Aircraft::class;
     }
 
     /**
@@ -41,10 +43,9 @@ class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
         $binaryId = $currentUser->getId()->toBinary();
 
         $queryBuilder
-            ->innerJoin($rootAlias . ".company", "oCompany")
-            ->andWhere('oCompany.owner = :user')
+            ->innerJoin($rootAlias.".company", "planeCompany")
+            ->andWhere('planeCompany.owner = :user')
             ->andWhere($rootAlias . '.isDeleted = false')
             ->setParameter('user', $binaryId);
     }
-
 }

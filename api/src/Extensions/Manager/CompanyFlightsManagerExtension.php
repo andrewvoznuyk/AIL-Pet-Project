@@ -44,6 +44,7 @@ class CompanyFlightsManagerExtension extends AbstractManagerAccessExtension
             ->innerJoin($rootAlias . ".company", "c")
             ->leftJoin("c.managers", "u")
             ->andWhere('u = :user')
+            ->andWhere($rootAlias . 'isDeleted = false')
             ->setParameter('user', $binaryId);
     }
 
