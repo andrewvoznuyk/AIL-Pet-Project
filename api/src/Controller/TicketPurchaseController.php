@@ -99,14 +99,8 @@ class TicketPurchaseController extends AbstractController
         /** @var Ticket $ticket */
         $ticket = $this->denormalizer->denormalize($ticketData, Ticket::class, "array");
 
-        $flight = $ticket->getFlight();
-
-        if (empty($flight)) {
-            throw new UnprocessableEntityHttpException("Flight cannot be null");
-        }
-
         $ticket->setUser($this->getUser());
-        $ticket->setPrice($this->calculateTicketPriceService->calculateTicketPrice($flight));
+        $ticket->setPrice($this->calculateTicketPriceService->calculateTicketPrice($ticket));
 
         $this->validator->validate($ticket);
 
