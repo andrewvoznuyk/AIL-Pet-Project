@@ -21,25 +21,30 @@ class MailerService
     {
         $this->mailer = $mailer;
     }
-    public function SendMailFunc($from,$to,$date,$aircraft){
+    public function SendMailFunc($user,$location,$aircraft){
 
         $email = (new TemplatedEmail())
-            ->from('mr.kolyakonoval@gmail.com')
-            ->to('you@example.com')
-            ->subject('Тест відправки листа!')
-            ->text('Коля відправив тестовий лист!')
+            ->from('no-reply@ail.com')
+            ->to($user['email'])
+            ->subject('Your ticket!')
             ->htmlTemplate('mailTemplate.twig')
             ->context([
-                'from'=>$from,
-                'to'=>$to,
-                'date'=>$date,
-                'aircraft'=>$aircraft
+                'email'=>$user['email'],
+                'from'=>$location['from'],
+                'to'=>$location['to'],
+                'arrival'=>$location['arrival'],
+                'departure'=>$location['departure'],
+                'place'=>$aircraft['place'],
+                'aircraftModel'=>$aircraft['model'],
+                'aircraftNumber'=>$aircraft['number'],
+                'name'=>$user['name'],
+                'surName'=>$user['surName'],
             ]);
 
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $e) {
-
+            $e->getMessage();
         }
     }
 }
