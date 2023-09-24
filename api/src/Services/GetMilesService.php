@@ -48,7 +48,6 @@ class GetMilesService
         return $this->countkilometers($departureAirportId->getLon(), $departureAirportId->getLat(), $arrivalAirportId->getLon(), $arrivalAirportId->getLat());
     }
 
-
     /**
      * @param Flight $flight
      * @return DateTimeInterface
