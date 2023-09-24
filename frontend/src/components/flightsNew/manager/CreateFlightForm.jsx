@@ -30,7 +30,7 @@ const CreateFlightForm = ({ setData, loading }) => {
         "econom": event.target.economPrice.value,
         "standard": event.target.standardPrice.value
       },
-      priceCoef: {
+      placesCoefs: {
         "business": event.target.businessCoef.value,
         "econom": event.target.economCoef.value,
         "standard": event.target.standardCoef.value
@@ -106,7 +106,6 @@ const CreateFlightForm = ({ setData, loading }) => {
                   type="text"
                   label="Business class"
                   name="businessCoef"
-                  value={1}
                   required
                 />
 
@@ -117,7 +116,6 @@ const CreateFlightForm = ({ setData, loading }) => {
                   variant="outlined"
                   label="Economy class"
                   name="economCoef"
-                  value={1}
                   required
                 />
 
@@ -128,7 +126,6 @@ const CreateFlightForm = ({ setData, loading }) => {
                   variant="outlined"
                   label="Standard class"
                   name="standardCoef"
-                  value={1}
                   required
                 />
 

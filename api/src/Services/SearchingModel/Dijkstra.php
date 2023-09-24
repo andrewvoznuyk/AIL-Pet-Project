@@ -2,7 +2,6 @@
 
 namespace App\Services\SearchingModel;
 
-
 use Exception;
 
 class Dijkstra
@@ -41,7 +40,7 @@ class Dijkstra
     /**
      * @param string $fromAirport
      * @param string $toAirport
-     * @return string
+     * @return array
      */
     public function getShortestPath(string $fromAirport, string $toAirport): array
     {
@@ -103,7 +102,7 @@ class Dijkstra
     /**
      * @param string $fromAirport
      * @param string $toAirport
-     * @return string
+     * @return array
      */
     private function restorePath(string $fromAirport, string $toAirport): array
     {
