@@ -27,7 +27,7 @@ const ResetPasswordPage = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isEmailConfirmed, setIsEmailConfirmed] = useState(false); // Додайте змінну для відстеження статусу підтвердження пошти
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     const data = {

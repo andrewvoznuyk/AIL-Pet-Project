@@ -11,6 +11,7 @@ import InputCustom from "../elemets/input/InputCustom";
 import InputPhoneNumber from "../elemets/input/InputPhoneNumber";
 import InputPassword from "../elemets/input/InputPassword";
 import { Label } from "recharts";
+import ModalConfirmEmail from "../elemets/modalForConfirm/ModalConfirmEmail";
 
 const UpdateProfileContainer = () => {
   const { user } = useContext(AppContext);
@@ -21,12 +22,23 @@ const UpdateProfileContainer = () => {
   const [email, setEmail] = useState("");
   const [authData, setAuthData] = useState()
 
+  const [initialFormValues, setInitialFormValues] = useState({
+    name: "",
+    surname: "",
+    phoneNumber: "",
+    email: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
     visible: false,
     type: "",
     message: ""
   });
+
+  const [modalOpen, setModalOpen] = useState(false);
+  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false); // Додайте змінну для відстеження статусу підтвердження пошти
+
 
   const getUserInfo = ()=>{
     axios.get("/api/username",
@@ -51,6 +63,20 @@ const UpdateProfileContainer = () => {
     };
 
     setAuthData(data);
+
+    axios.post("/api/confirm-email", data).then(response => {
+      if (response.status === responseStatus.HTTP_OK) {
+        setIsEmailConfirmed(true);
+        setModalOpen(true);
+      }
+    }).catch(error => {
+      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.detail });
+    });
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+    setIsEmailConfirmed(false);
   };
 
   const updateUser = () => {
@@ -61,6 +87,12 @@ const UpdateProfileContainer = () => {
 
     setLoading(true);
 
+    if (!isEmailConfirmed) {
+      setNotification({ ...notification, visible: true, type: "error", message: "Email is not confirmed" });
+      setLoading(false);
+      return;
+    }
+
     axios.put("/api/update-user", authData, UserAuthenticationConfig())
     .then((response) => {
       setNotification({ ...notification, visible: true, type: "success", message: "Profile was updated! " });
@@ -69,14 +101,16 @@ const UpdateProfileContainer = () => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
     }).finally(() => {
       setLoading(false);
+      setModalOpen(false);
     });
+
+
 
   };
 
-  useEffect(() => {
-    console.log(authData)
-    updateUser();
-  }, [authData]);
+  // useEffect(() => {
+  //   updateUser();
+  // }, [authData]);
 
   useEffect(() => {
     getUserInfo()
@@ -114,8 +148,9 @@ const UpdateProfileContainer = () => {
           label="E-mail"
           name="email"
           value={email}
-          onChange={(e)=>setEmail(e.target.value)}
-          required
+          // onChange={(e)=>setEmail(e.target.value)}
+          // required
+          disabled
         />
 
         <TextField
@@ -134,6 +169,13 @@ const UpdateProfileContainer = () => {
           Save changes
         </Button>
       </form>
+
+      <ModalConfirmEmail
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onConfirm={updateUser}
+        onNotMyEmail={handleCloseModal}
+      />
     </>
   );
 
