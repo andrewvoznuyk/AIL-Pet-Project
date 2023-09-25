@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 
-class GetUserNameController extends AbstractController
+class GetUserByEmailController extends AbstractController
 {
 
     /**
@@ -40,10 +40,14 @@ class GetUserNameController extends AbstractController
 
         $name = $user->getName();
         $surname = $user->getSurname();
+        $phoneNumber = $user->getPhoneNumber();
+        $email = $user->getEmail();
 
         return $this->json([
             'name'    => $name,
             'surname' => $surname,
+            'phoneNumber' => $phoneNumber,
+            'email' => $email
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Action\CreateUserAction;
 use App\Repository\UserRepository;
@@ -79,7 +80,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups([
         "get:item:user",
         "get:collection:user",
-        "post:collection:user"
+        "post:collection:user",
+        "put:item:user"
     ])]
     private ?string $email = null;
 
