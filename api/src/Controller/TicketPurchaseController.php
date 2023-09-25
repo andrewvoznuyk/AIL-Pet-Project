@@ -6,7 +6,6 @@ use ApiPlatform\Validator\ValidatorInterface;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Services\CalculateTicketPriceService;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -123,7 +122,7 @@ class TicketPurchaseController extends AbstractController
      * @param $requestData
      * @return int
      */
-    private function getBonusSum($requestData)
+    private function getBonusSum($requestData): int
     {
         $sum = 0;
         foreach ($requestData as $ticketData)
