@@ -18,7 +18,7 @@ function FilterGroup ({ filterData, setFilterData }) {
         inputLabel="Model"
         filterData={filterData}
         setFilterData={setFilterData}
-        fieldName="model.name"
+        fieldName="model.plane"
       />
     </Grid>
     <Grid item xs={3}>

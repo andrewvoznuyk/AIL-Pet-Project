@@ -32,10 +32,10 @@ class TicketRepository extends ServiceEntityRepository
      * @return int|null
      * @throws NonUniqueResultException
      */
-    public function getTotalLuggageMassOf(Flight $flight) : ?int
+    public function getTotalLuggageMassOf(Flight $flight): ?int
     {
         return $this->createQueryBuilder("ticket")
-                ->select("SUM(ticket.luggageMass) AS weight")
+            ->select("SUM(ticket.luggageMass) AS weight")
             ->where("ticket.flight = :flight")
             ->setParameter("flight", $flight)
             ->getQuery()
@@ -48,7 +48,7 @@ class TicketRepository extends ServiceEntityRepository
      * @return int|null
      * @throws NonUniqueResultException
      */
-    public function getTicketByPlace(int $place, Flight $flight) : ?Ticket
+    public function getTicketByPlace(int $place, Flight $flight): ?Ticket
     {
         return $this->createQueryBuilder("ticket")
             ->select("ticket")
@@ -59,4 +59,16 @@ class TicketRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getSoldTickets(Flight $flight): array
+    {
+        return $this->createQueryBuilder("ticket")
+            ->select("ticket.place")
+            ->where("ticket.flight = :flight")
+            ->setParameter("flight", $flight)
+            ->getQuery()
+            ->getResult();
+
+    }
+
 }
