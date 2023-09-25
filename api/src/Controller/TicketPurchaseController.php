@@ -65,6 +65,7 @@ class TicketPurchaseController extends AbstractController
      * @param Request $request
      * @return Response
      * @throws ExceptionInterface
+     * @throws Exception
      */
     #[IsGranted(User::ROLE_USER)]
     #[Route('/tickets/purchase', name: 'app_tickets_purchase', methods: "POST")]
@@ -78,10 +79,20 @@ class TicketPurchaseController extends AbstractController
 
         $requestData = json_decode($request->getContent(), true);
 
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
+        $bonusesSum = $this->getBonusSum($requestData);
+        if ($user->getMileBonuses() < $bonusesSum)
+            throw new Exception("Not enough bonuses", Response::HTTP_PAYMENT_REQUIRED);
+
         foreach ($requestData as $ticketData) {
-            $ticket = $this->createTicket($ticketData);
+            $bonus = 0;
+            if (isset($ticketData["bonus"]))
+                $bonus = $ticketData["bonus"];
+            $ticket = $this->createTicket($ticketData, $bonus);
             $this->entityManager->persist($ticket);
         }
+
+        $user->setMileBonuses($user->getMileBonuses() - $bonusesSum);
 
         $this->entityManager->flush();
 
@@ -89,22 +100,37 @@ class TicketPurchaseController extends AbstractController
     }
 
     /**
-     * @param $ticketData
-     * @return Ticket
      * @throws ExceptionInterface
      * @throws Exception
      */
-    private function createTicket($ticketData): Ticket
+    private function createTicket($ticketData, float $bonus): Ticket
     {
         /** @var Ticket $ticket */
         $ticket = $this->denormalizer->denormalize($ticketData, Ticket::class, "array");
 
         $ticket->setUser($this->getUser());
-        $ticket->setPrice($this->calculateTicketPriceService->calculateTicketPrice($ticket));
+        if ($bonus > ($ticket->getFlight()->getDistance() / 2))
+            throw new Exception("To mach bonuses used", Response::HTTP_PAYMENT_REQUIRED);
+
+        $ticket->setPrice($this->calculateTicketPriceService->calculateTicketPrice($ticket, $bonus));
 
         $this->validator->validate($ticket);
 
         return $ticket;
+    }
+
+    /**
+     * @param $requestData
+     * @return int
+     */
+    private function getBonusSum($requestData)
+    {
+        $sum = 0;
+        foreach ($requestData as $ticketData)
+            if (isset($ticketData["bonus"]))
+                $sum += $ticketData["bonus"];
+
+        return $sum;
     }
 
 }

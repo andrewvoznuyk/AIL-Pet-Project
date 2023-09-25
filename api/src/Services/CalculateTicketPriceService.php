@@ -30,9 +30,9 @@ class CalculateTicketPriceService
     /**
      * @throws Exception
      */
-    public function calculateTicketPrice(Ticket $ticket) : float
+    public function calculateTicketPrice(Ticket $ticket, float $bonus) : float
     {
-        $km = $ticket->getFlight()->getDistance();
+        $km = $ticket->getFlight()->getDistance() - $bonus;
         $classCoef = $ticket->getFlight()->getPlacesCoefs();
         $class = $ticket->getClass();
 
