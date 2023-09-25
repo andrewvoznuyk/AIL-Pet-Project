@@ -25,7 +25,7 @@ const FlightsItem = ({flight}) => {
           </CardContent>
           <CardActions>
               <Button style={{color:"white",backgroundColor:"black",padding:10}}
-                      to={authenticated ? "/panel/buy-ticket" : "/login"}
+                      to={authenticated ? `/flight/${flight.id}/buy` : "/login"}
                       component={NavLink}
               >Buy ticket now!
               </Button>

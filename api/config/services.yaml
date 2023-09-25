@@ -33,3 +33,13 @@ services:
             - '@security.helper'
         tags:
             - { name: doctrine.orm.entity_listener }
+
+    mailer.service:
+        class: App\Services\MailerService
+        autowire: true
+
+    App\EntityListener\TicketEntityListener:
+        arguments:
+            - '@mailer.service'
+        tags:
+            - { name: doctrine.orm.entity_listener }

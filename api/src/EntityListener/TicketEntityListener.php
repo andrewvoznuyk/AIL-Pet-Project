@@ -22,28 +22,36 @@ class TicketEntityListener
         $this->mailerService = $mailerService;
     }
 
+    /**
+     * @param Ticket $ticket
+     * @param LifecycleEventArgs $eventArgs
+     * @return void
+     */
     public function postPersist(Ticket $ticket, LifecycleEventArgs $eventArgs): void
     {
-        $user=[
-            'email'=>$ticket->getUser()->getEmail(),
-            'name'=>$ticket->getUser()->getName(),
-            'surName'=>$ticket->getUser()->getSurname()
+        $currentUser = $ticket->getUser();
+        $currentFlight = $ticket->getFlight();
+
+        $user = [
+            'userEmail' => $currentUser->getEmail(),
+            'name' => $currentUser->getName(),
+            'surName' => $currentUser->getSurname()
         ];
 
-        $location=[
-            'from'=>$ticket->getFlight()->getFromLocation()->getAirport(),
-            'to'=>$ticket->getFlight()->getFromLocation()->getAirport(),
-            'departure'=>$ticket->getFlight()->getDeparture(),
-            'arrival'=>$ticket->getFlight()->getArrival()
+        $location = [
+            'from' => $currentFlight->getFromLocation()->getAirport()->getName(),
+            'to' => $currentFlight->getFromLocation()->getAirport()->getName(),
+            'departure' => $currentFlight->getDeparture()->getTimestamp(),
+            'arrival' => $currentFlight->getArrival()->getTimestamp()
         ];
 
-        $aircraft=[
-            'model'=>$ticket->getFlight()->getAircraft()->getModel(),
-            'number'=>$ticket->getFlight()->getAircraft()->getSerialNumber(),
-            'place'=>$ticket->getPlace(),
-            'companyName'=>$ticket->getFlight()->getAircraft()->getCompany()->getName()
+        $aircraft = [
+            'model' => $currentFlight->getAircraft()->getModel()->getPlane(),
+            'number' => $currentFlight->getAircraft()->getSerialNumber(),
+            'place' => $ticket->getPlace(),
+            'companyName' => $currentFlight->getAircraft()->getCompany()->getName()
         ];
 
-        $this->mailerService->SendMailFunc($user,$location,$aircraft);
+        $this->mailerService->SendMailFunc($user, $location, $aircraft);
     }
 }
