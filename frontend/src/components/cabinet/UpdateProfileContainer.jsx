@@ -5,29 +5,25 @@ import { AppContext } from "../../App";
 import userAuthenticationConfig from "../../utils/userAuthenticationConfig";
 import { responseStatus } from "../../utils/consts";
 import Notification from "../elemets/notification/Notification";
-import { Box, Button, Grid, Input, TextField, Typography } from "@mui/material";
-import GlobalRegistrationItems from "../registration/GlobalRegistrationItems";
-import InputCustom from "../elemets/input/InputCustom";
-import InputPhoneNumber from "../elemets/input/InputPhoneNumber";
-import InputPassword from "../elemets/input/InputPassword";
-import { Label } from "recharts";
+import { Button, Grid, Input, Link, Modal, TextField } from "@mui/material";
 import ModalConfirmEmail from "../elemets/modalForConfirm/ModalConfirmEmail";
+import generateRandomCode from "../../utils/generateRandomCode";
+import loginRequest from "../../utils/loginRequest";
+import { useNavigate } from "react-router-dom";
+import { authentication } from "../../utils/authenticationRequest";
 
 const UpdateProfileContainer = () => {
-  const { user } = useContext(AppContext);
+  // const { user } = useContext(AppContext);
+  const {authenticated, setAuthenticated} = useContext(AppContext);
+  const navigate = useNavigate();
 
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
-  const [authData, setAuthData] = useState()
-
-  const [initialFormValues, setInitialFormValues] = useState({
-    name: "",
-    surname: "",
-    phoneNumber: "",
-    email: "",
-  });
+  const [newEmail, setNewEmail] = useState("");
+  const [authData, setAuthData] = useState();
+  const [code, setCode] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
@@ -37,10 +33,11 @@ const UpdateProfileContainer = () => {
   });
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false); // Додайте змінну для відстеження статусу підтвердження пошти
+  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
+  const [modalEmailOpen, setModalEmailOpen] = useState(false);
+  const [randomCode, setRandomCode] = useState(null);
 
-
-  const getUserInfo = ()=>{
+  const getUserInfo = () => {
     axios.get("/api/username",
       userAuthenticationConfig()).then((response) => {
       setName(response.data.name);
@@ -50,7 +47,7 @@ const UpdateProfileContainer = () => {
     }).catch(error => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
     });
-  }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -63,6 +60,8 @@ const UpdateProfileContainer = () => {
     };
 
     setAuthData(data);
+    console.log("authData");
+    console.log(authData);
 
     axios.post("/api/confirm-email", data).then(response => {
       if (response.status === responseStatus.HTTP_OK) {
@@ -77,6 +76,7 @@ const UpdateProfileContainer = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
     setIsEmailConfirmed(false);
+    setModalEmailOpen(false);
   };
 
   const updateUser = () => {
@@ -93,27 +93,55 @@ const UpdateProfileContainer = () => {
       return;
     }
 
-    axios.put("/api/update-user", authData, UserAuthenticationConfig())
-    .then((response) => {
+    axios.put("/api/update-user", authData, UserAuthenticationConfig()).then((response) => {
       setNotification({ ...notification, visible: true, type: "success", message: "Profile was updated! " });
-    })
-    .catch(error => {
+      setModalEmailOpen(false);
+    }).catch(error => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
     }).finally(() => {
       setLoading(false);
       setModalOpen(false);
     });
-
-
-
   };
 
-  // useEffect(() => {
-  //   updateUser();
-  // }, [authData]);
+  const handleUpdateEmail = () => {
+    setModalEmailOpen(true);
+  };
+
+  const handleGenerateCode = () => {
+    const code = generateRandomCode();
+    setRandomCode(code);
+
+    setNotification({ ...notification, visible: true, type: "info", message: `Generated code: ${code}` });
+  };
+
+  const handleConfirmCode = (enteredCode) => {
+
+    if (randomCode !== null && enteredCode !== randomCode.toString()) {
+      setNotification({ ...notification, visible: true, type: "error", message: "Wrong code." });
+      setModalEmailOpen(false);
+    } else {
+      const data = {
+        email: newEmail,
+        name: name,
+        surname: surname,
+        phoneNumber: phoneNumber
+      };
+
+      axios.put("/api/update-user", data, UserAuthenticationConfig()).then((response) => {
+        setModalEmailOpen(false);
+        setAuthenticated(false);
+        navigate("/login");
+      }).catch(error => {
+        setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
+      }).finally(() => {
+        setModalOpen(false);
+      });
+    }
+  };
 
   useEffect(() => {
-    getUserInfo()
+    getUserInfo();
   }, []);
 
   return (
@@ -128,7 +156,7 @@ const UpdateProfileContainer = () => {
           label="Name: "
           variant="outlined"
           value={name}
-          onChange={(e)=>setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           required
         />
 
@@ -138,7 +166,7 @@ const UpdateProfileContainer = () => {
           label="Surname"
           name="surname"
           value={surname}
-          onChange={(e)=>setSurname(e.target.value)}
+          onChange={(e) => setSurname(e.target.value)}
           required
         />
 
@@ -158,7 +186,7 @@ const UpdateProfileContainer = () => {
           label="Phone Number"
           name="phoneNumber"
           value={phoneNumber}
-          onChange={(e)=>setPhoneNumber(e.target.value)}
+          onChange={(e) => setPhoneNumber(e.target.value)}
           required
         />
         <Button
@@ -168,6 +196,11 @@ const UpdateProfileContainer = () => {
         >
           Save changes
         </Button>
+        <Grid item>
+          <Link variant="body2" onClick={handleUpdateEmail}>
+            {"Want to update your email?"}
+          </Link>
+        </Grid>
       </form>
 
       <ModalConfirmEmail
@@ -176,9 +209,50 @@ const UpdateProfileContainer = () => {
         onConfirm={updateUser}
         onNotMyEmail={handleCloseModal}
       />
+
+      <Modal open={modalEmailOpen} onClose={() => setModalEmailOpen(false)}>
+        <div className="modal-container">
+          <div className="modal-content">
+            <h3>Confirm Phone number</h3>
+            <TextField
+              id="phoneNumber"
+              label="Phone Number"
+              name="phoneNumber"
+              value={phoneNumber}
+              disabled
+            />
+            <Button variant="contained" color="primary" onClick={handleGenerateCode}>
+              Confirm
+            </Button>
+            <h3>Enter code</h3>
+            <TextField
+              id="code"
+              label="Code"
+              name="code"
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+            />
+            <br />
+            <TextField
+              id="newEmail"
+              type="email"
+              label="New email"
+              name="newEmail"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+            <Button variant="contained" color="primary" style={{ marginRight: 70 }} onClick={() => handleConfirmCode(code)}>
+              Confirm and login
+            </Button>
+            <Button variant="contained" color="inherit" onClick={handleCloseModal}>
+              Close
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </>
   );
 
-}
+};
 
 export default UpdateProfileContainer;

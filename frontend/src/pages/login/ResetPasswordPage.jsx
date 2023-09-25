@@ -1,4 +1,4 @@
-import { Button, Modal } from "@mui/material";
+import { Button } from "@mui/material";
 import InputPassword from "../../components/elemets/input/InputPassword";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
@@ -25,7 +25,7 @@ const ResetPasswordPage = () => {
   });
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false); // Додайте змінну для відстеження статусу підтвердження пошти
+  const [isEmailConfirmed, setIsEmailConfirmed] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -43,7 +43,7 @@ const ResetPasswordPage = () => {
         setModalOpen(true);
       }
     }).catch(error => {
-      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.detail });
+      setNotification({ ...notification, visible: true, type: "error", message: "Wrong email" });
     });
 
   };
