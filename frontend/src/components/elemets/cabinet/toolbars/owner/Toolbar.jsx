@@ -8,6 +8,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Business, FlightRounded, FlightTakeoffRounded } from "@mui/icons-material";
 
 const Toolbar = () => {
@@ -70,6 +71,13 @@ const Toolbar = () => {
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Last quarter" />
+          </ListItemButton>
+
+          <ListItemButton onClick={() => goTo("/cabinet/profile")}>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
           </ListItemButton>
 
         </React.Fragment>
