@@ -7,6 +7,7 @@ use App\Repository\CompanyIncomeRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CompanyIncomeRepository::class)]
@@ -48,12 +49,18 @@ class CompanyIncome
      * @var int|null
      */
     #[ORM\Column]
+    #[Groups([
+        "get:collection:companyIncome",
+    ])]
     private ?int $income = null;
 
     /**
      * @var DateTimeInterface|null
      */
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Groups([
+        "get:collection:companyIncome",
+    ])]
     private ?\DateTimeInterface $date = null;
 
     /**

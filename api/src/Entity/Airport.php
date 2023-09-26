@@ -127,6 +127,12 @@ class Airport
     private Collection $cooperationForm;
 
     /**
+     * @var int|null
+     */
+    #[ORM\Column(nullable: true)]
+    private ?int $offset = null;
+
+    /**
      * Airport constructor
      */
     public function __construct()
@@ -271,6 +277,25 @@ class Airport
     public function setCooperationForm(Collection $cooperationForm): self
     {
         $this->cooperationForm = $cooperationForm;
+
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getOffset(): ?int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @param int|null $offset
+     * @return $this
+     */
+    public function setOffset(?int $offset): static
+    {
+        $this->offset = $offset;
 
         return $this;
     }

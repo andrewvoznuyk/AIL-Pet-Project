@@ -1,5 +1,6 @@
 import React, { lazy } from "react";
 import routes from "./routes";
+import ReportsPage from "../pages/reports/ReportsPage";
 
 const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
 const CabinetPage = lazy(() => import("../pages/cabinet/CabinetPage"));
@@ -17,7 +18,11 @@ const adminRoutes = [
   {
     path: "/cabinet",
     element: <CabinetPage />
-  }
+  },
+  {
+    path: "/cabinet/reports",
+    element: <ReportsPage />
+  },
 ];
 
 const adminRoutesConcat = adminRoutes.concat(routes);

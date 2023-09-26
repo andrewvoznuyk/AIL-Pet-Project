@@ -25,7 +25,12 @@ const buyTickets = {
 const aircrafts = {
   OWNER: "aircrafts:owner",
 };
+const reports = {
+  OWNER: "reports:owner",
+  MANAGER: "reports:manager",
+  ADMIN: "reports:admin",
+};
 
 export {
-  goods, flights, toolbar, buyTickets, aircrafts
+  goods, flights, toolbar, buyTickets, aircrafts, reports
 };

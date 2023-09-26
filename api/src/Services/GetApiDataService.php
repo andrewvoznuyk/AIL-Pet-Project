@@ -81,7 +81,11 @@ class GetApiDataService
                 $airportData[$i]['lat'] = (double)$airportData[$i]['lat'];
             }
 
+            /** @var Airport $airport */
             $airport = $this->denormalize->denormalize($airportData[$i], Airport::class, "array");
+
+            $airport->setOffset($airportData[$i]['timezone']['offset']);
+
             $errors = $this->validator->validate($airportData[$i]);
 
             $this->entityManager->persist($airport);
