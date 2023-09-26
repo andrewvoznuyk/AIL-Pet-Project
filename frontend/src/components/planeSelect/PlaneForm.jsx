@@ -13,12 +13,13 @@ import {useEffect, useState} from "react";
 
 const PlaneForm = ({currentPlane,data,setData}) => {
     const [places,setPlaces]=useState({
-        economPlaces:""+currentPlane.passenger_capacity,
-        businessPlaces:"0"
+        economPlaces:currentPlane.passenger_capacity,
+        businessPlaces:0,
+        standardPlaces:0,
     });
 
     useEffect(()=>{
-        setData({...data,places:[places.economPlaces,places.businessPlaces]});
+        setData({...data,places:{"econom":parseInt(places.economPlaces), "standard":parseInt(places.standardPlaces) ,"business":parseInt(places.businessPlaces)}});
     },[places]);
 
     return (
@@ -30,6 +31,7 @@ const PlaneForm = ({currentPlane,data,setData}) => {
             <div>
                 <TextField label="Business places" type="number" id="business" name="business" defaultValue={places.businessPlaces} onChange={(event)=>{setPlaces({...places, businessPlaces: event.target.value})}} style={{margin:10}}/>
                 <TextField label="Econom places" type="number" id="econom" name="econom" defaultValue={places.economPlaces} onChange={(event)=>{setPlaces({...places, economPlaces: event.target.value})}} style={{margin:10}}/>
+                <TextField label="Standard places" type="number" id="standard" name="standard" defaultValue={places.standardPlaces} onChange={(event)=>{setPlaces({...places, standardPlaces: event.target.value})}} style={{margin:10}}/>
             </div>
             <TextField label="Input plane number" type="text" id="planeNum" name="planeNum" onChange={(event)=>{setData({...data, serialNumber:event.target.value})}} style={{margin:10}}/>
             <img src={currentPlane.imgThumb} alt=""/>
