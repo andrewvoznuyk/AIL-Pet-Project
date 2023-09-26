@@ -24,6 +24,11 @@ class CompanyIncomeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, CompanyIncome::class);
     }
+
+    /**
+     * @param $companyId
+     * @return array
+     */
     public function findStatOfDate($companyId): array
     {
         return $this->createQueryBuilder('ci')
