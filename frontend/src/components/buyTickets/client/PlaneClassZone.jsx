@@ -5,7 +5,7 @@ import SeatsRow from "./SeatsRow";
 /**
  * Each plane has several classes divided
  */
-function PlaneClassZone ({ classZone, onButtonClick }) {
+function PlaneClassZone ({ classZone, onButtonClick, isPlaceSold }) {
 
   return <>
     {
@@ -13,7 +13,12 @@ function PlaneClassZone ({ classZone, onButtonClick }) {
         return (
 
           <tr className="centered-table">
-            <SeatsRow row={row} onButtonClick={onButtonClick} placeClass={classZone.className}/>
+            <SeatsRow
+              row={row}
+              onButtonClick={onButtonClick}
+              placeClass={classZone.className}
+              isPlaceSold={isPlaceSold}
+            />
           </tr>
 
         );

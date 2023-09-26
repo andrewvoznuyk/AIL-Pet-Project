@@ -2,13 +2,14 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import aircraftSettings from "./aircraftSettings";
 
-function SeatItem ({number, placeClass, onButtonClick}) {
+function SeatItem ({number, placeClass, onButtonClick, isPlaceSold}) {
 
   const [isClicked, setIsClicked] = useState(false);
 
   const onItemClick = () => {
     setIsClicked(!isClicked);
-    onButtonClick({id: number, placeClass: placeClass});
+    let data = {place: number, class: placeClass};
+    onButtonClick(data);
   }
 
   const getColor = () => {
@@ -20,6 +21,7 @@ function SeatItem ({number, placeClass, onButtonClick}) {
       variant={isClicked ? "contained" : "outlined"}
       onClick={onItemClick}
       color={getColor()}
+      disabled={isPlaceSold(number)}
     >
       {number}
     </Button>

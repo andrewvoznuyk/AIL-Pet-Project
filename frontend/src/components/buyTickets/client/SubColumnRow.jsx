@@ -8,14 +8,19 @@ import React from "react";
  * @returns {JSX.Element}
  * @constructor
  */
-function SubColumnRow ({ subrow, onButtonClick, placeClass }) {
+function SubColumnRow ({ subrow, onButtonClick, placeClass, isPlaceSold }) {
 
   return <>
     {subrow && subrow.map((cell) => {
 
       return (
         <td>
-          <SeatItem number={cell} onButtonClick={() => onButtonClick(cell)} placeClass={placeClass}/>
+          <SeatItem
+            number={cell}
+            onButtonClick={onButtonClick}
+            placeClass={placeClass}
+            isPlaceSold={isPlaceSold}
+          />
         </td>
       );
     })}

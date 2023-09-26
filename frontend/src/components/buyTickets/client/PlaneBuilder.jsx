@@ -3,7 +3,7 @@ import PlaneClassZone from "./PlaneClassZone";
 import { Typography } from "@mui/material";
 import aircraftSettings from "./aircraftSettings";
 
-function PlaneBuilder ({ aircraftData, selectedPlaces, setSelectedPlaces }) {
+function PlaneBuilder ({ aircraftData, onPlaceClick, soldPlaces }) {
 
   const [seatsArray, setSeatsArray] = useState(null);
 
@@ -100,19 +100,8 @@ function PlaneBuilder ({ aircraftData, selectedPlaces, setSelectedPlaces }) {
     return count;
   };
 
-  const onPlaceClick = (placeData) => {
-    console.log(placeData);
-
-    let array = [...selectedPlaces]; // make a separate copy of the array
-    let index = array.indexOf(placeData);
-
-    if (index !== -1) {
-      array.splice(index, 1);
-    } else {
-      array.push(placeData);
-    }
-
-    setSelectedPlaces(array);
+  const isPlaceSold = (id) => {
+    return soldPlaces.some(e => e.place === id);
   };
 
   return <>
@@ -130,7 +119,11 @@ function PlaneBuilder ({ aircraftData, selectedPlaces, setSelectedPlaces }) {
               </td>
             </tr>
 
-            <PlaneClassZone classZone={classZone} onButtonClick={onPlaceClick} />
+            <PlaneClassZone
+              classZone={classZone}
+              onButtonClick={onPlaceClick}
+              isPlaceSold={isPlaceSold}
+            />
 
             <tr>
               <p></p>
