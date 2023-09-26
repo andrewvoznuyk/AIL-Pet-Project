@@ -38,6 +38,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 class Ticket
 {
 
+    public const SKIPPED_PLACES = [13];
+
     /**
      * @var Uuid
      */

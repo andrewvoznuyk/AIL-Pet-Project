@@ -13,7 +13,11 @@ function SeatItem ({number, placeClass, onButtonClick, isPlaceSold}) {
   }
 
   const getColor = () => {
-    return aircraftSettings.placeClasses[placeClass].color;
+    if(aircraftSettings.placeClasses[placeClass]) {
+      return aircraftSettings.placeClasses[placeClass].color;
+    }
+
+    return "primary";
   }
 
   return <>
