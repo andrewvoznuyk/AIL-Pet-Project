@@ -1,4 +1,6 @@
 import Grid from "@mui/material/Grid";
+import SeatItem from "./SeatItem";
+import React from "react";
 
 /**
  * Plane has several seat columns, and each column can have several seats in row.
@@ -6,11 +8,22 @@ import Grid from "@mui/material/Grid";
  * @returns {JSX.Element}
  * @constructor
  */
-function SubColumnRow ({ seats }) {
-  return <>
-    <Grid container>
+function SubColumnRow ({ subrow, onButtonClick, placeClass, isPlaceSold }) {
 
-    </Grid>
+  return <>
+    {subrow && subrow.map((cell) => {
+
+      return (
+        <td>
+          <SeatItem
+            number={cell}
+            onButtonClick={onButtonClick}
+            placeClass={placeClass}
+            isPlaceSold={isPlaceSold}
+          />
+        </td>
+      );
+    })}
   </>;
 }
 

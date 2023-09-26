@@ -63,7 +63,6 @@ class Ticket
      */
     #[ORM\Column]
     #[Groups([
-        "get:item:flight",
         "get:collection:ticket"
     ])]
     #[NotBlank]

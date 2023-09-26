@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use ApiPlatform\Validator\ValidatorInterface;
+use App\Entity\Flight;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Services\CalculateTicketPriceService;
@@ -13,6 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -130,6 +132,25 @@ class TicketPurchaseController extends AbstractController
                 $sum += $ticketData["bonus"];
 
         return $sum;
+    }
+  
+  
+  /**
+     * @param int $id
+     * @return JsonResponse
+     */
+    #[Route('/tickets/flight/{id}', name: 'app_tickets_get', methods: "GET")]
+    public function getPurchasedTickets(int $id) : JsonResponse
+    {
+        $flight = $this->entityManager->getRepository(Flight::class)->findOneBy(["id" => $id]);
+
+        if(empty($flight)){
+            throw new NotFoundHttpException("Not Found");
+        }
+
+        $tickets = $this->entityManager->getRepository(Ticket::class)->getSoldTickets($flight);
+
+        return new JsonResponse($tickets);
     }
 
 }
