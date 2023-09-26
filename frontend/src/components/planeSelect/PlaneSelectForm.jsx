@@ -18,6 +18,7 @@ const PlaneSelectForm = () => {
         model:"",
         serialNumber:"",
         company:"",
+        columns:[2,2]
     })
 
     useEffect(()=>{
