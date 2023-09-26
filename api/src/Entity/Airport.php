@@ -293,7 +293,7 @@ class Airport
      * @param int|null $offset
      * @return $this
      */
-    public function setOffset(?int $offset): static
+    public function setOffset(?int $offset): self
     {
         $this->offset = $offset;
 

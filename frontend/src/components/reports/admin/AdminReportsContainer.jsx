@@ -13,33 +13,18 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import {responseStatus} from "../../../utils/consts";
+import {InputLabel, MenuItem, Select} from "@mui/material";
 
 const AdminReportsContainer = () => {
-  const [myData,setMyData]=useState(
-      [
-        {
-          id: 1,
-          date: 2016,
-          income: 80000,
-        },
-        {
-          id: 2,
-          date: 2017,
-          income: 40500,
-        },
-        {
-          id: 2,
-          date: 2018,
-          income: 70500,
-        },
-      ]
-  );
+  const [myData,setMyData]=useState([]);
 
-  const loadData = () => {
+  const [currentStat,setCurrentStat]=useState(1);
 
-    axios.get("/api/get-company-stat", userAuthenticationConfig()).then(response => {
-      if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
-        setMyData(response.data["hydra:member"]);
+  const loadData = (num) => {
+
+    axios.get("/api/get-website-stat?num="+num, userAuthenticationConfig()).then(response => {
+      if (response.status === responseStatus.HTTP_OK && response.data) {
+        setMyData(response.data);
       }
     }).catch(error => {
       console.log("error");
@@ -47,9 +32,13 @@ const AdminReportsContainer = () => {
   };
 
   useEffect(() => {
-    loadData();
+    loadData(currentStat);
   }, []);
-  
+
+  useEffect(() => {
+    loadData(currentStat);
+  }, [currentStat]);
+
   ChartJS.register(
       CategoryScale,
       LinearScale,
@@ -59,26 +48,27 @@ const AdminReportsContainer = () => {
       Tooltip,
       Legend
   );
-    const options = {
+  const options = {
     responsive: true,
     plugins: {
       legend: {
         position: 'top',
       },
-      title: {
-        display: true,
-        text: 'Chart.js Line Chart',
-      },
     },
   };
 
-    const labels = myData.map((data) => data.date);
-
-    const chartData = {
+  let labels=[];
+  if(currentStat===1){
+    labels = myData.map((data) => data.date);
+  }
+  else if(currentStat===2){
+    labels = myData.map((data) => data.company);
+  }
+  const chartData = {
     labels,
     datasets: [
       {
-        label: 'Dataset 1',
+        label: 'Daily profit fluctuation',
         data: myData.map((data) => data.income),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -87,10 +77,19 @@ const AdminReportsContainer = () => {
   };
 
   return (
-    <>
-      <h1>Admin reports</h1>
-      <Line options={options} data={chartData} />;
-    </>
+      <>
+        <h1>Admin reports</h1>
+        <InputLabel id="company-select-label">Company List</InputLabel>
+        <Select
+            labelId="company-select-label"
+            id="company-select"
+            label="Company List"
+        >
+          <MenuItem value={"Income by companies"} onClick={()=>{setCurrentStat(2)}}>Income by companies</MenuItem>
+          <MenuItem value={"Income by dates"} onClick={()=>{setCurrentStat(1)}}>Income by dates</MenuItem>
+        </Select>
+        <Line options={options} data={chartData} />;
+      </>
   );
 };
 

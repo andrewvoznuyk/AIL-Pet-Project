@@ -10,6 +10,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Business, FlightRounded, FlightTakeoffRounded } from "@mui/icons-material";
+import BarChartIcon from "@mui/icons-material/BarChart";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -49,6 +50,13 @@ const Toolbar = () => {
               <Business />
             </ListItemIcon>
             <ListItemText primary="Companies" />
+          </ListItemButton>
+
+          <ListItemButton onClick={() => goTo("/cabinet/reports")}>>
+            <ListItemIcon>
+              <BarChartIcon />
+            </ListItemIcon>
+            <ListItemText primary="Reports" />
           </ListItemButton>
 
         </React.Fragment>
