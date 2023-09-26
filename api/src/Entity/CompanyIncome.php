@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CompanyIncomeRepository;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
@@ -9,6 +10,22 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CompanyIncomeRepository::class)]
+#[ApiResource(
+    collectionOperations:[
+        "get" => [
+            "method" => "get",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
+            "normalization_context" => ["groups" => ["get:collection:companyIncome"]]
+        ]
+    ],
+    itemOperations: [
+        "get" => [
+            "method" => "get",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
+            "normalization_context" => ["groups" => ["get:collection:companyIncome"]]
+        ],
+    ]
+)]
 class CompanyIncome
 {
     /**

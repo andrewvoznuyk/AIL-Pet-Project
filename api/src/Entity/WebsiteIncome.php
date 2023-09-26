@@ -2,11 +2,28 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\WebsiteIncomeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: WebsiteIncomeRepository::class)]
+#[ApiResource(
+    collectionOperations:[
+        "get" => [
+            "method" => "get",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
+            "normalization_context" => ["groups" => ["get:collection:websiteIncome"]]
+        ]
+    ],
+    itemOperations: [
+        "get" => [
+            "method" => "get",
+            "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
+            "normalization_context" => ["groups" => ["get:collection:websiteIncome"]]
+        ],
+    ]
+)]
 class WebsiteIncome
 {
     /**

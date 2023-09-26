@@ -6,8 +6,6 @@ use App\Entity\Airport;
 use App\Entity\Flight;
 use App\Services\SearchingModel\Dijkstra;
 use App\Services\SearchingModel\Graph;
-use Exception;
-use phpDocumentor\Reflection\Types\Array_;
 
 class SearchTheShortestWayService
 {
@@ -31,6 +29,22 @@ class SearchTheShortestWayService
         for ($i = 0; $i < count($airports); $i++) {
             $this->graph->addAirport($airports[$i]);
         }
+    }
+
+    /**
+     * @param array $flights
+     * @return array
+     */
+    private function getAirports(array $flights): array
+    {
+        $airports = [];
+
+        /** @var Flight $flight */
+        foreach ($flights as $flight) {
+            $airports[] = $flight->getFromLocation()->getAirport();
+            $airports[] = $flight->getToLocation()->getAirport();
+        }
+        return $airports;
     }
 
     /**
@@ -107,22 +121,6 @@ class SearchTheShortestWayService
         }
 
         return $neededFlights;
-    }
-
-    /**
-     * @param array $flights
-     * @return array
-     */
-    private function getAirports(array $flights): array
-    {
-        $airports = [];
-
-        /** @var Flight $flight */
-        foreach ($flights as $flight) {
-            $airports[] = $flight->getFromLocation()->getAirport();
-            $airports[] = $flight->getToLocation()->getAirport();
-        }
-        return $airports;
     }
 
 }

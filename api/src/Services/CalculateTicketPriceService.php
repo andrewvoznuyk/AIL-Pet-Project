@@ -10,13 +10,29 @@ class CalculateTicketPriceService
 {
     private const FLUE_PRICE = 0.4;
     private const PRICE_INCREASE = 0.1;
+    private const PERCENT = 100;
+    private const MIN_AZIMUTH = 0;
+    private const MAX_AZIMUTH = 180;
+
+    /**
+     * @var GetMilesService
+     */
+    private GetMilesService $getMilesService;
+
+    /**
+     * @param GetMilesService $getMilesService
+     */
+    public function __construct(GetMilesService $getMilesService)
+    {
+        $this->getMilesService = $getMilesService;
+    }
 
     /**
      * @throws Exception
      */
-    public function calculateTicketPrice(Ticket $ticket) : float
+    public function calculateTicketPrice(Ticket $ticket, float $bonus) : float
     {
-        $km = $ticket->getFlight()->getDistance();
+        $km = $ticket->getFlight()->getDistance() - $bonus;
         $classCoef = $ticket->getFlight()->getPlacesCoefs();
         $class = $ticket->getClass();
 
@@ -26,7 +42,12 @@ class CalculateTicketPriceService
 
         $initPrice = $ticket->getFlight()->getInitPrices()[$class];
 
-        $price = $km * self::FLUE_PRICE * (1 / (1 + $interval->days * self::PRICE_INCREASE)) * (1 + $classCoef[0][$class]);
+        $price = $km * self::FLUE_PRICE * (1 / (1 + $interval->days * self::PRICE_INCREASE)) * (1 + $classCoef[$class]);
+        $azimuth = $this->getMilesService->calculateAzimuth($ticket->getFlight());
+
+        if ($azimuth >= self::MIN_AZIMUTH && $azimuth < self::MAX_AZIMUTH)
+            $price += $price / self::PERCENT;
+
         if ($price < $initPrice)
             $price = $initPrice;
 

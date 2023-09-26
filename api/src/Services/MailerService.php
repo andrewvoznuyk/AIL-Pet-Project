@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
@@ -20,17 +21,30 @@ class MailerService
     {
         $this->mailer = $mailer;
     }
-    public function SendMailFunc(){
-        $email = (new Email())
-            ->from('mr.kolyakonoval@gmail.com')
-            ->to('you@example.com')
-            ->subject('Тест відправки листа!')
-            ->text('Коля відправив тестовий лист!')
-            ->html("<h1 style='color: #00bb00'>Відправка листа у вигляді html</h1>");
+    public function SendMailFunc($user,$location,$aircraft){
+
+        $email = (new TemplatedEmail())
+            ->from('no-reply@ail.com')
+            ->to($user['email'])
+            ->subject('Your ticket!')
+            ->htmlTemplate('mailTemplate.twig')
+            ->context([
+                'email'=>$user['email'],
+                'from'=>$location['from'],
+                'to'=>$location['to'],
+                'arrival'=>$location['arrival'],
+                'departure'=>$location['departure'],
+                'place'=>$aircraft['place'],
+                'aircraftModel'=>$aircraft['model'],
+                'aircraftNumber'=>$aircraft['number'],
+                'name'=>$user['name'],
+                'surName'=>$user['surName'],
+            ]);
+
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $e) {
-
+            $e->getMessage();
         }
     }
 }
