@@ -29,7 +29,7 @@ const FlightContainer = () => {
   const [paginationInfo, setPaginationInfo] = useState({
     totalItems: null,
     totalPageCount: null,
-    itemsPerPage: 5
+    itemsPerPage: 20
   });
 
   const [filterData, setFilterData] = useState({
