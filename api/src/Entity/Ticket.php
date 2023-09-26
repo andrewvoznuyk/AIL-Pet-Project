@@ -22,14 +22,17 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 #[ApiResource(
     collectionOperations: [
         "get" => [
-            "method"   => "GET",
-            "security" => "is_granted('" . User::ROLE_USER . "')",
-            "normalization_context"   => ["groups" => ["get:collection:ticket"]]
+            "method"                => "GET",
+            "security"              => "is_granted('" . User::ROLE_USER . "')",
+            "normalization_context" => ["groups" => ["get:collection:ticket"]]
         ]
     ],
     itemOperations: []
 )]
-#[GroupSequence(["Ticket", "constraint:last"])]
+#[GroupSequence([
+    "Ticket",
+    "constraint:last"
+])]
 #[TicketConstraint(groups: ["constraint:last"])]
 #[ORM\EntityListeners([TicketEntityListener::class])]
 class Ticket
@@ -81,12 +84,12 @@ class Ticket
     private ?string $class = null;
 
     /**
-     * @var int|null
+     * @var float|null
      */
-    #[ORM\Column]
+    #[ORM\Column(type: "float")]
     #[NotBlank]
     #[GreaterThan(0)]
-    private ?int $price = null;
+    private ?float $price = null;
 
     /**
      * @var string|null
@@ -209,18 +212,18 @@ class Ticket
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getPrice(): ?int
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
     /**
-     * @param int $price
+     * @param float $price
      * @return $this
      */
-    public function setPrice(int $price): self
+    public function setPrice(float $price): self
     {
         $this->price = $price;
 

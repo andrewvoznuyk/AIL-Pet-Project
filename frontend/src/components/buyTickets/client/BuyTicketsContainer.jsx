@@ -1,7 +1,7 @@
 import { Breadcrumbs, Button, CardContent, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import { responseStatus } from "../../../utils/consts";
@@ -10,8 +10,11 @@ import PlaneBuilder from "./PlaneBuilder";
 import CardTicketInfo from "./CardTicketInfo";
 import PopupPayment from "../../elemets/popup/PopupPayment";
 import Box from "@mui/material/Box";
+import Notification from "../../elemets/notification/Notification";
 
 const BuyTicketsContainer = () => {
+
+  const navigate = useNavigate();
 
   const [flightData, setFlightData] = useState(null);
   const [boughtTickets, setBoughtTickets] = useState(null);
@@ -26,6 +29,13 @@ const BuyTicketsContainer = () => {
   const [isPaymentPopupOpen, setPaymentPopupOpen] = useState(false);
   const params = useParams();
 
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState({
+    visible: false,
+    type: "",
+    message: ""
+  });
+
   /**
    * <DATA LOADING>
    */
@@ -38,12 +48,19 @@ const BuyTicketsContainer = () => {
       setFlightData(undefined);
     });
   };
+  const loadTicketsPriceData = () => {
+    axios.get(`/api/tickets/prices/${params.flightId}`, userAuthenticationConfig()).then(response => {
+      if (response.status === responseStatus.HTTP_OK) {
+        setTicketPricesArray(response.data);
+      }
+    }).catch(error => {
+    });
+  };
 
   const loadPurchasedTickets = () => {
     axios.get(`/api/tickets/flight/${params.flightId}`, userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK) {
         setBoughtTickets(response.data);
-        console.log(response.data);
       }
     }).catch(error => {
       setBoughtTickets(undefined);
@@ -54,9 +71,14 @@ const BuyTicketsContainer = () => {
    */
 
 
-  const onPlaceClick = (placeData) => {
+  const reloadPage = () => {
+    navigate(0);
+  };
 
+  const onPlaceClick = (placeData) => {
     placeData.price = ticketPricesArray[placeData.class];
+    placeData.flight = params.flightId;
+
     let index = -1;
     for (let i = 0; i < selectedPlaces.length; i++) {
       if (selectedPlaces[i].place === placeData.place) {
@@ -93,25 +115,49 @@ const BuyTicketsContainer = () => {
   };
 
   const onButtonBuyClick = (e) => {
-    console.log(selectedPlaces);
     //open modal window
     setPaymentPopupOpen(true);
   };
 
   const onButtonApprovePurchaseClick = (e) => {
-    //TODO: send purchase data
-    closePaymentPopup();
+
+    setLoading(true);
+    axios.post(`/api/tickets/purchase`, selectedPlaces, userAuthenticationConfig()).then(response => {
+      if (response.status === responseStatus.HTTP_CREATED) {
+        setNotification({
+          ...notification,
+          visible: true,
+          type: "success",
+          message: "Tickets successfully purchased!"
+        });
+        reloadPage();
+      }
+    }).catch(error => {
+
+      if (error.response.status === responseStatus.HTTP_ERROR_VALIDATION) {
+        setNotification({ ...notification, visible: true, type: "error", message: "Fill all blank fields" });
+      } else {
+        setNotification({ ...notification, visible: true, type: "error", message: error.response.data.message });
+      }
+    }).finally(() => {
+      setLoading(false);
+      closePaymentPopup();
+
+    });
   };
+
   const closePaymentPopup = (e) => {
     setPaymentPopupOpen(false);
   };
 
+  //load all required data
   useEffect(() => {
     loadFlightData();
     loadPurchasedTickets();
+    loadTicketsPriceData();
   }, []);
 
-  //recalculate total price
+  //recalculate total price on place select
   useEffect(() => {
     const sum = selectedPlaces.reduce((accumulator, obj) => {
       return accumulator + obj.price;
@@ -121,6 +167,13 @@ const BuyTicketsContainer = () => {
 
   return (
     <>
+      {notification.visible &&
+        <Notification
+          notification={notification}
+          setNotification={setNotification}
+        />
+      }
+
       <Helmet>
         <title>
           Buy tickets
@@ -157,20 +210,26 @@ const BuyTicketsContainer = () => {
                 <Box>
                   {selectedPlaces && selectedPlaces.map((item, key) => {
                     return (
-                      <div key={key} style={{paddingBottom: 15}}>
-                      <CardTicketInfo
-                        placeData={item}
-                        setSelectedPlaces={setSelectedPlaces}
-                        changeOneTicketItem={changeOneTicketItem}
-                        ticketPricesArray={ticketPricesArray}
-                      />
+                      <div key={key} style={{ paddingBottom: 15 }}>
+                        <CardTicketInfo
+                          placeData={item}
+                          setSelectedPlaces={setSelectedPlaces}
+                          changeOneTicketItem={changeOneTicketItem}
+                          ticketPricesArray={ticketPricesArray}
+                        />
                       </div>
                     );
                   })}
 
                   <p></p>
                   {selectedPlaces.length > 0 &&
-                    <Button onClick={onButtonBuyClick} variant="contained" fullWidth>Buy ({totalPrice}$)</Button>
+                    <Button
+                      onClick={onButtonBuyClick}
+                      variant="contained"
+                      fullWidth
+                    >
+                      Buy ({totalPrice}$)
+                    </Button>
                   }
                 </Box>
               </Grid>
@@ -180,6 +239,7 @@ const BuyTicketsContainer = () => {
               isOpen={isPaymentPopupOpen}
               onAccept={onButtonApprovePurchaseClick}
               handleClose={closePaymentPopup}
+              loading={loading}
             />
           </>
         ) : (

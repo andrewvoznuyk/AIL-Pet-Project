@@ -46,7 +46,7 @@ class CalculateTicketPriceService
         $prices = [];
         foreach ($classes as $class => $key)
         {
-            $prices[] = $this->calculateInitialTicketPrice($flight, $class, 0);
+            $prices[$class] = round($this->calculateInitialTicketPrice($flight, $class, 0),2);
         }
 
         return $prices;

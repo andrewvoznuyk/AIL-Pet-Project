@@ -54,7 +54,6 @@ function CardTicketInfo ({ placeData, changeOneTicketItem, ticketPricesArray }) 
             name="name"
             required={true}
             onInput={onNameInput}
-            fullWidth
           />
           <p></p>
           <TextField

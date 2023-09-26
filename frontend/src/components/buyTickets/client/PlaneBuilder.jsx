@@ -8,18 +8,10 @@ function PlaneBuilder ({ aircraftData, onPlaceClick, soldPlaces }) {
   const [seatsArray, setSeatsArray] = useState(null);
 
   useEffect(() => {
-    //recalculate total places
-
-    //const sum = sumValues(aircraftData.places);
-
-    //const seats = getSeatsArray(aircraftData.columns, sum);
     const seats = getSeatsByClasses(aircraftData.columns, aircraftData.places);
-
     setSeatsArray(seats);
 
   }, [aircraftData]);
-
-  const sumValues = obj => Object.values(obj).reduce((a, b) => a + b, 0);
 
   const getSeatsByClasses = (columns, placeClassArr) => {
 
