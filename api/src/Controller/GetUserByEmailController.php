@@ -42,12 +42,14 @@ class GetUserByEmailController extends AbstractController
         $surname = $user->getSurname();
         $phoneNumber = $user->getPhoneNumber();
         $email = $user->getEmail();
+        $mileBonuses = $user->getMileBonuses();
 
         return $this->json([
-            'name'    => $name,
-            'surname' => $surname,
+            'name'        => $name,
+            'surname'     => $surname,
             'phoneNumber' => $phoneNumber,
-            'email' => $email
+            'email'       => $email,
+            'mileBonuses' => $mileBonuses
         ]);
     }
 
