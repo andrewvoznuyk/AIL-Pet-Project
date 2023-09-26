@@ -127,24 +127,25 @@ class TicketPurchaseController extends AbstractController
     private function getBonusSum($requestData): int
     {
         $sum = 0;
-        foreach ($requestData as $ticketData)
-            if (isset($ticketData["bonus"]))
+        foreach ($requestData as $ticketData) {
+            if (isset($ticketData["bonus"])) {
                 $sum += $ticketData["bonus"];
+            }
+        }
 
         return $sum;
     }
-  
-  
-  /**
+
+    /**
      * @param int $id
      * @return JsonResponse
      */
     #[Route('/tickets/flight/{id}', name: 'app_tickets_get', methods: "GET")]
-    public function getPurchasedTickets(int $id) : JsonResponse
+    public function getPurchasedTickets(int $id): JsonResponse
     {
         $flight = $this->entityManager->getRepository(Flight::class)->findOneBy(["id" => $id]);
 
-        if(empty($flight)){
+        if (empty($flight)) {
             throw new NotFoundHttpException("Not Found");
         }
 
