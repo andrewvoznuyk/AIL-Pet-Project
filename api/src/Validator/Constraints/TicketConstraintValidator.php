@@ -72,27 +72,28 @@ class TicketConstraintValidator extends ConstraintValidator
 
     private function checkIsPlaceValid(int $place, int $totalPlaces): void
     {
-        $isValid = false;
+        //place number always > 0, cannot be skipped num (13) and cannot be grater than places totally
+        if (!($place > 0 &&
+            $place <= $totalPlaces + $this->getSkippedPlacesCount($totalPlaces) &&
+            !in_array($place, Ticket::SKIPPED_PLACES)
+        )) {
+            $this->context->addViolation("Wrong place number");
+        }
+    }
 
-        //place number always > 0 and cannot be 13
-        if ($place > 0 && $place !== 13) {
+    protected function getSkippedPlacesCount($totalPlaces): int
+    {
+        $count = 0;
 
-            //if there are less than 13 places
-            if ($totalPlaces < 13) {
-                if ($place <= $totalPlaces) {
-                    $isValid = true;
-                }
-            } //if places more than 13, then one more number added
-            else {
-                if ($place <= $totalPlaces + 1) {
-                    $isValid = true;
-                }
+        for ($i = 0; $i < count(Ticket::SKIPPED_PLACES); $i++) {
+            if ($totalPlaces >= Ticket::SKIPPED_PLACES[$i]) {
+                $count++;
+            } else {
+                break;
             }
         }
 
-        if (!$isValid) {
-            $this->context->addViolation("Wrong place number");
-        }
+        return $count;
     }
 
 }

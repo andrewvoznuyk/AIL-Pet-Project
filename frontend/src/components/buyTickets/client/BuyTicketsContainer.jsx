@@ -63,7 +63,7 @@ const BuyTicketsContainer = () => {
         setBoughtTickets(response.data);
       }
     }).catch(error => {
-      setBoughtTickets(undefined);
+      setBoughtTickets([]);
     });
   };
   /**

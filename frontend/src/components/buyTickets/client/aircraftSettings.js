@@ -1,6 +1,5 @@
 const aircraftSettings = {
   walkwayWidth: 10,
-
   CLOSED_PLACES: [13],
 
   placeClasses: {
