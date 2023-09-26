@@ -46,6 +46,15 @@ class UpdateUserController extends AbstractController
             return $this->json(['message' => 'No user'], Response::HTTP_NOT_FOUND);
         }
 
+        if (!isset(
+            $data["email"],
+            $data['surname'],
+            $data['name'],
+            $data['phoneNumber']
+        )){
+            return $this->json(['message' => 'Wrong type'], Response::HTTP_BAD_REQUEST);
+        }
+
         $data = json_decode($request->getContent(), true);
         $user->setEmail($data["email"]);
         $user->setSurname($data['surname']);

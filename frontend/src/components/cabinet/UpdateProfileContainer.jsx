@@ -8,12 +8,9 @@ import Notification from "../elemets/notification/Notification";
 import { Button, Grid, Input, Link, Modal, TextField } from "@mui/material";
 import ModalConfirmEmail from "../elemets/modalForConfirm/ModalConfirmEmail";
 import generateRandomCode from "../../utils/generateRandomCode";
-import loginRequest from "../../utils/loginRequest";
 import { useNavigate } from "react-router-dom";
-import { authentication } from "../../utils/authenticationRequest";
 
 const UpdateProfileContainer = () => {
-  // const { user } = useContext(AppContext);
   const {authenticated, setAuthenticated} = useContext(AppContext);
   const navigate = useNavigate();
 
@@ -176,8 +173,6 @@ const UpdateProfileContainer = () => {
           label="E-mail"
           name="email"
           value={email}
-          // onChange={(e)=>setEmail(e.target.value)}
-          // required
           disabled
         />
 

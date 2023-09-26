@@ -11,6 +11,7 @@ import LayersIcon from "@mui/icons-material/Layers";
 import ListSubheader from "@mui/material/ListSubheader";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { AirplaneTicket, FlightRounded, FlightTakeoffRounded } from "@mui/icons-material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const Toolbar = () => {
   const navigate = useNavigate();
@@ -59,6 +60,13 @@ const Toolbar = () => {
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Current month" />
+          </ListItemButton>
+
+          <ListItemButton onClick={() => goTo("/cabinet/profile")}>
+            <ListItemIcon>
+              <AccountCircleIcon />
+            </ListItemIcon>
+            <ListItemText primary="Profile" />
           </ListItemButton>
 
         </React.Fragment>
