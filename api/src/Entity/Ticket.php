@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Action\CancelFlightAction;
 use App\Action\FinishFlightAction;
+use App\EntityListener\TicketEntityListener;
 use App\Repository\TicketRepository;
 use App\Validator\Constraints\TicketConstraint;
 use DateTimeInterface;
@@ -30,6 +31,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 )]
 #[GroupSequence(["Ticket", "constraint:last"])]
 #[TicketConstraint(groups: ["constraint:last"])]
+#[ORM\EntityListeners([TicketEntityListener::class])]
 class Ticket
 {
 
