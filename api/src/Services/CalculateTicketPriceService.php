@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entity\Flight;
 use App\Entity\Ticket;
 use DateTime;
 use Exception;
@@ -32,20 +33,46 @@ class CalculateTicketPriceService
      */
     public function calculateTicketPrice(Ticket $ticket, float $bonus) : float
     {
-        $km = $ticket->getFlight()->getDistance() - $bonus;
-        $classCoef = $ticket->getFlight()->getPlacesCoefs();
-        $class = $ticket->getClass();
+        return $this->calculateInitialTicketPrice($ticket->getFlight(), $ticket->getClass(), $bonus);
+    }
+
+    /**
+     * @param Flight $flight
+     * @return array
+     */
+    public function calculateInitialClassesPrices(Flight $flight) : array
+    {
+        $classes = $flight->getPlacesCoefs();
+        $prices = [];
+        foreach ($classes as $class => $key)
+        {
+            $prices[] = $this->calculateInitialTicketPrice($flight, $class, 0);
+        }
+
+        return $prices;
+    }
+
+    /**
+     * @param Flight $flight
+     * @param string $class
+     * @param int $bonus
+     * @return float
+     */
+    public function calculateInitialTicketPrice(Flight $flight, string $class, int $bonus) : float
+    {
+        $km = $flight->getDistance() - $bonus;
+        $classCoef = $flight->getPlacesCoefs();
 
         $nowDateTime = new DateTime();
-        $departureDateTime = $ticket->getFlight()->getDeparture();
+        $departureDateTime = $flight->getDeparture();
         $interval = $nowDateTime->diff($departureDateTime);
 
-        $initPrice = $ticket->getFlight()->getInitPrices()[$class];
+        $initPrice = $flight->getInitPrices()[$class];
 
         $price = $km * self::FLUE_PRICE * (1 / (1 + $interval->days * self::PRICE_INCREASE)) * (1 + $classCoef[$class]);
-        $azimuth = $this->getMilesService->calculateAzimuth($ticket->getFlight());
+        $azimuth = $this->getMilesService->calculateAzimuth($flight);
 
-        if ($azimuth >= self::MIN_AZIMUTH && $azimuth < self::MAX_AZIMUTH)
+        if (!($azimuth >= self::MIN_AZIMUTH && $azimuth < self::MAX_AZIMUTH))
             $price += $price / self::PERCENT;
 
         if ($price < $initPrice)

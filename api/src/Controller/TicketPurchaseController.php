@@ -63,6 +63,26 @@ class TicketPurchaseController extends AbstractController
     }
 
     /**
+     * @param string $id
+     * @return Response
+     * @throws Exception
+     */
+    #[Route('/tickets/prices/{id}', name: 'tickets_prices', methods: "GET")]
+    public function getTicketsPrices(string $id) : Response
+    {
+        $flight = $this->entityManager->getRepository(Flight::class)->findOneBy(["id" => $id]);
+
+        if (!$flight){
+            throw new Exception("There is no such a flight with id: $id .");
+        }
+
+        $ticketsPrices = $this->calculateTicketPriceService->calculateInitialClassesPrices($flight);
+
+        return new JsonResponse($ticketsPrices, Response::HTTP_OK);
+
+    }
+
+    /**
      * @param Request $request
      * @return Response
      * @throws ExceptionInterface
@@ -97,7 +117,7 @@ class TicketPurchaseController extends AbstractController
 
         $this->entityManager->flush();
 
-        return new JsonResponse("Created", 201);
+        return new JsonResponse("Created", Response::HTTP_CREATED);
     }
 
     /**
