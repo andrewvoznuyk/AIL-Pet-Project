@@ -9,7 +9,7 @@ import { TextField } from "@mui/material";
 
 export default function PopupPayment ({
   onAccept = null, handleClose = null,
-  isOpen
+  isOpen, loading
 }) {
 
   return (
@@ -34,7 +34,8 @@ export default function PopupPayment ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onAccept}>Buy</Button>
+          <Button onClick={onAccept}
+                  disabled={loading}>Buy</Button>
         </DialogActions>
       </Dialog>
     </div>
