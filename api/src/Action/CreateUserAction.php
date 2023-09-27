@@ -12,35 +12,15 @@ class CreateUserAction
 {
 
     /**
-     * @var Security
-     */
-    private Security $security;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
-
-    /**
      * @param Security $security
      * @param UserPasswordHasherInterface $passwordHasher
      * @param ValidatorInterface $validator
      */
     public function __construct(
-        Security                    $security,
-        UserPasswordHasherInterface $passwordHasher,
-        ValidatorInterface          $validator,
-    )
-    {
-        $this->security = $security;
-        $this->passwordHasher = $passwordHasher;
-        $this->validator = $validator;
-    }
+        private Security                    $security,
+        private UserPasswordHasherInterface $passwordHasher,
+        private ValidatorInterface          $validator,
+    ){}
 
     public function __invoke(User $data): User
     {

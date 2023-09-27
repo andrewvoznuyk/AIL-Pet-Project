@@ -19,24 +19,9 @@ class GetApiDataService
 {
 
     /**
-     * @var HttpClientInterface
-     */
-    private HttpClientInterface $client;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
      * @var DenormalizerInterface
      */
     private DenormalizerInterface $denormalize;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
 
     /**
      * @param HttpClientInterface $client
@@ -44,12 +29,9 @@ class GetApiDataService
      * @param DenormalizerInterface $denormalizer
      * @param ValidatorInterface $validator
      */
-    public function __construct(HttpClientInterface $client, EntityManagerInterface $entityManager, DenormalizerInterface $denormalizer, ValidatorInterface $validator)
+    public function __construct(private HttpClientInterface $client, private EntityManagerInterface $entityManager, DenormalizerInterface $denormalizer, private ValidatorInterface $validator)
     {
-        $this->client = $client;
-        $this->entityManager = $entityManager;
         $this->denormalize = $denormalizer;
-        $this->validator = $validator;
     }
 
     /**

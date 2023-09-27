@@ -9,18 +9,11 @@ use Symfony\Component\Mailer\MailerInterface;
 
 class MailerService
 {
-    /**
-     * @var MailerInterface
-     */
-    private MailerInterface $mailer;
 
     /**
      * @param MailerInterface $mailer
      */
-    public function __construct(MailerInterface $mailer)
-    {
-        $this->mailer = $mailer;
-    }
+    public function __construct(private MailerInterface $mailer){}
 
     /**
      * @param $user

@@ -9,18 +9,11 @@ use Symfony\Component\Security\Core\Security;
 
 class TicketEntityListener
 {
-    /**
-     * @var MailerService
-     */
-    private MailerService $mailerService;
 
     /**
      * @param MailerService $mailerService
      */
-    public function __construct(MailerService $mailerService)
-    {
-        $this->mailerService = $mailerService;
-    }
+    public function __construct(private MailerService $mailerService){}
 
     /**
      * @param Ticket $ticket

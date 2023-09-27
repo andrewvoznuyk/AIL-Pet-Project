@@ -16,24 +16,10 @@ class PasswordResetController extends AbstractController
 {
 
     /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var UserPasswordHasherInterface
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
      * @param EntityManagerInterface $entityManager
      * @param UserPasswordHasherInterface $passwordHasher
      */
-    public function __construct(EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher)
-    {
-        $this->entityManager = $entityManager;
-        $this->passwordHasher = $passwordHasher;
-    }
+    public function __construct(private EntityManagerInterface $entityManager, private UserPasswordHasherInterface $passwordHasher){}
 
     /**
      * @param Request $request

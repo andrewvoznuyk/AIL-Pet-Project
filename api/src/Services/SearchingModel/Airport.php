@@ -6,24 +6,10 @@ class Airport
 {
 
     /**
-     * @var string
-     */
-    private string $item;
-
-    /**
-     * @var Airport|null
-     */
-    private ?Airport $next;
-
-    /**
      * @param string $item
      * @param Airport|null $next
      */
-    public function __construct(string $item, ?Airport $next = null)
-    {
-        $this->item = $item;
-        $this->next = $next;
-    }
+    public function __construct(private string $item, private ?Airport $next = null){}
 
     /**
      * @return string

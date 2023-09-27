@@ -15,18 +15,9 @@ class GetAircraftModelApiAction
 {
 
     /**
-     * @var GetApiDataService
-     */
-    private GetApiDataService $getAirportsData;
-
-
-    /**
      * @param GetApiDataService $getAirportsData
      */
-    public function __construct(GetApiDataService $getAirportsData)
-    {
-        $this->getAirportsData = $getAirportsData;
-    }
+    public function __construct(private GetApiDataService $getAirportsData){}
 
     /**
      * @throws ClientExceptionInterface
