@@ -60,7 +60,7 @@ class GetMilesService
         $timeInHour = $flight->getDistance() / $aircraftSpeed;
         $timeStamp = $timeInHour * self::HOUR_IN_SECONDS;
         $departureTime = $flight->getDeparture()->getTimestamp();
-        $arrivalTimeStamp = $departureTime + $timeStamp;
+        $arrivalTimeStamp = $departureTime + $timeStamp + $flight->getToLocation()->getAirport()->getOffset() ?? 0;
 
         return new DateTime("@$arrivalTimeStamp");
     }

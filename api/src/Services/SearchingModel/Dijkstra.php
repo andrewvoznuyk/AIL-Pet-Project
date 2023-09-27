@@ -10,11 +10,6 @@ class Dijkstra
     private const INFINITY = 1e20;
 
     /**
-     * @var Graph
-     */
-    private Graph $graph;
-
-    /**
      * @var array
      */
     private array $used = [];
@@ -32,10 +27,7 @@ class Dijkstra
     /**
      * @param Graph $graph
      */
-    public function __construct(Graph $graph)
-    {
-        $this->graph = $graph;
-    }
+    public function __construct(private Graph $graph){}
 
     /**
      * @param string $fromAirport

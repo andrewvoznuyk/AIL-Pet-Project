@@ -41,17 +41,9 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
     public abstract function getAffectedMethods(): array;
 
     /**
-     * @var TokenStorageInterface
-     */
-    protected TokenStorageInterface $tokenStorage;
-
-    /**
      * AbstractCurrentUserExtension constructor.
      */
-    public function __construct(TokenStorageInterface $tokenStorage)
-    {
-        $this->tokenStorage = $tokenStorage;
-    }
+    public function __construct(private TokenStorageInterface $tokenStorage){}
 
     /**
      * @param QueryBuilder $queryBuilder

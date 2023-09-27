@@ -16,17 +16,9 @@ class CalculateTicketPriceService
     private const MAX_AZIMUTH = 180;
 
     /**
-     * @var GetMilesService
-     */
-    private GetMilesService $getMilesService;
-
-    /**
      * @param GetMilesService $getMilesService
      */
-    public function __construct(GetMilesService $getMilesService)
-    {
-        $this->getMilesService = $getMilesService;
-    }
+    public function __construct(private GetMilesService $getMilesService){}
 
     /**
      * @throws Exception

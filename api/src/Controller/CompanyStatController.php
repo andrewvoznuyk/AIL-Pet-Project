@@ -14,18 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CompanyStatController extends AbstractController
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
 
     /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
+    public function __construct(private EntityManagerInterface $entityManager){}
 
     /**
      * @param Request $request

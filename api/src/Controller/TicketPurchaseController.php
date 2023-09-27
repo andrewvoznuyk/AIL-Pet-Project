@@ -20,28 +20,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
+/**
+ *
+ */
 class TicketPurchaseController extends AbstractController
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    private DenormalizerInterface $denormalizer;
-
-    /**
-     * @var CalculateTicketPriceService
-     */
-    private CalculateTicketPriceService $calculateTicketPriceService;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -50,17 +33,11 @@ class TicketPurchaseController extends AbstractController
      * @param CalculateTicketPriceService $calculateTicketPriceService
      */
     public function __construct(
-        EntityManagerInterface      $entityManager,
-        ValidatorInterface          $validator,
-        DenormalizerInterface       $denormalizer,
-        CalculateTicketPriceService $calculateTicketPriceService
-    )
-    {
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->denormalizer = $denormalizer;
-        $this->calculateTicketPriceService = $calculateTicketPriceService;
-    }
+        private EntityManagerInterface      $entityManager,
+        private ValidatorInterface          $validator,
+        private DenormalizerInterface       $denormalizer,
+        private CalculateTicketPriceService $calculateTicketPriceService
+    ){}
 
     /**
      * @param string $id
@@ -68,11 +45,11 @@ class TicketPurchaseController extends AbstractController
      * @throws Exception
      */
     #[Route('/tickets/prices/{id}', name: 'tickets_prices', methods: "GET")]
-    public function getTicketsPrices(string $id) : Response
+    public function getTicketsPrices(string $id): Response
     {
         $flight = $this->entityManager->getRepository(Flight::class)->findOneBy(["id" => $id]);
 
-        if (!$flight){
+        if (!$flight) {
             throw new Exception("There is no such a flight with id: $id .");
         }
 
@@ -102,13 +79,17 @@ class TicketPurchaseController extends AbstractController
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $this->getUser()->getUserIdentifier()]);
         $bonusesSum = $this->getBonusSum($requestData);
-        if ($user->getMileBonuses() < $bonusesSum)
+
+        if ($user->getMileBonuses() < $bonusesSum) {
             throw new Exception("Not enough bonuses", Response::HTTP_PAYMENT_REQUIRED);
+        }
 
         foreach ($requestData as $ticketData) {
             $bonus = 0;
-            if (isset($ticketData["bonus"]))
+            if (isset($ticketData["bonus"])) {
                 $bonus = $ticketData["bonus"];
+            }
+
             $ticket = $this->createTicket($ticketData, $bonus);
             $this->entityManager->persist($ticket);
         }
@@ -126,12 +107,19 @@ class TicketPurchaseController extends AbstractController
      */
     private function createTicket($ticketData, float $bonus): Ticket
     {
+        if (isset($ticketData['price'])){
+            $ticketPrice = floatval($ticketData['price']);
+            $ticketData['price'] = $ticketPrice;
+        }
+
         /** @var Ticket $ticket */
         $ticket = $this->denormalizer->denormalize($ticketData, Ticket::class, "array");
 
         $ticket->setUser($this->getUser());
-        if ($bonus > ($ticket->getFlight()->getDistance() / 2))
+
+        if ($bonus > ($ticket->getFlight()->getDistance() / 2)) {
             throw new Exception("To mach bonuses used", Response::HTTP_PAYMENT_REQUIRED);
+        }
 
         $ticket->setPrice($this->calculateTicketPriceService->calculateTicketPrice($ticket, $bonus));
 

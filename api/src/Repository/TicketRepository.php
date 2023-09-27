@@ -6,6 +6,7 @@ use App\Entity\Flight;
 use App\Entity\Ticket;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -31,6 +32,7 @@ class TicketRepository extends ServiceEntityRepository
      * @param Flight $flight
      * @return int|null
      * @throws NonUniqueResultException
+     * @throws NoResultException
      */
     public function getTotalLuggageMassOf(Flight $flight): ?int
     {
@@ -45,7 +47,7 @@ class TicketRepository extends ServiceEntityRepository
     /**
      * @param int $place
      * @param Flight $flight
-     * @return int|null
+     * @return Ticket|null
      * @throws NonUniqueResultException
      */
     public function getTicketByPlace(int $place, Flight $flight): ?Ticket
@@ -60,6 +62,10 @@ class TicketRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param Flight $flight
+     * @return array
+     */
     public function getSoldTickets(Flight $flight): array
     {
         return $this->createQueryBuilder("ticket")

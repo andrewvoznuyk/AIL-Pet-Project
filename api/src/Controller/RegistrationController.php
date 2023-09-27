@@ -26,43 +26,17 @@ class RegistrationController extends AbstractController
 {
 
     /**
-     * @var UserPasswordHasherInterface
-     */
-    private UserPasswordHasherInterface $passwordHasher;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
-     * @var ValidatorInterface
-     */
-    private ValidatorInterface $validator;
-
-    /**
-     * @var DenormalizerInterface
-     */
-    private DenormalizerInterface $denormalizer;
-
-    /**
      * @param UserPasswordHasherInterface $passwordHasher
      * @param EntityManagerInterface $entityManager
      * @param ValidatorInterface $validator
      * @param DenormalizerInterface $denormalizer
      */
     public function __construct(
-        UserPasswordHasherInterface $passwordHasher,
-        EntityManagerInterface      $entityManager,
-        ValidatorInterface          $validator,
-        DenormalizerInterface       $denormalizer
-    )
-    {
-        $this->passwordHasher = $passwordHasher;
-        $this->entityManager = $entityManager;
-        $this->validator = $validator;
-        $this->denormalizer = $denormalizer;
-    }
+        private UserPasswordHasherInterface $passwordHasher,
+        private EntityManagerInterface      $entityManager,
+        private ValidatorInterface          $validator,
+        private DenormalizerInterface       $denormalizer
+    ){}
 
     /**
      * @throws ExceptionInterface

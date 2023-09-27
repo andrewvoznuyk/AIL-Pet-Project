@@ -14,24 +14,10 @@ class UpdateUserController extends AbstractController
 {
 
     /**
-     * @var Security
-     */
-    private Security $security;
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
      * @param Security $security
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(Security $security, EntityManagerInterface $entityManager)
-    {
-        $this->security = $security;
-        $this->entityManager = $entityManager;
-    }
+    public function __construct(private Security $security, private EntityManagerInterface $entityManager){}
 
     /**
      * @param Request $request

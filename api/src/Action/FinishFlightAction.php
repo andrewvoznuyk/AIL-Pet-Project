@@ -16,17 +16,9 @@ class FinishFlightAction
     private const WEBSITE_PERCENT_INCOME = 0.02;
 
     /**
-     * @var EntityManagerInterface
-     */
-    private EntityManagerInterface $entityManager;
-
-    /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
+    public function __construct(private EntityManagerInterface $entityManager){}
 
     /**
      * @param Flight $data
