@@ -46,6 +46,7 @@ class AircraftManagerExtension extends AbstractManagerAccessExtension
             ->innerJoin($rootAlias.".company", "comp")
             ->innerJoin("comp.managers", "us")
             ->andWhere('us = :user')
+            ->andWhere($rootAlias.'.isDeleted = false')
             ->setParameter('user', $binaryId)
         ;
     }

@@ -28,7 +28,7 @@ class CreateUserAction
         $currentUser = $this->security->getUser();
 
         //if unauthorized
-        if (!($currentUser)) {
+        if (empty($currentUser)) {
             $data->setManagerAtCompany(null);
         } else {
             $roles = $currentUser->getRoles();

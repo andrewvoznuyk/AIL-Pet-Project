@@ -26,14 +26,14 @@ const CreateFlightForm = ({ setData, loading }) => {
       fromLocation: airportFrom.id,
       toLocation: airportTo.id,
       initPrices: {
-        "business": event.target.businessPrice.value,
-        "econom": event.target.economPrice.value,
-        "standard": event.target.standardPrice.value
+        "business": parseFloat(event.target.businessPrice.value),
+        "econom": parseFloat(event.target.economPrice.value),
+        "standard": parseFloat(event.target.standardPrice.value)
       },
       placesCoefs: {
-        "business": event.target.businessCoef.value,
-        "econom": event.target.economCoef.value,
-        "standard": event.target.standardCoef.value
+        "business": parseFloat(event.target.businessCoef.value),
+        "econom": parseFloat(event.target.economCoef.value),
+        "standard": parseFloat(event.target.standardCoef.value)
       },
       departure: event.target.departure.value
     };

@@ -91,7 +91,7 @@ class Ticket
     #[ORM\Column(type: "float")]
     #[NotBlank]
     #[GreaterThan(0)]
-    private ?float $price = null;
+    private ?float $price = 0;
 
     /**
      * @var string|null
@@ -214,20 +214,20 @@ class Ticket
     }
 
     /**
-     * @return float|null
+     * @return float
      */
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
 
     /**
-     * @param float $price
+     * @param int|float $price
      * @return $this
      */
-    public function setPrice(float $price): self
+    public function setPrice(int|float $price): self
     {
-        $this->price = $price;
+        $this->price = floatval($price);
 
         return $this;
     }
