@@ -34,7 +34,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             "normalization_context" => ["groups" => ["get:item:ticket"]]
         ]
     ],
-    order: ['departure' => 'ASC']
+    order: ['flight.departure' => 'ASC']
 )]
 #[GroupSequence([
     "Ticket",
