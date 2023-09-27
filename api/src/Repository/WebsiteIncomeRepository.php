@@ -55,4 +55,5 @@ class WebsiteIncomeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

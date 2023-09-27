@@ -17,7 +17,9 @@ class UpdateUserController extends AbstractController
      * @param Security $security
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(private Security $security, private EntityManagerInterface $entityManager){}
+    public function __construct(private Security $security, private EntityManagerInterface $entityManager)
+    {
+    }
 
     /**
      * @param Request $request
@@ -37,7 +39,7 @@ class UpdateUserController extends AbstractController
             $data['surname'],
             $data['name'],
             $data['phoneNumber']
-        )){
+        )) {
             return $this->json(['message' => 'Wrong type'], Response::HTTP_BAD_REQUEST);
         }
 

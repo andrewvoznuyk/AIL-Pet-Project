@@ -12,16 +12,16 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: CompanyIncomeRepository::class)]
 #[ApiResource(
-    collectionOperations:[
+    collectionOperations: [
         "get" => [
-            "method" => "get",
+            "method"                => "get",
             "security"              => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
             "normalization_context" => ["groups" => ["get:collection:companyIncome"]]
         ]
     ],
     itemOperations: [
         "get" => [
-            "method" => "get",
+            "method"                => "get",
             "security"              => "is_granted('" . User::ROLE_ADMIN . "') or is_granted('" . User::ROLE_OWNER . "')",
             "normalization_context" => ["groups" => ["get:collection:companyIncome"]]
         ],
@@ -29,6 +29,7 @@ use Symfony\Component\Uid\Uuid;
 )]
 class CompanyIncome
 {
+
     /**
      * @var Uuid
      */
@@ -41,7 +42,10 @@ class CompanyIncome
     /**
      * @var Flight|null
      */
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(cascade: [
+        'persist',
+        'remove'
+    ])]
     #[ORM\JoinColumn(nullable: false)]
     private ?Flight $flight = null;
 
@@ -127,4 +131,5 @@ class CompanyIncome
 
         return $this;
     }
+
 }

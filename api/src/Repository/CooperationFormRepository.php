@@ -16,8 +16,13 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class CooperationFormRepository extends ServiceEntityRepository
 {
+
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CooperationForm::class);
     }
+
 }

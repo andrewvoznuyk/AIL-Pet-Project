@@ -1,4 +1,4 @@
-import { Breadcrumbs, Button, CardContent, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
@@ -66,11 +66,10 @@ const BuyTicketsContainer = () => {
       setBoughtTickets([]);
     });
   };
+
   /**
    * </DATA LOADING>
    */
-
-
   const reloadPage = () => {
     navigate(0);
   };

@@ -14,7 +14,6 @@ const CompanyContainer = () => {
 
   const navigate = useNavigate();
   const [requestData, setRequestData] = useState();
-  const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
     visible: false,
     type: "",

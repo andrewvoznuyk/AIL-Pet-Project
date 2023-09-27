@@ -5,7 +5,6 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Action\GetAircraftModelApiAction;
 use App\Repository\AircraftModelRepository;
-use App\Services\GetApiDataService;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -23,10 +22,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "normalization_context"   => ["groups" => ["get:item:model"]]
         ],
         "post-aircraft" => [
-            "method"                  => "POST",
-            "path"                    => "get-aircrafts",
-            "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
-            "controller"              => GetAircraftModelApiAction::class
+            "method"     => "POST",
+            "path"       => "get-aircrafts",
+            "security"   => "is_granted('" . User::ROLE_ADMIN . "')",
+            "controller" => GetAircraftModelApiAction::class
         ]
     ],
     itemOperations: [

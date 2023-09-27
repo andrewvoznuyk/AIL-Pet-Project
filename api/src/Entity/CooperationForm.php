@@ -35,10 +35,10 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             "normalization_context" => ["groups" => ["get:item:cooperationForm"]]
         ],
         "put"    => [
-            "method"                => "put",
-            "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
+            "method"                  => "put",
+            "security"                => "is_granted('" . User::ROLE_ADMIN . "')",
             "denormalization_context" => ["groups" => ["put:item:cooperationForm"]],
-            "normalization_context" => ["groups" => ["get:item:cooperationForm"]]
+            "normalization_context"   => ["groups" => ["get:item:cooperationForm"]]
         ],
         "delete" => [
             "method"                => "DELETE",

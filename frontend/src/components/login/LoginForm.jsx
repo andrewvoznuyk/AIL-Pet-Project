@@ -1,15 +1,11 @@
 import React from "react";
 import {
   Button,
-  FormControl, Grid,
-  IconButton,
-  Input,
-  InputAdornment,
-  InputLabel, Link,
+  Grid,
+  Link,
   TextField,
   Typography
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import InputPassword from "../elemets/input/InputPassword";
 
 const LoginForm = ({ setAuthData, loading }) => {

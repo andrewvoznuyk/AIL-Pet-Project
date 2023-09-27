@@ -15,7 +15,6 @@ const AircraftsContainer = () => {
 
   const navigate = useNavigate();
   const [requestData, setRequestData] = useState();
-  const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
     visible: false,
     type: "",
@@ -45,7 +44,6 @@ const AircraftsContainer = () => {
     axios.get("/api/aircraft" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
         setAircrafts(response.data["hydra:member"]);
-        console.log(response.data["hydra:member"])
         setPaginationInfo({
           ...paginationInfo,
           totalItems: response.data["hydra:totalItems"],
@@ -96,7 +94,7 @@ const AircraftsContainer = () => {
 
         </Grid>
 
-        <FilterGroup filterData={filterData} setFilterData={setFilterData}/>
+        <FilterGroup filterData={filterData} setFilterData={setFilterData} />
 
         <p></p>
 

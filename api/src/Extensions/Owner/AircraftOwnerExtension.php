@@ -3,8 +3,6 @@
 namespace App\Extensions\Owner;
 
 use App\Entity\Aircraft;
-use App\Entity\Company;
-use App\Entity\CompanyFlights;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 
@@ -43,9 +41,10 @@ class AircraftOwnerExtension extends AbstractOwnerAccessExtension
         $binaryId = $currentUser->getId()->toBinary();
 
         $queryBuilder
-            ->innerJoin($rootAlias.".company", "planeCompany")
+            ->innerJoin($rootAlias . ".company", "planeCompany")
             ->andWhere('planeCompany.owner = :user')
             ->andWhere($rootAlias . '.isDeleted = false')
             ->setParameter('user', $binaryId);
     }
+
 }

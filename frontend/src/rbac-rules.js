@@ -6,7 +6,7 @@ const rules = {
       goods.ADMIN,
       toolbar.ADMIN,
       flights.ADMIN,
-      reports.ADMIN,
+      reports.ADMIN
     ],
     dynamic: {}
   },
@@ -27,7 +27,7 @@ const rules = {
       toolbar.OWNER,
       goods.OWNER,
       aircrafts.OWNER,
-      reports.OWNER,
+      reports.OWNER
     ],
     dynamic: {}
   },
@@ -37,7 +37,7 @@ const rules = {
       flights.MANAGER,
       toolbar.MANAGER,
       goods.MANAGER,
-      reports.MANAGER,
+      reports.MANAGER
     ],
     dynamic: {}
   }

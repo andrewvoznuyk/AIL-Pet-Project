@@ -127,12 +127,12 @@ class GetApiDataService
 
             $this->entityManager->persist($aircraft);
         }
+
         if (count($errors) != 0) {
             throw new Exception();
         }
 
         $this->entityManager->flush();
-
     }
 
 }

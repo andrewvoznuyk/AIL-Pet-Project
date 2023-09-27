@@ -12,7 +12,7 @@ const AircraftsNewContainer = () => {
         </title>
       </Helmet>
 
-      <PlaneSelectForm/>
+      <PlaneSelectForm />
     </>
   );
 };

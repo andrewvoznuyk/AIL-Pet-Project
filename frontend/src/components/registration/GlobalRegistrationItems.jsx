@@ -1,6 +1,6 @@
 import React from "react";
-import InputCustom from "../elemets/input/InputCustom"
-import InputPassword from "../elemets/input/InputPassword"
+import InputCustom from "../elemets/input/InputCustom";
+import InputPassword from "../elemets/input/InputPassword";
 import InputPhoneNumber from "../elemets/input/InputPhoneNumber";
 
 const globalRegistrationItems = () => {

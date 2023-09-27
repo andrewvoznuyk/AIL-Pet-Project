@@ -57,7 +57,7 @@ const ownerRoutes = [
   {
     path: "/cabinet/reports",
     element: <ReportsPage />
-  },
+  }
 ];
 
 const ownerRoutesConcat = ownerRoutes.concat(routes);

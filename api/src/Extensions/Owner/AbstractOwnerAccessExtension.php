@@ -22,4 +22,5 @@ abstract class AbstractOwnerAccessExtension extends AbstractAccessExtension
             User::ROLE_OWNER
         ];
     }
+
 }

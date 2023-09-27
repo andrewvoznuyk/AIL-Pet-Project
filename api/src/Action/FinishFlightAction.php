@@ -12,13 +12,15 @@ use Doctrine\ORM\EntityManagerInterface;
 class FinishFlightAction
 {
 
-    private const BONUS_PERCENTAGE = 10;
+    private const BONUS_PERCENTAGE       = 10;
     private const WEBSITE_PERCENT_INCOME = 0.02;
 
     /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(private EntityManagerInterface $entityManager){}
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
 
     /**
      * @param Flight $data
@@ -36,8 +38,7 @@ class FinishFlightAction
         $tickets = $this->entityManager->getRepository(Ticket::class)->findBy(['flight' => $data]);
         $companyFlightIncome = 0;
 
-        foreach ($tickets as $ticket)
-        {
+        foreach ($tickets as $ticket) {
             $user = $ticket->getUser();
             $user->setMileBonuses($user->getMileBonuses() + intval(floor($bonus)));
             $companyFlightIncome += $ticket->getPrice();

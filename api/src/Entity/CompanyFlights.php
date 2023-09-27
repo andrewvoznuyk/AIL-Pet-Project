@@ -26,18 +26,16 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ],
     itemOperations: [
-        "get"    => [
+        "get"        => [
             "method"                => "GET",
-            // "security"              => "(is_granted('" . User::ROLE_OWNER . "') and object.company.getOwner() == user) or
-            // ((is_granted('" . User::ROLE_MANAGER . "') and user.getManagerAtCompany() == object.company)",
             "normalization_context" => ["groups" => ["get:item:companyFlights"]]
         ],
         "softDelete" => [
-            "method"     => "PUT",
-            "path"       => "company-flights/delete/{id}",
-            "security"   => "is_granted('" . User::ROLE_OWNER . "')",
+            "method"                => "PUT",
+            "path"                  => "company-flights/delete/{id}",
+            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
             "normalization_context" => ["groups" => ["aircraft:empty"]],
-            "controller" => DeleteDeletableAction::class
+            "controller"            => DeleteDeletableAction::class
         ]
     ],
     attributes: [
@@ -136,4 +134,5 @@ class CompanyFlights extends DeletableEntity
 
         return $this;
     }
+
 }

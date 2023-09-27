@@ -5,7 +5,7 @@ const HomePage = lazy(() => import("../pages/home/HomePage"));
 const LoginPage = lazy(() => import("../pages/login/LoginPage"));
 const CreateFlightsPage = lazy(() => import("../pages/flights/FlightsPage"));
 const ResetPasswordPage = lazy(() => import("../pages/login/ResetPasswordPage"));
-const ProfilePage  = lazy(() => import("../pages/cabinet/ProfilePage"));
+const ProfilePage = lazy(() => import("../pages/cabinet/ProfilePage"));
 
 const routes = [
   {

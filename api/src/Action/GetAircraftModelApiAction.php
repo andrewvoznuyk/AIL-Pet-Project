@@ -17,7 +17,9 @@ class GetAircraftModelApiAction
     /**
      * @param GetApiDataService $getAirportsData
      */
-    public function __construct(private GetApiDataService $getAirportsData){}
+    public function __construct(private GetApiDataService $getAirportsData)
+    {
+    }
 
     /**
      * @throws ClientExceptionInterface
@@ -30,7 +32,7 @@ class GetAircraftModelApiAction
     {
         $this->getAirportsData->aircraftsApiParse();
 
-        return new JsonResponse("Successfully done",ResponseAlias::HTTP_OK);
+        return new JsonResponse("Successfully done", ResponseAlias::HTTP_OK);
     }
 
 }

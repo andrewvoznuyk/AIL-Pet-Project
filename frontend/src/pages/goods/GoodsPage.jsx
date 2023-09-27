@@ -22,16 +22,16 @@ const GoodsPage = () => {
         perform={goods.USER}
         yes={() => <ClientGoodsContainer />}
       />
-        <Can
-            role={user.roles}
-            perform={goods.MANAGER}
-            yes={() => <ManagerGoodsContainer />}
-        />
-        <Can
-            role={user.roles}
-            perform={goods.OWNER}
-            yes={() => <OwnerGoodsContainer />}
-        />
+      <Can
+        role={user.roles}
+        perform={goods.MANAGER}
+        yes={() => <ManagerGoodsContainer />}
+      />
+      <Can
+        role={user.roles}
+        perform={goods.OWNER}
+        yes={() => <OwnerGoodsContainer />}
+      />
     </>
   );
 };

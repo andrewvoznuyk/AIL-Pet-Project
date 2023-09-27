@@ -1,12 +1,12 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Typography from '@mui/material/Typography';
+import * as React from "react";
+import Link from "@mui/material/Link";
+import Typography from "@mui/material/Typography";
 
-function preventDefault(event) {
+function preventDefault (event) {
   event.preventDefault();
 }
 
-export default function Deposits() {
+export default function Deposits () {
   return (
     <React.Fragment>
       <Typography component="p" variant="h4">

@@ -1,5 +1,3 @@
-import Grid from "@mui/material/Grid";
-import SeatItem from "./SeatItem";
 import SeatsRow from "./SeatsRow";
 
 /**
