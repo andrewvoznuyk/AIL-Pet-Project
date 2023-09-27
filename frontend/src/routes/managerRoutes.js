@@ -27,7 +27,7 @@ const managerRoutes = [
   {
     path: "/cabinet/reports",
     element: <ReportsPage />
-  },
+  }
 ];
 
 const managerRoutesConcat = managerRoutes.concat(routes);

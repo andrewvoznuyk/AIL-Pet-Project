@@ -20,15 +20,15 @@ const toolbar = {
 };
 
 const buyTickets = {
-  USER: "buyTicket:client",
+  USER: "buyTicket:client"
 };
 const aircrafts = {
-  OWNER: "aircrafts:owner",
+  OWNER: "aircrafts:owner"
 };
 const reports = {
   OWNER: "reports:owner",
   MANAGER: "reports:manager",
-  ADMIN: "reports:admin",
+  ADMIN: "reports:admin"
 };
 
 export {

@@ -27,11 +27,13 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             "normalization_context" => ["groups" => ["get:collection:ticket"]]
         ]
     ],
-    itemOperations: ["get" => [
-        "method"                => "GET",
-        "security"              => "is_granted('" . User::ROLE_USER . "')",
-        "normalization_context" => ["groups" => ["get:item:ticket"]]
-    ]]
+    itemOperations: [
+        "get" => [
+            "method"                => "GET",
+            "security"              => "is_granted('" . User::ROLE_USER . "')",
+            "normalization_context" => ["groups" => ["get:item:ticket"]]
+        ]
+    ]
 )]
 #[GroupSequence([
     "Ticket",

@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
-import { responseStatus } from "../../../utils/consts";
-import { Button, MenuItem, Select, FormControl, InputLabel } from "@mui/material";
+import { Button } from "@mui/material";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import Notification from "../../elemets/notification/Notification";
 import InputDataLoader from "../../elemets/input/InputDataLoader";
@@ -18,9 +17,6 @@ const FlightsCreate = () => {
     message: ""
   });
 
-  const [airportList, setAirportList] = useState([]);
-  const [companiesList, setCompaniesList] = useState([]);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     flushFlights();
@@ -31,8 +27,8 @@ const FlightsCreate = () => {
 
     const data = {
       company: company.id,
-      airport: fromAirport.id,
-    }
+      airport: fromAirport.id
+    };
 
     axios.post("/api/company-flights", data, userAuthenticationConfig(false)).then(response => {
       setNotification({ ...notification, visible: true, type: "success", message: "Company flight created!" });
@@ -42,7 +38,6 @@ const FlightsCreate = () => {
       setLoading(false);
     });
   };
-
 
   return (
     <>

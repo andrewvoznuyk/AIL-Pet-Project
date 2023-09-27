@@ -29,23 +29,23 @@ use Symfony\Component\Validator\Constraints\NotBlank;
         ]
     ],
     itemOperations: [
-        "get"    => [
+        "get"        => [
             "method"                => "GET",
             "normalization_context" => ["groups" => ["get:item:aircraft"]]
         ],
         "softDelete" => [
-            "method"     => "PUT",
-            "path"       => "aircraft/delete/{id}",
-            "security"   => "is_granted('" . User::ROLE_OWNER . "')",
+            "method"                => "PUT",
+            "path"                  => "aircraft/delete/{id}",
+            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
             "normalization_context" => ["groups" => ["aircraft:empty"]],
-            "controller" => DeleteDeletableAction::class
+            "controller"            => DeleteDeletableAction::class
         ]
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
     "aircraftModel" => "partial",
     "serialNumber"  => "partial",
-    "model.plane"  => "partial",
+    "model.plane"   => "partial",
     "company.name"  => "partial",
 ])]
 class Aircraft extends DeletableEntity

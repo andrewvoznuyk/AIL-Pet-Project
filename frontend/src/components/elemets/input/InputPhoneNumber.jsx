@@ -1,22 +1,22 @@
-import {MuiTelInput} from "mui-tel-input";
-import {useState} from "react";
+import { MuiTelInput } from "mui-tel-input";
+import { useState } from "react";
 
-const InputPhoneNumber = ({name = "", label = ""}) => {
+const InputPhoneNumber = ({ name = "", label = "" }) => {
 
-    const [value, setValue] = useState('+380')
+  const [value, setValue] = useState("+380");
 
-    const handleChange = (newValue) => {
-        setValue(newValue)
-    }
+  const handleChange = (newValue) => {
+    setValue(newValue);
+  };
 
-    return <>
-        <MuiTelInput
-            value={value}
-            variant="standard"
-            onChange={handleChange}
-            label={label}
-            name={name}
-        />
-    </>
-}
-export default InputPhoneNumber
+  return <>
+    <MuiTelInput
+      value={value}
+      variant="standard"
+      onChange={handleChange}
+      label={label}
+      name={name}
+    />
+  </>;
+};
+export default InputPhoneNumber;

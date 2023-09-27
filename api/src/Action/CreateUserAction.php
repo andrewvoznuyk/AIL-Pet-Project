@@ -22,6 +22,10 @@ class CreateUserAction
         private ValidatorInterface          $validator,
     ){}
 
+    /**
+     * @param User $data
+     * @return User
+     */
     public function __invoke(User $data): User
     {
         /** @var User $currentUser */

@@ -5,7 +5,6 @@ namespace App\EntityListener;
 use App\Entity\Ticket;
 use App\Services\MailerService;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\Security\Core\Security;
 
 class TicketEntityListener
 {

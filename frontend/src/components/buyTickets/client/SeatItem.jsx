@@ -2,23 +2,23 @@ import { Button } from "@mui/material";
 import { useState } from "react";
 import aircraftSettings from "./aircraftSettings";
 
-function SeatItem ({number, placeClass, onButtonClick, isPlaceSold}) {
+function SeatItem ({ number, placeClass, onButtonClick, isPlaceSold }) {
 
   const [isClicked, setIsClicked] = useState(false);
 
   const onItemClick = () => {
     setIsClicked(!isClicked);
-    let data = {place: number, class: placeClass};
+    let data = { place: number, class: placeClass };
     onButtonClick(data);
-  }
+  };
 
   const getColor = () => {
-    if(aircraftSettings.placeClasses[placeClass]) {
+    if (aircraftSettings.placeClasses[placeClass]) {
       return aircraftSettings.placeClasses[placeClass].color;
     }
 
     return "primary";
-  }
+  };
 
   return <>
     <Button
@@ -30,7 +30,7 @@ function SeatItem ({number, placeClass, onButtonClick, isPlaceSold}) {
       {number}
     </Button>
 
-  </>
+  </>;
 }
 
 export default SeatItem;

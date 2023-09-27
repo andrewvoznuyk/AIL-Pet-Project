@@ -2,7 +2,7 @@ import * as React from "react";
 import MenuItem from "@mui/material/MenuItem";
 import eventBus from "../../../../utils/eventBus";
 
-export default function DropdownUnlogged ({goTo}) {
+export default function DropdownUnlogged ({ goTo }) {
 
   return (
     <>

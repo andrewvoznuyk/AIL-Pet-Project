@@ -34,8 +34,10 @@ export default function PopupPayment ({
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={onAccept}
-                  disabled={loading}>Buy</Button>
+          <Button
+            onClick={onAccept}
+            disabled={loading}
+          >Buy</Button>
         </DialogActions>
       </Dialog>
     </div>

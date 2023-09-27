@@ -1,8 +1,8 @@
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import React from "react";
 import Paper from "@mui/material/Paper";
 
-const TableGenerator = ({titles, items = [], align="left" }) => {
+const TableGenerator = ({ titles, items = [], align = "left" }) => {
 
   return (
     <TableContainer component={Paper}>
@@ -10,7 +10,7 @@ const TableGenerator = ({titles, items = [], align="left" }) => {
         <TableHead>
           <TableRow>
             {titles.map((t) => (
-            <TableCell align={align}>{t}</TableCell>
+              <TableCell align={align}>{t}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -20,6 +20,6 @@ const TableGenerator = ({titles, items = [], align="left" }) => {
       </Table>
     </TableContainer>
   );
-}
+};
 
 export default TableGenerator;

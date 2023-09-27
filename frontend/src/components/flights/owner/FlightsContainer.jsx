@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import {Helmet} from "react-helmet-async";
-import { Breadcrumbs, Button, Link, Pagination, Typography } from "@mui/material";
+import { Helmet } from "react-helmet-async";
+import { Button, Pagination } from "@mui/material";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import FlightsCreate from "./FlightsCreate";
 import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
 import axios from "axios";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
@@ -16,7 +15,6 @@ const FlightsContainer = () => {
 
   const navigate = useNavigate();
   const [requestData, setRequestData] = useState();
-  const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
     visible: false,
     type: "",
@@ -43,7 +41,6 @@ const FlightsContainer = () => {
     axios.get("/api/company-flights" + filterUrl + "&itemsPerPage=" + paginationInfo.itemsPerPage, userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data["hydra:member"]) {
         setFlights(response.data["hydra:member"]);
-        console.log(response.data["hydra:member"])
         setPaginationInfo({
           ...paginationInfo,
           totalItems: response.data["hydra:totalItems"],
@@ -93,7 +90,7 @@ const FlightsContainer = () => {
         <Grid item xs={12}>
 
         </Grid>
-        <FilterGroup filterData={filterData} setFilterData={setFilterData}/>
+        <FilterGroup filterData={filterData} setFilterData={setFilterData} />
 
         <p></p>
 

@@ -9,7 +9,6 @@ const FlightsCreate = () => {
 
   const [company, setCompany] = useState("");
   const [fromAirport, setFromAirport] = useState(null);
-  const [toAirport, setToAirport] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
@@ -31,8 +30,8 @@ const FlightsCreate = () => {
 
     const data = {
       company: company,
-      airport: fromAirport,
-    }
+      airport: fromAirport
+    };
 
     axios.post("/api/company-flights", data, userAuthenticationConfig(false)).then(response => {
       setNotification({ ...notification, visible: true, type: "success", message: "Company flight created!" });
@@ -67,8 +66,6 @@ const FlightsCreate = () => {
     fetchCompanies();
     fetchAirports();
   }, []);
-
-  const availableToAirports = airportList.filter(item => item["@id"] !== fromAirport);
 
   return (
     <>

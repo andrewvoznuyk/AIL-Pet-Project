@@ -23,9 +23,7 @@ const FlightsTable = ({ fetchedData, reloadData }) => {
   };
 
   const deleteCompanyFlight = () => {
-    //
     axios.put(`/api/company-flights/delete/${selectedFlight}`, {}, userAuthenticationConfig(false)).then(response => {
-      console.log(response);
       if (response.status === responseStatus.HTTP_OK) {
       }
     }).catch(error => {

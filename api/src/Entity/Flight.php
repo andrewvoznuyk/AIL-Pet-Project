@@ -11,13 +11,11 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\EntityListener\FlightEntityListener;
 use App\Repository\FlightRepository;
 use App\Validator\Constraints\FlightConstraint;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Exception;
 use JsonSerializable;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -36,7 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         ]
     ],
     itemOperations: [
-        "get" => [
+        "get"    => [
             "method"                => "GET",
             "normalization_context" => ["groups" => ["get:item:flight"]]
         ],
@@ -46,7 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "security"                => "is_granted('" . User::ROLE_MANAGER . "') && object.getAircraft().getCompany() == user.getManagerAtCompany()",
             "denormalization_context" => ["groups" => ["flight:empty"]],
             "normalization_context"   => ["groups" => ["finish:item:flight"]],
-            "controller" => FinishFlightAction::class
+            "controller"              => FinishFlightAction::class
         ],
         "cancel" => [
             "method"                  => "PUT",
@@ -54,7 +52,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "security"                => "is_granted('" . User::ROLE_MANAGER . "') && object.getAircraft().getCompany() == user.getManagerAtCompany()",
             "denormalization_context" => ["groups" => ["flight:empty"]],
             "normalization_context"   => ["groups" => ["finish:item:flight"]],
-            "controller" => CancelFlightAction::class
+            "controller"              => CancelFlightAction::class
         ]
     ],
     attributes: [
@@ -62,9 +60,9 @@ use Symfony\Component\Serializer\Annotation\Groups;
     ]
 )]
 #[ApiFilter(SearchFilter::class, properties: [
-    "aircraft.serialNumber" => "partial",
+    "aircraft.serialNumber"     => "partial",
     "fromLocation.airport.name" => "partial",
-    "toLocation.airport.name" => "partial"
+    "toLocation.airport.name"   => "partial"
 ])]
 #[ApiFilter(RangeFilter::class, properties: ["departure"])]
 #[FlightConstraint]
@@ -420,21 +418,21 @@ class Flight implements JsonSerializable
     public function jsonSerialize()
     {
         return [
-            "id" => $this->getId(),
-            "company"=>$this->getFromLocation()->getCompany()->getName(),
-            "fromLocation" => [
+            "id"             => $this->getId(),
+            "company"        => $this->getFromLocation()->getCompany()->getName(),
+            "fromLocation"   => [
                 "fromId" => $this->getFromLocation()->getAirport()->getId(),
-                "name" => $this->getFromLocation()->getAirport()->getName(),
-                "city"=>$this->getFromLocation()->getAirport()->getCity(),
+                "name"   => $this->getFromLocation()->getAirport()->getName(),
+                "city"   => $this->getFromLocation()->getAirport()->getCity(),
             ],
-            "toLocation" => [
+            "toLocation"     => [
                 "toId" => $this->getToLocation()->getAirport()->getId(),
                 "name" => $this->getToLocation()->getAirport()->getName(),
-                "city"=>$this->getToLocation()->getAirport()->getCity()
+                "city" => $this->getToLocation()->getAirport()->getCity()
             ],
-            "distance" => $this->getDistance(),
-            "aircraftNumber"=>$this->getAircraft()->getSerialNumber(),
-            "aircraftModel"=>$this->getAircraft()->getModel()->getPlane(),
+            "distance"       => $this->getDistance(),
+            "aircraftNumber" => $this->getAircraft()->getSerialNumber(),
+            "aircraftModel"  => $this->getAircraft()->getModel()->getPlane(),
         ];
     }
 

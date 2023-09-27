@@ -1,19 +1,15 @@
-import axios from 'axios';
+import axios from "axios";
 import userAuthenticationConfig from "./userAuthenticationConfig";
 import { responseStatus } from "./consts";
 
 const updateFormData = (formId, updatedData) => {
-console.log("updatedData")
-console.log(updatedData)
-  console.log("formId")
-  console.log(formId)
-  axios.put(`https://courselab.com${formId}`,updatedData, userAuthenticationConfig()).then(response => {
+  axios.put(`https://courselab.com${formId}`, updatedData, userAuthenticationConfig()).then(response => {
     if (response.status === responseStatus.HTTP_OK) {
-      console.log('Дані оновлені успішно');
+      console.log("Дані оновлені успішно");
     }
   }).catch(error => {
-    console.error('Помилка під час оновлення даних:', error);
-  })
+    console.error("Помилка під час оновлення даних:", error);
+  });
 };
 
 export default updateFormData;
