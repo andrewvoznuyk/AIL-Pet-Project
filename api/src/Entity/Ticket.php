@@ -27,7 +27,11 @@ use Symfony\Component\Validator\Constraints\NotBlank;
             "normalization_context" => ["groups" => ["get:collection:ticket"]]
         ]
     ],
-    itemOperations: []
+    itemOperations: ["get" => [
+        "method"                => "GET",
+        "security"              => "is_granted('" . User::ROLE_USER . "')",
+        "normalization_context" => ["groups" => ["get:item:ticket"]]
+    ]]
 )]
 #[GroupSequence([
     "Ticket",
@@ -63,6 +67,10 @@ class Ticket
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     #[ORM\JoinColumn(nullable: false)]
     #[NotBlank]
+    #[Groups([
+        "get:collection:ticket",
+        "get:item:ticket"
+    ])]
     private ?Flight $flight = null;
 
     /**
@@ -70,7 +78,8 @@ class Ticket
      */
     #[ORM\Column]
     #[Groups([
-        "get:collection:ticket"
+        "get:collection:ticket",
+        "get:item:ticket"
     ])]
     #[NotBlank]
     private ?int $place = null;
@@ -80,7 +89,8 @@ class Ticket
      */
     #[ORM\Column(length: 255)]
     #[Groups([
-        "get:collection:ticket"
+        "get:collection:ticket",
+        "get:item:ticket"
     ])]
     #[NotBlank]
     private ?string $class = null;
@@ -91,6 +101,9 @@ class Ticket
     #[ORM\Column(type: "float")]
     #[NotBlank]
     #[GreaterThan(0)]
+    #[Groups([
+        "get:item:ticket"
+    ])]
     private ?float $price = 0;
 
     /**
@@ -98,6 +111,10 @@ class Ticket
      */
     #[ORM\Column(length: 255)]
     #[NotBlank]
+    #[Groups([
+        "get:item:ticket",
+        "get:collection:ticket",
+    ])]
     private ?string $name = null;
 
     /**
@@ -105,6 +122,10 @@ class Ticket
      */
     #[ORM\Column(length: 255)]
     #[NotBlank]
+    #[Groups([
+        "get:item:ticket",
+        "get:collection:ticket",
+    ])]
     private ?string $surname = null;
 
     /**
@@ -127,6 +148,9 @@ class Ticket
     #[ORM\Column]
     #[NotBlank]
     #[GreaterThanOrEqual(0)]
+    #[Groups([
+        "get:item:ticket"
+    ])]
     private ?int $luggageMass = 0;
 
     /**

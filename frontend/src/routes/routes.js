@@ -31,7 +31,7 @@ const routes = [
   {
     path: "/cabinet/profile",
     element: <ProfilePage />
-  },
+  }
 ];
 
 export default routes;

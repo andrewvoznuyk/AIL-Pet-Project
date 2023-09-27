@@ -1,12 +1,11 @@
 import React, { lazy } from "react";
 import routes from "./routes";
-import { NavLink } from "react-router-dom";
-import { Button } from "@mui/material";
 
 const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
 const CooperationPage = lazy(() => import("../pages/cooperation/CooperationPage"));
 const CabinetPage = lazy(() => import("../pages/cabinet/CabinetPage"));
 const BuyTicketsPage = lazy(() => import("../pages/buyTicket/BuyTicketsPage"));
+const TicketPage = lazy(() => import("../pages/cabinet/TicketPage"));
 
 const userRoutes = [
   {
@@ -24,7 +23,11 @@ const userRoutes = [
   {
     path: "/cooperation",
     element: <CooperationPage />
-  }
+  },
+  {
+    path: "/cabinet/ticket",
+    element: <TicketPage />
+  },
 ];
 
 const userRoutesConcat = userRoutes.concat(routes);
