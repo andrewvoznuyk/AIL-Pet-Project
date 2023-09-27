@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use ApiPlatform\Validator\ValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,8 +17,13 @@ class UpdateUserController extends AbstractController
     /**
      * @param Security $security
      * @param EntityManagerInterface $entityManager
+     * @param ValidatorInterface $validator
      */
-    public function __construct(private Security $security, private EntityManagerInterface $entityManager)
+    public function __construct(
+        private Security               $security,
+        private EntityManagerInterface $entityManager,
+        private ValidatorInterface     $validator
+    )
     {
     }
 
@@ -29,13 +35,14 @@ class UpdateUserController extends AbstractController
     public function updateUserByEmail(Request $request): JsonResponse
     {
         $user = $this->security->getUser();
+        $data = json_decode($request->getContent(), true);
 
         if (!$user) {
-            return $this->json(['message' => 'No user'], Response::HTTP_NOT_FOUND);
+            return $this->json(['message' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
         }
 
         if (!isset(
-            $data["email"],
+            //$data["email"],
             $data['surname'],
             $data['name'],
             $data['phoneNumber']
@@ -43,15 +50,16 @@ class UpdateUserController extends AbstractController
             return $this->json(['message' => 'Wrong type'], Response::HTTP_BAD_REQUEST);
         }
 
-        $data = json_decode($request->getContent(), true);
-        $user->setEmail($data["email"]);
+        //$user->setEmail($data["email"]);
         $user->setSurname($data['surname']);
         $user->setName($data['name']);
         $user->setPhoneNumber($data['phoneNumber']);
 
+        $this->validator->validate($user);
+
         $this->entityManager->flush();
 
-        return $this->json(['message' => 'Profile was updates'], Response::HTTP_OK);
+        return $this->json(['message' => 'Profile was updated'], Response::HTTP_OK);
     }
 
 }

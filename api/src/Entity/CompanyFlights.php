@@ -8,6 +8,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Action\DeleteCompanyFlightAction;
 use App\Action\DeleteDeletableAction;
 use App\Repository\CompanyFlightsRepository;
+use App\Validator\Constraints\CompanyFlightConstraint;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
@@ -49,6 +50,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
     "airport.city"    => "partial",
     "company.name"    => "partial"
 ])]
+#[CompanyFlightConstraint]
 class CompanyFlights extends DeletableEntity
 {
 
@@ -74,7 +76,8 @@ class CompanyFlights extends DeletableEntity
         "post:collection:companyFlights",
         "get:item:companyFlights",
         "get:item:flight",
-        "get:collection:flight"
+        "get:collection:flight",
+        "get:collection:ticket"
     ])]
     private ?Airport $airport = null;
 

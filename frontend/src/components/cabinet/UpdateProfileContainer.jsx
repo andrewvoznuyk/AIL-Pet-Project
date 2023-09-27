@@ -197,11 +197,11 @@ const UpdateProfileContainer = () => {
         >
           Save changes
         </Button>
-        <Grid item>
+        {/*<Grid item>
           <Link variant="body2" onClick={handleUpdateEmail}>
             {"Want to update your email?"}
           </Link>
-        </Grid>
+        </Grid>*/}
       </form>
 
       <ModalConfirmEmail

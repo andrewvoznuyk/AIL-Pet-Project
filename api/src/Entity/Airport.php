@@ -70,7 +70,8 @@ class Airport
         "get:collection:flight",
         "get:collection:companyFlights",
         "get:item:companyFlights",
-        "get:collection:companyFlights"
+        "get:collection:companyFlights",
+        "get:collection:ticket"
     ])]
     private ?string $name = null;
 

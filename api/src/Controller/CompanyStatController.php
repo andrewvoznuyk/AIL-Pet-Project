@@ -18,7 +18,9 @@ class CompanyStatController extends AbstractController
     /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(private EntityManagerInterface $entityManager){}
+    public function __construct(private EntityManagerInterface $entityManager)
+    {
+    }
 
     /**
      * @param Request $request
@@ -29,27 +31,20 @@ class CompanyStatController extends AbstractController
     {
         $user = $this->getUser();
 
-        if (!in_array(User::ROLE_ADMIN, $user->getRoles()))
-        {
+        if (!in_array(User::ROLE_ADMIN, $user->getRoles())) {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
         $num = $request->query->get('num');
 
-        if($num==1)
-        {
+        if ($num == 1) {
             $stat = $this->entityManager->getRepository(WebsiteIncome::class)->findStatOfDateAdmin();
-        }
-
-        else if($num==2)
-        {
+        } else if ($num == 2) {
             $stat = $this->entityManager->getRepository(WebsiteIncome::class)->findStatOfCompanyAdmin();
         }
 
-        if (isset($stat[0]['date']))
-        {
-            foreach ($stat as &$result)
-            {
+        if (isset($stat[0]['date'])) {
+            foreach ($stat as &$result) {
                 $formattedDate = (new \DateTime('1970-01-01'))->modify('+' . $result['date'] . ' days')->format('Y-m-d');
                 $result['date'] = $formattedDate;
             }
@@ -67,20 +62,13 @@ class CompanyStatController extends AbstractController
     {
         $user = $this->getUser();
 
-        if (in_array(User::ROLE_MANAGER, $user->getRoles()))
-        {
+        if (in_array(User::ROLE_MANAGER, $user->getRoles())) {
             $companyUser = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $user->getUserIdentifier()]);
             $companyStat = $this->searchStat($companyUser, User::ROLE_MANAGER);
-        }
-
-        else if (in_array(User::ROLE_OWNER, $user->getRoles()))
-        {
+        } else if (in_array(User::ROLE_OWNER, $user->getRoles())) {
             $companyId = $request->query->get('id');
             $companyStat = $this->searchStat($companyId, User::ROLE_OWNER);
-        }
-
-        else
-        {
+        } else {
             return new JsonResponse([], Response::HTTP_NOT_FOUND);
         }
 
@@ -97,13 +85,9 @@ class CompanyStatController extends AbstractController
 
         $companyStat = [];
 
-        if ($role === User::ROLE_MANAGER)
-        {
+        if ($role === User::ROLE_MANAGER) {
             $companyStat = $this->entityManager->getRepository(CompanyIncome::class)->findStatOfDate($company->getManagerAtCompany());
-        }
-
-        else if ($role === User::ROLE_OWNER)
-        {
+        } else if ($role === User::ROLE_OWNER) {
             $companyStat = $this->entityManager->getRepository(CompanyIncome::class)->findStatOfDate($company);
         }
 
@@ -114,4 +98,5 @@ class CompanyStatController extends AbstractController
 
         return $companyStat;
     }
+
 }
