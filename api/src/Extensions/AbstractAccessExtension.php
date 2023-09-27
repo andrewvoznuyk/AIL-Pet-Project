@@ -43,7 +43,7 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
     /**
      * AbstractCurrentUserExtension constructor.
      */
-    public function __construct(private TokenStorageInterface $tokenStorage){}
+    public function __construct(protected TokenStorageInterface $tokenStorage){}
 
     /**
      * @param QueryBuilder $queryBuilder
