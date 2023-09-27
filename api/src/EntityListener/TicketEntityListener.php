@@ -26,8 +26,8 @@ class TicketEntityListener
 
         $user = [
             'userEmail' => $currentUser->getEmail(),
-            'name' => $currentUser->getName(),
-            'surName' => $currentUser->getSurname()
+            'name' => $ticket->getName(),
+            'surName' => $ticket->getSurname()
         ];
 
         $location = [
