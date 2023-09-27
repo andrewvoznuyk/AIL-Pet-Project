@@ -1,5 +1,6 @@
 import React, { lazy } from "react";
 import routes from "./routes";
+import ReportsPage from "../pages/reports/ReportsPage";
 
 const GoodsPage = lazy(() => import("../pages/goods/GoodsPage"));
 const CabinetPage = lazy(() => import("../pages/cabinet/CabinetPage"));
@@ -52,6 +53,10 @@ const ownerRoutes = [
   {
     path: "/cabinet/aircrafts/edit/:flightId",
     element: <AircraftsEditPage />
+  },
+  {
+    path: "/cabinet/reports",
+    element: <ReportsPage />
   },
 ];
 

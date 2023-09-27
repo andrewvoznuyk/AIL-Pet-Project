@@ -1,15 +1,24 @@
 <?php
 
-namespace App\Extensions\User;
+namespace App\Extensions\Manager;
 
+use App\Entity\Aircraft;
 use App\Entity\CompanyFlights;
-use App\Entity\Ticket;
+use App\Entity\Flight;
 use App\Entity\User;
 use App\Extensions\Owner\AbstractOwnerAccessExtension;
 use Doctrine\ORM\QueryBuilder;
 
-class UsersTicketExtension extends AbstractUserAccessExtension
+class AircraftManagerExtension extends AbstractManagerAccessExtension
 {
+
+    /**
+     * @return string
+     */
+    public function getResourceClass(): string
+    {
+        return Aircraft::class;
+    }
 
     /**
      * @return array
@@ -19,14 +28,6 @@ class UsersTicketExtension extends AbstractUserAccessExtension
         return [
             self::GET
         ];
-    }
-
-    /**
-     * @return string
-     */
-    public function getResourceClass(): string
-    {
-        return Ticket::class;
     }
 
     /**
@@ -42,9 +43,11 @@ class UsersTicketExtension extends AbstractUserAccessExtension
         $binaryId = $currentUser->getId()->toBinary();
 
         $queryBuilder
-            ->andWhere($rootAlias.'.user = :user')
-            ->setParameter('user', $binaryId);
+            ->innerJoin($rootAlias.".company", "comp")
+            ->innerJoin("comp.managers", "us")
+            ->andWhere('us = :user')
+            ->andWhere($rootAlias.'.isDeleted = false')
+            ->setParameter('user', $binaryId)
+        ;
     }
-
-
 }

@@ -86,7 +86,7 @@ const AircraftsContainer = () => {
             component={NavLink}
             variant="outlined"
           >
-            Create flight
+            Create aircraft
           </Button>
         </Grid>
 

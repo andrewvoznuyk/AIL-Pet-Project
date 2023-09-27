@@ -12,17 +12,9 @@ class LoginController extends AbstractController
 {
 
     /**
-     * @var Security
-     */
-    private Security $security;
-
-    /**
      * @param Security $security
      */
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
+    public function __construct(private Security $security){}
 
     /**
      * @return JsonResponse

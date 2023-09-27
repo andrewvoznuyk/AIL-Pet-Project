@@ -12,17 +12,9 @@ class GetUserByEmailController extends AbstractController
 {
 
     /**
-     * @var Security
-     */
-    private Security $security;
-
-    /**
      * @param Security $security
      */
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
+    public function __construct(private Security $security){}
 
     /**
      * @return JsonResponse
@@ -42,12 +34,14 @@ class GetUserByEmailController extends AbstractController
         $surname = $user->getSurname();
         $phoneNumber = $user->getPhoneNumber();
         $email = $user->getEmail();
+        $mileBonuses = $user->getMileBonuses();
 
         return $this->json([
-            'name'    => $name,
-            'surname' => $surname,
+            'name'        => $name,
+            'surname'     => $surname,
             'phoneNumber' => $phoneNumber,
-            'email' => $email
+            'email'       => $email,
+            'mileBonuses' => $mileBonuses
         ]);
     }
 

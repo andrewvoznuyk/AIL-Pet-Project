@@ -25,4 +25,21 @@ class CompanyIncomeRepository extends ServiceEntityRepository
         parent::__construct($registry, CompanyIncome::class);
     }
 
+    /**
+     * @param $companyId
+     * @return array
+     */
+    public function findStatOfDate($companyId): array
+    {
+        return $this->createQueryBuilder('ci')
+            ->select("DATE_DIFF(ci.date, '1970-01-01') AS date, SUM(ci.income) AS income")
+            ->innerJoin('ci.flight', 'f')
+            ->innerJoin('f.aircraft', 'a')
+            ->innerJoin('a.company', 'c')
+            ->where('c.id = :companyId')
+            ->setParameter('companyId', $companyId)
+            ->groupBy('ci.date')
+            ->getQuery()
+            ->getResult();
+    }
 }

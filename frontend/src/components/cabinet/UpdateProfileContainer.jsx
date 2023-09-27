@@ -11,8 +11,9 @@ import generateRandomCode from "../../utils/generateRandomCode";
 import { useNavigate } from "react-router-dom";
 
 const UpdateProfileContainer = () => {
-  const {authenticated, setAuthenticated} = useContext(AppContext);
+  const { authenticated, setAuthenticated } = useContext(AppContext);
   const navigate = useNavigate();
+  const { user } = useContext(AppContext);
 
   const [name, setName] = useState("");
   const [surname, setSurname] = useState("");
@@ -21,6 +22,7 @@ const UpdateProfileContainer = () => {
   const [newEmail, setNewEmail] = useState("");
   const [authData, setAuthData] = useState();
   const [code, setCode] = useState("");
+  const [mileBonuses, setMileBonuses] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
@@ -41,6 +43,7 @@ const UpdateProfileContainer = () => {
       setSurname(response.data.surname);
       setPhoneNumber(response.data.phoneNumber);
       setEmail(response.data.email);
+      setMileBonuses(response.data.mileBonuses);
     }).catch(error => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
     });
@@ -57,8 +60,6 @@ const UpdateProfileContainer = () => {
     };
 
     setAuthData(data);
-    console.log("authData");
-    console.log(authData);
 
     axios.post("/api/confirm-email", data).then(response => {
       if (response.status === responseStatus.HTTP_OK) {
@@ -147,7 +148,12 @@ const UpdateProfileContainer = () => {
         <Notification notification={notification} setNotification={setNotification} />
       }
       <form className="auth-form" onSubmit={handleSubmit} style={{ width: "300px" }}>
-        <h2>Update your profile</h2>
+
+        <h3>Your profile</h3>
+
+        {user.roles.includes("ROLE_USER") &&
+          <div>Your mile bonuses = {mileBonuses}</div>
+        }
 
         <TextField
           label="Name: "
@@ -173,7 +179,7 @@ const UpdateProfileContainer = () => {
           label="E-mail"
           name="email"
           value={email}
-          disabled
+          aria-readonly
         />
 
         <TextField
