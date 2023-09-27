@@ -2,10 +2,8 @@
 
 namespace App\Extensions\Manager;
 
-use App\Entity\CompanyFlights;
 use App\Entity\Flight;
 use App\Entity\User;
-use App\Extensions\Owner\AbstractOwnerAccessExtension;
 use Doctrine\ORM\QueryBuilder;
 
 class FlightsManagerExtension extends AbstractManagerAccessExtension
@@ -44,10 +42,11 @@ class FlightsManagerExtension extends AbstractManagerAccessExtension
         $binaryId = $currentUser->getId()->toBinary();
 
         $queryBuilder
-            ->innerJoin($rootAlias.".aircraft", "plane")
+            ->innerJoin($rootAlias . ".aircraft", "plane")
             ->innerJoin("plane.company", "comp")
             ->leftJoin("comp.managers", "u")
             ->andWhere('u = :user')
             ->setParameter('user', $binaryId);
     }
+
 }

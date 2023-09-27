@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import {
@@ -9,14 +9,14 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import {responseStatus} from "../../../utils/consts";
+  Legend
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import { responseStatus } from "../../../utils/consts";
 
 const ManagerReportsContainer = () => {
-  const [myData,setMyData]=useState(
-      []
+  const [myData, setMyData] = useState(
+    []
   );
 
   const loadData = () => {
@@ -24,7 +24,7 @@ const ManagerReportsContainer = () => {
     axios.get("/api/get-company-stat", userAuthenticationConfig()).then(response => {
       if (response.status === responseStatus.HTTP_OK && response.data) {
         setMyData(response.data);
-        console.log(response.data)
+        console.log(response.data);
       }
     }).catch(error => {
       console.log("error");
@@ -36,25 +36,26 @@ const ManagerReportsContainer = () => {
   }, []);
 
   ChartJS.register(
-      CategoryScale,
-      LinearScale,
-      PointElement,
-      LineElement,
-      Title,
-      Tooltip,
-      Legend
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
   );
+
   const options = {
     responsive: true,
     plugins: {
       legend: {
-        position: 'top',
+        position: "top"
       },
       title: {
         display: true,
-        text: 'Company reporting',
-      },
-    },
+        text: "Company reporting"
+      }
+    }
   };
 
   const labels = myData.map((data) => data.date);
@@ -63,19 +64,19 @@ const ManagerReportsContainer = () => {
     labels,
     datasets: [
       {
-        label: 'Daily profit fluctuation',
+        label: "Daily profit fluctuation",
         data: myData.map((data) => data.income),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-    ],
+        borderColor: "rgb(255, 99, 132)",
+        backgroundColor: "rgba(255, 99, 132, 0.5)"
+      }
+    ]
   };
 
   return (
-      <>
-        <h1>Manager reports</h1>
-        <Line options={options} data={chartData} />;
-      </>
+    <>
+      <h1>Manager reports</h1>
+      <Line options={options} data={chartData} />;
+    </>
   );
 };
 

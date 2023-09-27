@@ -12,6 +12,10 @@ use App\Extensions\AbstractAccessExtension;
  */
 abstract class AbstractManagerAccessExtension extends AbstractAccessExtension
 {
+
+    /**
+     * @return array
+     */
     public function getAffectedRoles(): array
     {
         return [

@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
-import { Box, Breadcrumbs, Button, Grid, Link, Typography } from "@mui/material";
+import { Box, Button, Grid, Link, Typography } from "@mui/material";
 import Notification from "../elemets/notification/Notification";
 import { responseStatus } from "../../utils/consts";
-import InputCustom from "../elemets/input/InputCustom";
-import InputPhoneNumber from "../elemets/input/InputPhoneNumber";
-import InputPassword from "../elemets/input/InputPassword";
 import UserAuthenticationConfig from "../../utils/userAuthenticationConfig";
 import GlobalRegistrationItems from "./GlobalRegistrationItems";
 

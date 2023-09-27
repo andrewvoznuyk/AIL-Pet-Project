@@ -1,6 +1,6 @@
 import { getExpirationDate, isExpired } from "./checkExpiredToken";
 import eventBus from "./eventBus";
-import {storageGetItem, TOKEN} from "../storage/storage";
+import { storageGetItem, TOKEN } from "../storage/storage";
 
 const userAuthenticationConfig = (jsonld = true, multipart = false) => {
 

@@ -22,7 +22,7 @@ const adminRoutes = [
   {
     path: "/cabinet/reports",
     element: <ReportsPage />
-  },
+  }
 ];
 
 const adminRoutesConcat = adminRoutes.concat(routes);

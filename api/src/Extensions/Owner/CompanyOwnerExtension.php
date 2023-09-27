@@ -3,7 +3,6 @@
 namespace App\Extensions\Owner;
 
 use App\Entity\Company;
-use App\Entity\CompanyFlights;
 use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 
@@ -47,4 +46,5 @@ class CompanyOwnerExtension extends AbstractOwnerAccessExtension
             ->andWhere($rootAlias . '.owner = :user')
             ->setParameter('user', $binaryId);
     }
+
 }

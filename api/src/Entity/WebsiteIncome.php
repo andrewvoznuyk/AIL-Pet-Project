@@ -9,16 +9,16 @@ use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: WebsiteIncomeRepository::class)]
 #[ApiResource(
-    collectionOperations:[
+    collectionOperations: [
         "get" => [
-            "method" => "get",
+            "method"                => "get",
             "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
             "normalization_context" => ["groups" => ["get:collection:websiteIncome"]]
         ]
     ],
     itemOperations: [
         "get" => [
-            "method" => "get",
+            "method"                => "get",
             "security"              => "is_granted('" . User::ROLE_ADMIN . "')",
             "normalization_context" => ["groups" => ["get:collection:websiteIncome"]]
         ],
@@ -26,6 +26,7 @@ use Symfony\Component\Uid\Uuid;
 )]
 class WebsiteIncome
 {
+
     /**
      * @var Uuid
      */

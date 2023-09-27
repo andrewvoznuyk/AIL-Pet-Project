@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import Notification from "../../elemets/notification/Notification";
@@ -7,16 +7,14 @@ import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import FlightsTable from "./FlightsTable";
-import { Button, Pagination, TableCell, TableRow } from "@mui/material";
+import { Button, Pagination } from "@mui/material";
 import Grid from "@mui/material/Grid";
-import SearchFilterDefault from "../../elemets/searchFilter/SearchFilterDefault";
 import FilterGroup from "./FilterGroup";
 
 const FlightContainer = () => {
 
   const navigate = useNavigate();
   const [requestData, setRequestData] = useState();
-  const [loading, setLoading] = useState(false);
   const [notification, setNotification] = useState({
     visible: false,
     type: "",

@@ -1,16 +1,12 @@
 <?php
 
-
 namespace App\Extensions;
-
 
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
-use App\Entity\User;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-
 
 /**
  * Class AbstractCurrentUserExtension
@@ -20,11 +16,11 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
 {
 
     public const FIRST_ELEMENT_ARRAY = 0;
-    public const GET = "get";
-    public const POST = "post";
-    public const PUT = "put";
-    public const PATCH = "patch";
-    public const DELETE = "delete";
+    public const GET                 = "get";
+    public const POST                = "post";
+    public const PUT                 = "put";
+    public const PATCH               = "patch";
+    public const DELETE              = "delete";
 
     /*public const AFFECTED_ROLES = [ // ...a long time ago here was ADMIN_ROLES
         User::ROLE_OWNER
@@ -43,7 +39,9 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
     /**
      * AbstractCurrentUserExtension constructor.
      */
-    public function __construct(protected TokenStorageInterface $tokenStorage){}
+    public function __construct(protected TokenStorageInterface $tokenStorage)
+    {
+    }
 
     /**
      * @param QueryBuilder $queryBuilder
@@ -89,7 +87,6 @@ abstract class AbstractAccessExtension implements QueryCollectionExtensionInterf
      */
     protected function apply($operationName): bool
     {
-        //return !is_bool(strpos($operationName, "get"));
         return in_array($operationName, $this->getAffectedMethods());
     }
 

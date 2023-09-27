@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import TableGenerator from "../../elemets/table/TableGenerator";
-import { Button, TableCell, TableRow } from "@mui/material";
 import PopupDefault from "../../elemets/popup/PopupDefault";
 import axios from "axios";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import { responseStatus } from "../../../utils/consts";
-import notification from "../../elemets/notification/Notification";
 import FlightRowItem from "./FlightRowItem";
 
 const FlightsTable = ({ fetchedData, reloadData }) => {
@@ -32,8 +30,6 @@ const FlightsTable = ({ fetchedData, reloadData }) => {
   };
 
   const finishFlight = () => {
-    //
-
     axios.put(`/api/flight/${selectedFlight}/finish`, {}, userAuthenticationConfig(false)).then(response => {
       console.log(response);
       if (response.status === responseStatus.HTTP_OK) {

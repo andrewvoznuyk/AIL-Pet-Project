@@ -27,7 +27,7 @@ const userRoutes = [
   {
     path: "/cabinet/ticket",
     element: <TicketPage />
-  },
+  }
 ];
 
 const userRoutesConcat = userRoutes.concat(routes);

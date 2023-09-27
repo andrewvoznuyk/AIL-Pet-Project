@@ -42,4 +42,5 @@ class CompanyIncomeRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
 }

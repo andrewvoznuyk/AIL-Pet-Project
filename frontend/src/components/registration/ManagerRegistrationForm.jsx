@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
-import { Box, Button, Grid, InputLabel, Link, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import Notification from "../elemets/notification/Notification";
 import { responseStatus } from "../../utils/consts";
 import UserAuthenticationConfig from "../../utils/userAuthenticationConfig";
@@ -41,8 +41,7 @@ const ManagerRegistrationForm = () => {
     if (!authData) {
       return;
     }
-    console.log("authData");
-    console.log(authData);
+
     setLoading(true);
 
     axios.post(`/api/users`, authData, UserAuthenticationConfig()).then(response => {

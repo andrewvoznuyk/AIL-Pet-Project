@@ -1,13 +1,11 @@
-import { Button, Card, CardContent, Input, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
-import aircraftSettings from "./aircraftSettings";
-import { Label } from "recharts";
+import { Card, CardContent, TextField, Typography } from "@mui/material";
+import React from "react";
 
 function CardTicketInfo ({ placeData, changeOneTicketItem, ticketPricesArray }) {
 
   const getPriceByClass = () => {
     return ticketPricesArray[placeData.class];
-  }
+  };
 
   const onNameInput = (e) => {
     placeData.name = e.target.value;

@@ -104,7 +104,7 @@ function App () {
     >
       <MenuAppBar />
       <HelmetProvider>
-        <div className="container" style={{width:"100%"}}>
+        <div className="container" style={{ width: "100%" }}>
           <Suspense fallback={<CircularProgress />}>
             <Routes>
               {authRouteRender()}

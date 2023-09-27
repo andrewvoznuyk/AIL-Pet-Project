@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { responseStatus } from "../../../utils/consts";
+import React from "react";
 import { Helmet } from "react-helmet-async";
-import { Breadcrumbs, Button, Link, Pagination, Typography } from "@mui/material";
-import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
-import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
-import { checkFilterItem, fetchFilterData } from "../../../utils/fetchFilterData";
+import { Breadcrumbs, Button, Link, Typography } from "@mui/material";
+import { NavLink, useNavigate } from "react-router-dom";
 
 const GoodsContainer = () => {
-
-  const navigate = useNavigate();
-
   return (
     <>
       <Helmet>

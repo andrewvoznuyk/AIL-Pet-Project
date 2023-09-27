@@ -1,4 +1,3 @@
-import Grid from "@mui/material/Grid";
 import SeatItem from "./SeatItem";
 import React from "react";
 

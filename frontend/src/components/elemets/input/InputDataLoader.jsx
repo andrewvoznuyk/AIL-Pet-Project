@@ -1,13 +1,20 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import CircularProgress from "@mui/material/CircularProgress";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import userAuthenticationConfig from "../../../utils/userAuthenticationConfig";
 import { responseStatus } from "../../../utils/consts";
 
-function InputDataLoader ({ url, name = "", getOptionLabel, itemsPerPage = 20, searchWord = "", label, onChange = undefined }) {
+function InputDataLoader ({
+  url,
+  name = "",
+  getOptionLabel,
+  itemsPerPage = 20,
+  searchWord = "",
+  label,
+  onChange = undefined
+}) {
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState([]);
   const [inputQuery, setInputQuery] = useState("");
@@ -26,7 +33,6 @@ function InputDataLoader ({ url, name = "", getOptionLabel, itemsPerPage = 20, s
         let data = response.data["hydra:member"];
         setOptions(data);
 
-        //console.log(response.data["hydra:member"]);
         if (data.length === 0) {
           setOptions([]);
         }

@@ -74,7 +74,6 @@ class TicketRepository extends ServiceEntityRepository
             ->setParameter("flight", $flight)
             ->getQuery()
             ->getResult();
-
     }
 
 }

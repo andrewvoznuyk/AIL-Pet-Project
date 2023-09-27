@@ -4,7 +4,6 @@ namespace App\Extensions\Manager;
 
 use App\Entity\CompanyFlights;
 use App\Entity\User;
-use App\Extensions\Owner\AbstractOwnerAccessExtension;
 use Doctrine\ORM\QueryBuilder;
 
 class CompanyFlightsManagerExtension extends AbstractManagerAccessExtension

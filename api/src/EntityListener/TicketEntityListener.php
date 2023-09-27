@@ -5,7 +5,6 @@ namespace App\EntityListener;
 use App\Entity\Ticket;
 use App\Services\MailerService;
 use Doctrine\Persistence\Event\LifecycleEventArgs;
-use Symfony\Component\Security\Core\Security;
 
 class TicketEntityListener
 {
@@ -27,8 +26,8 @@ class TicketEntityListener
 
         $user = [
             'userEmail' => $currentUser->getEmail(),
-            'name' => $currentUser->getName(),
-            'surName' => $currentUser->getSurname()
+            'name' => $ticket->getName(),
+            'surName' => $ticket->getSurname()
         ];
 
         $location = [

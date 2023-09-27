@@ -6,8 +6,6 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ListItemText from "@mui/material/ListItemText";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
 import ListSubheader from "@mui/material/ListSubheader";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import { AirplaneTicket, FlightRounded, FlightTakeoffRounded } from "@mui/icons-material";
@@ -18,7 +16,7 @@ const Toolbar = () => {
 
   const goTo = (route) => {
     navigate(route);
-  }
+  };
   return (
     <>
       <List component="nav">
@@ -32,9 +30,9 @@ const Toolbar = () => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>
 
-          <ListItemButton  onClick={() => goTo("/cabinet/ticket")}>
+          <ListItemButton onClick={() => goTo("/cabinet/ticket")}>
             <ListItemIcon>
-              <AirplaneTicket/>
+              <AirplaneTicket />
             </ListItemIcon>
             <ListItemText primary="Tickets" />
           </ListItemButton>

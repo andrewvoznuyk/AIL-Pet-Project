@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import Can from "../../components/elemets/can/Can";
 import { AppContext } from "../../App";
-import {reports} from "../../rbac-consts";
+import { reports } from "../../rbac-consts";
 import CabinetDefaultContainer from "../../components/elemets/cabinet/CabinetDefaultContainer";
 import ToolbarRoleSwitch from "../../components/elemets/cabinet/toolbars/ToolbarRoleSwitch";
 import NotFoundPage from "../notFound/NotFoundPage";
@@ -11,42 +11,42 @@ import AdminReportsContainer from "../../components/reports/admin/AdminReportsCo
 
 const ReportsPage = () => {
 
-    return (
-        <>
-            <CabinetDefaultContainer
-                Sidebar={<ToolbarRoleSwitch />}
-                Content={<ContentRoleSwitch />}
-            />
-        </>
-    );
+  return (
+    <>
+      <CabinetDefaultContainer
+        Sidebar={<ToolbarRoleSwitch />}
+        Content={<ContentRoleSwitch />}
+      />
+    </>
+  );
 };
 
 const ContentRoleSwitch = () => {
-    const { user } = useContext(AppContext);
+  const { user } = useContext(AppContext);
 
-    if (!user) {
-        return <NotFoundPage />;
-    }
+  if (!user) {
+    return <NotFoundPage />;
+  }
 
-    return (
-        <>
-            <Can
-                role={user.roles}
-                perform={reports.OWNER}
-                yes={() => <OwnerReportsContainer />}
-            />
-            <Can
-                role={user.roles}
-                perform={reports.MANAGER}
-                yes={() => <ManagerReportsContainer />}
-            />
-            <Can
-                role={user.roles}
-                perform={reports.ADMIN}
-                yes={() => <AdminReportsContainer />}
-            />
-        </>
-    );
+  return (
+    <>
+      <Can
+        role={user.roles}
+        perform={reports.OWNER}
+        yes={() => <OwnerReportsContainer />}
+      />
+      <Can
+        role={user.roles}
+        perform={reports.MANAGER}
+        yes={() => <ManagerReportsContainer />}
+      />
+      <Can
+        role={user.roles}
+        perform={reports.ADMIN}
+        yes={() => <AdminReportsContainer />}
+      />
+    </>
+  );
 };
 
 export default ReportsPage;
