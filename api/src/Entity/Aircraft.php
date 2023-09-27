@@ -7,6 +7,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Action\DeleteDeletableAction;
 use App\Repository\AircraftRepository;
+use App\Validator\Constraints\AircraftConstraint;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -48,6 +49,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
     "model.plane"  => "partial",
     "company.name"  => "partial",
 ])]
+#[AircraftConstraint]
 class Aircraft extends DeletableEntity
 {
 

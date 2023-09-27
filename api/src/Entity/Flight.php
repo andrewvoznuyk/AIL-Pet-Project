@@ -103,7 +103,8 @@ class Flight implements JsonSerializable
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:collection:flight"
+        "post:collection:flight",
+        "get:collection:ticket"
     ])]
     private ?DateTimeInterface $departure = null;
 
@@ -115,7 +116,8 @@ class Flight implements JsonSerializable
         "get:item:flight",
         "get:collection:flight",
         "post:item:flight",
-        "post:collection:flight"
+        "post:collection:flight",
+        "get:collection:ticket"
     ])]
     private ?DateTimeInterface $arrival = null;
 
@@ -145,7 +147,8 @@ class Flight implements JsonSerializable
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:collection:flight"
+        "post:collection:flight",
+        "get:collection:ticket"
     ])]
     private ?CompanyFlights $fromLocation = null;
 
@@ -157,7 +160,8 @@ class Flight implements JsonSerializable
     #[Groups([
         "get:item:flight",
         "get:collection:flight",
-        "post:collection:flight"
+        "post:collection:flight",
+        "get:collection:ticket"
     ])]
     private ?CompanyFlights $toLocation = null;
 

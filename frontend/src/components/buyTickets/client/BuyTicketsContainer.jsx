@@ -11,6 +11,7 @@ import CardTicketInfo from "./CardTicketInfo";
 import PopupPayment from "../../elemets/popup/PopupPayment";
 import Box from "@mui/material/Box";
 import Notification from "../../elemets/notification/Notification";
+import UserBonusesCounter from "./UserBonusesCounter";
 
 const BuyTicketsContainer = () => {
 
@@ -207,6 +208,8 @@ const BuyTicketsContainer = () => {
               </Grid>
               <Grid item xs={3} padding={0} margin={0} spacing={0}>
 
+                <UserBonusesCounter/>
+                <p></p>
                 <Box>
                   {selectedPlaces && selectedPlaces.map((item, key) => {
                     return (
