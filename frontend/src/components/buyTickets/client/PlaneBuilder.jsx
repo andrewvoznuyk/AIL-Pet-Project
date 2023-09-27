@@ -93,7 +93,15 @@ function PlaneBuilder ({ aircraftData, onPlaceClick, soldPlaces }) {
   };
 
   const isPlaceSold = (id) => {
-    return soldPlaces.some(e => e.place === id);
+
+    if (soldPlaces) {
+      try {
+        return soldPlaces.some(e => e.place === id);
+      } catch (e) {
+
+      }
+    }
+    return false;
   };
 
   return <>
