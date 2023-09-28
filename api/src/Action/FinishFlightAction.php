@@ -2,6 +2,8 @@
 
 namespace App\Action;
 
+use ApiPlatform\Core\Bridge\Symfony\Validator\Validator;
+use ApiPlatform\Validator\ValidatorInterface;
 use App\Entity\CompanyIncome;
 use App\Entity\Flight;
 use App\Entity\Ticket;
@@ -18,7 +20,7 @@ class FinishFlightAction
     /**
      * @param EntityManagerInterface $entityManager
      */
-    public function __construct(private EntityManagerInterface $entityManager)
+    public function __construct(private EntityManagerInterface $entityManager, private ValidatorInterface $validator)
     {
     }
 
@@ -46,6 +48,8 @@ class FinishFlightAction
         $companyIncome->setIncome($companyFlightIncome);
         $companyIncome->setFlight($data);
         $companyIncome->setDate($now);
+
+        $this->validator->validate($companyIncome);
 
         $websiteIncome = new WebsiteIncome();
         $websiteIncome->setCompanyIncome($companyIncome);
