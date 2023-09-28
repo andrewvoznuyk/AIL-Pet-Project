@@ -7,7 +7,7 @@ function FilterGroup ({ filterData, setFilterData }) {
   return <>
     <Grid item xs={3}>
       <SearchFilterDefault
-        inputLabel="Model"
+        inputLabel="Serial number"
         filterData={filterData}
         setFilterData={setFilterData}
         fieldName="serialNumber"

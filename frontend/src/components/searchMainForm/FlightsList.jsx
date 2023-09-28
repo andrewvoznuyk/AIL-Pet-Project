@@ -9,8 +9,8 @@ const FlightsList = ({ flights }) => {
         <div key={index}>
           <h2 style={{ marginLeft: 10 }}>Flight number {index + 1}</h2>
           <div style={{ display: "flex", flexDirection: "row" }}>
-            {flightGroup.map(flight => (
-              <FlightsItem flight={flight} />
+            {flightGroup.map((flight, index) => (
+              <FlightsItem flight={flight} key={index}/>
             ))}
           </div>
         </div>

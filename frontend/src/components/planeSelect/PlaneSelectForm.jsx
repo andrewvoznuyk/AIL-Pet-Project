@@ -74,14 +74,22 @@ const PlaneSelectForm = () => {
             id="company-select"
             label="Company List"
           >
-            {companyList && companyList.map((item, key) => (
-              <MenuItem
-                key={key} value={item.name} onClick={() => {
-                setCurrentCompany(item);
-                setData({ ...data, company: "/api/companies/" + item.id });
-              }}
-              >{item.name}</MenuItem>
-            ))}
+            {companyList && companyList.length > 0 ? (
+              companyList.map((item, key) => (
+                <MenuItem
+                  key={key} value={item.name} onClick={() => {
+                  setCurrentCompany(item);
+                  setData({ ...data, company: "/api/companies/" + item.id });
+                }}
+                >
+                  {item.name}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled>
+                Add your company first
+              </MenuItem>
+            )}
           </Select>
           <Select
             labelId="demo-simple-select-label"
