@@ -31,6 +31,13 @@ const Toolbar = () => {
             <ListItemText primary="Dashboard" />
           </ListItemButton>*/}
 
+          <ListItemButton onClick={() => goTo("/cabinet/companies")}>
+            <ListItemIcon>
+              <Business />
+            </ListItemIcon>
+            <ListItemText primary="Companies" />
+          </ListItemButton>
+
           <ListItemButton onClick={() => goTo("/cabinet/aircrafts")}>
             <ListItemIcon>
               <FlightRounded />
@@ -45,14 +52,7 @@ const Toolbar = () => {
             <ListItemText primary="Flights" />
           </ListItemButton>
 
-          <ListItemButton onClick={() => goTo("/cabinet/companies")}>
-            <ListItemIcon>
-              <Business />
-            </ListItemIcon>
-            <ListItemText primary="Companies" />
-          </ListItemButton>
-
-          <ListItemButton onClick={() => goTo("/cabinet/reports")}>>
+          <ListItemButton onClick={() => goTo("/cabinet/reports")}>
             <ListItemIcon>
               <BarChartIcon />
             </ListItemIcon>

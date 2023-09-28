@@ -94,6 +94,7 @@ const UpdateProfileContainer = () => {
     axios.put("/api/update-user", authData, UserAuthenticationConfig()).then((response) => {
       setNotification({ ...notification, visible: true, type: "success", message: "Profile was updated! " });
       setModalEmailOpen(false);
+      navigate(0);
     }).catch(error => {
       setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
     }).finally(() => {
