@@ -30,9 +30,7 @@ class FinishFlightAction
     {
         $now = new DateTime();
 
-        if ($data->getArrival() < $now) {
-            $data->setIsCompleted(true);
-        }
+        $data->setIsCompleted(true);
 
         $bonus = $data->getDistance() * self::BONUS_PERCENTAGE / 100;
         $tickets = $this->entityManager->getRepository(Ticket::class)->findBy(['flight' => $data]);

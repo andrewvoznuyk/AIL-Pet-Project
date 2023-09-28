@@ -101,7 +101,7 @@ const OwnerReportsContainer = () => {
           <MenuItem key={key} value={item.name} onClick={() => {setCurrentCompany(item);}}>{item.name}</MenuItem>
         ))}
       </Select>
-      <Line options={options} data={chartData} />;
+      <Line options={options} data={chartData} />
     </>
   );
 };

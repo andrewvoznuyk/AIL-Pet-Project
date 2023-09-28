@@ -88,7 +88,7 @@ const AdminReportsContainer = () => {
         <MenuItem value={"Income by companies"} onClick={() => {setCurrentStat(2);}}>Income by companies</MenuItem>
         <MenuItem value={"Income by dates"} onClick={() => {setCurrentStat(1);}}>Income by dates</MenuItem>
       </Select>
-      <Line options={options} data={chartData} />;
+      <Line options={options} data={chartData} />
     </>
   );
 };
