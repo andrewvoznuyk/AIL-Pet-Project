@@ -42,6 +42,12 @@ const CreateFlightForm = ({ setData, loading }) => {
     console.log(data);
   };
 
+  const absFloatConstraint = (e) => {
+    if (e.target.value < 0) {
+      e.target.value = 0;
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -67,29 +73,32 @@ const CreateFlightForm = ({ setData, loading }) => {
 
                 <TextField
                   variant="outlined"
-                  type="text"
+                  type="number"
                   label="Business class"
                   name="businessPrice"
+                  onChange={absFloatConstraint}
                   required
                 />
 
                 <p></p>
 
                 <TextField
-                  type="text"
+                  type="number"
                   variant="outlined"
                   label="Economy class"
                   name="economPrice"
+                  onChange={absFloatConstraint}
                   required
                 />
 
                 <p></p>
 
                 <TextField
-                  type="text"
+                  type="number"
                   variant="outlined"
                   label="Standard class"
                   name="standardPrice"
+                  onChange={absFloatConstraint}
                   required
                 />
 
@@ -103,29 +112,32 @@ const CreateFlightForm = ({ setData, loading }) => {
                 </Typography>
                 <TextField
                   variant="outlined"
-                  type="text"
+                  type="number"
                   label="Business class"
                   name="businessCoef"
+                  onChange={absFloatConstraint}
                   required
                 />
 
                 <p></p>
 
                 <TextField
-                  type="text"
+                  type="number"
                   variant="outlined"
                   label="Economy class"
                   name="economCoef"
+                  onChange={absFloatConstraint}
                   required
                 />
 
                 <p></p>
 
                 <TextField
-                  type="text"
+                  type="number"
                   variant="outlined"
                   label="Standard class"
                   name="standardCoef"
+                  onChange={absFloatConstraint}
                   required
                 />
 
