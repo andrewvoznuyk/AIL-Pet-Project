@@ -23,11 +23,19 @@ function CardTicketInfo ({ placeData, changeOneTicketItem, ticketPricesArray }) 
   };
 
   const onBonusesInput = (e) => {
+    if (e.target.value < 0) {
+      e.target.value = 0;
+    }
+
     placeData.bonus = parseInt(e.target.value);
     changeOneTicketItem(placeData);
   };
 
   const onLuggageInput = (e) => {
+    if (e.target.value < 0) {
+      e.target.value = 0;
+    }
+
     placeData.luggageMass = parseInt(e.target.value);
     changeOneTicketItem(placeData);
   };
