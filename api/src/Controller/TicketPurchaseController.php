@@ -87,7 +87,7 @@ class TicketPurchaseController extends AbstractController
                 $bonus = $ticketData["bonus"];
             }
 
-            $ticket = $this->createTicket($ticketData, $bonus);
+            $ticket = $this->createTicket($ticketData, abs($bonus));
             $this->entityManager->persist($ticket);
         }
 

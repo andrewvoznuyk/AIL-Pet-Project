@@ -25,7 +25,7 @@ class CalculateTicketPriceService
      */
     public function calculateTicketPrice(Ticket $ticket, float $bonus) : float
     {
-        return $this->calculateInitialTicketPrice($ticket->getFlight(), $ticket->getClass(), $bonus);
+        return $this->calculateInitialTicketPrice($ticket->getFlight(), $ticket->getClass(), $bonus, $ticket->getLuggageMass());
     }
 
     /**
@@ -38,7 +38,7 @@ class CalculateTicketPriceService
         $prices = [];
         foreach ($classes as $class => $key)
         {
-            $prices[$class] = round($this->calculateInitialTicketPrice($flight, $class, 0),2);
+            $prices[$class] = round($this->calculateInitialTicketPrice($flight, $class, 0 , 0),2);
         }
 
         return $prices;
@@ -50,9 +50,9 @@ class CalculateTicketPriceService
      * @param int $bonus
      * @return float
      */
-    public function calculateInitialTicketPrice(Flight $flight, string $class, int $bonus) : float
+    public function calculateInitialTicketPrice(Flight $flight, string $class, int $bonus, float $weight) : float
     {
-        $km = $flight->getDistance() - $bonus;
+        $km = $flight->getDistance() - abs($bonus);
         $classCoef = $flight->getPlacesCoefs();
 
         $nowDateTime = new DateTime();
