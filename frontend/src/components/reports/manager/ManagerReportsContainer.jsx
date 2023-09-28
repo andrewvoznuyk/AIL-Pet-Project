@@ -75,7 +75,7 @@ const ManagerReportsContainer = () => {
   return (
     <>
       <h1>Manager reports</h1>
-      <Line options={options} data={chartData} />;
+      <Line options={options} data={chartData} />
     </>
   );
 };
