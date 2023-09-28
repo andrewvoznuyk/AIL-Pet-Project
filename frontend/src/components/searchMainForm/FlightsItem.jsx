@@ -5,6 +5,13 @@ import { AppContext } from "../../App";
 
 const FlightsItem = ({ flight }) => {
   const { authenticated } = useContext(AppContext);
+
+  const getDate = (date) => {
+    const arr = date.toString().split(".");
+
+    return arr[0];
+  };
+
   return (
     <Card
       sx={{ maxWidth: 400 }} style={{
@@ -33,6 +40,12 @@ const FlightsItem = ({ flight }) => {
         </Typography>
         <Typography variant="body2" color="black">
           Number: {flight.aircraftNumber}
+        </Typography>
+        <Typography variant="body2" color="black">
+          Departure: {getDate(flight.departure.date)}
+        </Typography>
+        <Typography variant="body2" color="black">
+          Arrival: {getDate(flight.arrival.date)}
         </Typography>
       </CardContent>
       <CardActions>

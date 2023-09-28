@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CompanyIncomeRepository;
+use App\Validator\Constraints\CompanyIncomeConstraint;
 use DateTimeInterface;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,6 +28,7 @@ use Symfony\Component\Uid\Uuid;
         ],
     ]
 )]
+#[CompanyIncomeConstraint]
 class CompanyIncome
 {
 
