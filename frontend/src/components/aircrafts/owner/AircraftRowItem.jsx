@@ -1,14 +1,14 @@
 import { Button, TableCell, TableRow } from "@mui/material";
 import React from "react";
 
-const AircraftRowItem = ({ align = "left", aircraft, openModalDeleteFlight, navigate }) => {
+const AircraftRowItem = ({ align = "left", aircraft, openModalDeleteAircraft, navigate }) => {
 
   const onFlightEdit = () => {
     navigate(`/api/aircrafts/edit/${aircraft.id}`);
   };
 
   const onDelete = () => {
-    openModalDeleteFlight(aircraft.id);
+    openModalDeleteAircraft(aircraft.id);
   };
 
   return <>

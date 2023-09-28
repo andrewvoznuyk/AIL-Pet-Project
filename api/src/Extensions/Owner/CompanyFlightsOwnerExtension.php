@@ -16,7 +16,7 @@ class CompanyFlightsOwnerExtension extends AbstractOwnerAccessExtension
     {
         return [
             self::GET,
-            self::PUT,
+            self::PUT
         ];
     }
 
