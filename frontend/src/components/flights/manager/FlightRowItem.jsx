@@ -4,7 +4,7 @@ import React from "react";
 const FlightRowItem = ({ align = "left", flight, openModalFinishFlight, openModalCancelFlight }) => {
 
   const isFlightInPast = () => {
-    const now = Date.now();
+   const now = Date.now();
     const arrival = (Date.parse(flight.arrival));
 
     return arrival < now;

@@ -24,12 +24,12 @@ const Toolbar = () => {
 
         <React.Fragment>
 
-          <ListItemButton>
+          {/*<ListItemButton>
             <ListItemIcon>
               <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
-          </ListItemButton>
+          </ListItemButton>*/}
 
           <ListItemButton onClick={() => goTo("/cabinet/reports")}>
             <ListItemIcon>
@@ -52,21 +52,8 @@ const Toolbar = () => {
 
         <React.Fragment>
           <ListSubheader component="div" inset>
-            Saved reports
+            Other
           </ListSubheader>
-          <ListItemButton>
-            <ListItemIcon>
-              <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Current month" />
-          </ListItemButton>
-
-          <ListItemButton>
-            <ListItemIcon>
-              <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Last quarter" />
-          </ListItemButton>
 
           <ListItemButton onClick={() => goTo("/cabinet/profile")}>
             <ListItemIcon>
