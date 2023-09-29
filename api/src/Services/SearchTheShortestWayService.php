@@ -113,9 +113,7 @@ class SearchTheShortestWayService
 
         for ($i = 0; $i < count($flights); $i++) {
             for ($j = 0; $j < count($airportsId); $j++) {
-
-                if ($flights[$i]->getFromLocation()->getAirport()->getId() == $airportsId[$j] && $flights[$i]->getToLocation()->getAirport()->getId() == $airportsId[$j + 1]) {
-
+                if ($flights[$i]->getFromLocation()->getAirport()->getId() == $airportsId[$j] && $flights[$i]->getToLocation()->getAirport()->getId() == $airportsId[$j + 1] && $flights[$i]->isIsCompleted() == 0) {
                     $neededFlights[] = $flights[$i];
                 }
             }

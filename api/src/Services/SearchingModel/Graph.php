@@ -7,14 +7,13 @@ use Generator;
 
 class Graph
 {
-
     /**
      * @var array
      */
     private array $ways;
 
     /**
-     *
+     * Graph constructor.
      */
     public function __construct()
     {
@@ -23,7 +22,6 @@ class Graph
 
     /**
      * @param Airport $airport
-     * @return void
      */
     public function addAirport(Airport $airport): void
     {
@@ -34,12 +32,11 @@ class Graph
      * @param Airport $initialAirport
      * @param Airport $terminalAirport
      * @param string $distance
-     * @return void
      */
     public function addWay(Airport $initialAirport, Airport $terminalAirport, string $distance): void
     {
-        $this->ways[$initialAirport->getId()][$terminalAirport->getId()] = $distance;
-        $this->ways[$terminalAirport->getId()][$initialAirport->getId()] = $distance;
+        $this->addEdge($initialAirport, $terminalAirport, $distance);
+        $this->addEdge($terminalAirport, $initialAirport, $distance);
     }
 
     /**
@@ -47,8 +44,8 @@ class Graph
      */
     public function getAirports(): iterable
     {
-        foreach ($this->ways as $node => $edge) {
-            yield $node;
+        foreach (array_keys($this->ways) as $airportId) {
+            yield $airportId;
         }
     }
 
@@ -63,4 +60,13 @@ class Graph
         }
     }
 
+    /**
+     * @param Airport $initialAirport
+     * @param Airport $terminalAirport
+     * @param string $distance
+     */
+    private function addEdge(Airport $initialAirport, Airport $terminalAirport, string $distance): void
+    {
+        $this->ways[$initialAirport->getId()][$terminalAirport->getId()] = $distance;
+    }
 }

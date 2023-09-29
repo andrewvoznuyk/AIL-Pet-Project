@@ -38,6 +38,7 @@ class Dijkstra
     {
         $this->init();
         $this->waySums[$fromAirport] = 0;
+
         while ($currNode = $this->findNearestUnusedNode()) {
             $this->setWaySumToNextNodes($currNode);
         }
@@ -63,6 +64,7 @@ class Dijkstra
     private function findNearestUnusedNode(): string
     {
         $nearestAirport = '';
+
         foreach ($this->graph->getAirports() as $airport) {
             if (!$this->used[$airport]) {
                 if ($nearestAirport == '' || $this->waySums[$airport] < $this->waySums[$nearestAirport]) {
@@ -70,6 +72,7 @@ class Dijkstra
                 }
             }
         }
+
         return $nearestAirport;
     }
 
@@ -80,6 +83,7 @@ class Dijkstra
     private function setWaySumToNextNodes(string $currAirport): void
     {
         $this->used[$currAirport] = true;
+
         foreach ($this->graph->getWays($currAirport) as $nextAirport => $distance) {
             if (!$this->used[$nextAirport]) {
                 $newESum = $this->waySums[$currAirport] + $distance;
@@ -99,6 +103,7 @@ class Dijkstra
     private function restorePath(string $fromAirport, string $toAirport): array
     {
         $path[] = $toAirport;
+
         while ($toAirport != $fromAirport) {
             try {
                 $toAirport = $this->path[$toAirport];
