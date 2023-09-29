@@ -16,11 +16,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class CompanyFlightConstraintValidator extends ConstraintValidator
 {
+
     /**
      * @param Security $security
      */
     public function __construct(
-        private Security $security)
+        private EntityManagerInterface $entityManager,
+        private Security               $security)
     {
     }
 
@@ -44,7 +46,8 @@ class CompanyFlightConstraintValidator extends ConstraintValidator
 
         //check if that company belongs to user
         if ($value->getCompany()->getOwner() !== $currentUser) {
-            $this->context->addViolation("Select valid company");
+            $this->context->addViolation("Select valid flight");
         }
     }
+
 }

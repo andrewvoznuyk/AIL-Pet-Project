@@ -25,4 +25,14 @@ class CompanyFlightsRepository extends ServiceEntityRepository
         parent::__construct($registry, CompanyFlights::class);
     }
 
+    public function isExists(CompanyFlights $companyFlight) : bool{
+        return !empty($this->_em->getRepository(CompanyFlights::class)
+            ->findOneBy(
+                [
+                    "airport" => $companyFlight->getAirport(),
+                    "company" => $companyFlight->getCompany()
+                ]));
+
+    }
+
 }
