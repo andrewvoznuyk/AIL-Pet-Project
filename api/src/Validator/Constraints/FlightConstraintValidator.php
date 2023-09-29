@@ -16,6 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class FlightConstraintValidator extends ConstraintValidator
 {
+
     /**
      * @param EntityManagerInterface $entityManager
      * @param Security $security
@@ -23,7 +24,8 @@ class FlightConstraintValidator extends ConstraintValidator
     public function __construct(
         private EntityManagerInterface $entityManager,
         private Security               $security)
-    {}
+    {
+    }
 
     /**
      * @param $value
@@ -68,6 +70,22 @@ class FlightConstraintValidator extends ConstraintValidator
             $this->context->addViolation("Select valid destination");
         }
 
+        //check if flight has only positive start prices
+        foreach ($value->getInitPrices() as $key => $v) {
+            if ($v < 0 || !is_float($v)) {
+                $this->context->addViolation("Prices could be only positive numbers");
+                break;
+            }
+        }
+
+        //check if flight has only positive coefs
+        foreach ($value->getPlacesCoefs() as $key => $v) {
+            if ($v < 0 || !is_float($v)) {
+                $this->context->addViolation("Coefficients could be only positive numbers");
+                break;
+            }
+        }
+
         //TODO: check if flight planned to the future
         //TODO: check if plane wouldn't be in another flight at the same time
     }
@@ -81,4 +99,5 @@ class FlightConstraintValidator extends ConstraintValidator
                     "company" => $currentUser->getManagerAtCompany()
                 ])));
     }
+
 }
