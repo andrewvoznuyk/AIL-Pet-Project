@@ -73,7 +73,6 @@ const CooperationContainer = () => {
 
   useEffect(() => {
     fetchForms();
-    console.log(forms);
   }, [filterData]);
 
   return (

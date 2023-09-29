@@ -10,6 +10,7 @@ import {
 import FormsItem from "./FormsItem";
 import { useState } from "react";
 import WorkerRegistrationForm from "../../registration/WorkerRegistrationForm";
+import updateFormData from "../../../utils/updateFormData";
 
 const FormsList = ({ forms }) => {
   const [disabledRows, setDisabledRows] = useState([]);

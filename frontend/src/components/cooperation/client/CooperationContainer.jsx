@@ -9,7 +9,7 @@ import {
   Select,
   TextField,
   Typography,
-  TextareaAutosize
+  TextareaAutosize, Input
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
@@ -131,6 +131,7 @@ const CooperationContainer = () => {
               <TextField
                 id="email"
                 label="Email"
+                type="email"
                 value={email}
                 onChange={(e) => {setEmail(e.target.value);}}
                 required
@@ -176,13 +177,14 @@ const CooperationContainer = () => {
           <div>
             <p>Download your license: </p>
             <FormControl style={{ width: 500 }}>
-              <input
+              <Input
                 type="file" name="documents"
                 value={documents}
                 onChange={(e) => {setDocuments(e.target.value);}}
               />
             </FormControl>
           </div>
+          <br/>
           <Button variant="contained" type="submit">
             Apply
           </Button>
