@@ -16,11 +16,14 @@ import { AppContext } from "../../../../App";
 export default function MenuAppBar () {
 
   const navigate = useNavigate();
-  const { authenticated } = useContext(AppContext);
+  const { user, authenticated } = useContext(AppContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
+
+  const isUserOrAdmin = authenticated && user.roles && (user.roles.includes('ROLE_USER') || user.roles.includes('ROLE_ADMIN'));
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
+    console.log(user)
   };
 
   const goTo = (route) => {
@@ -52,7 +55,7 @@ export default function MenuAppBar () {
               AIL
             </IconButton>
           </Typography>
-          {authenticated &&
+          {isUserOrAdmin &&
             <Button
               to="/cooperation"
               component={NavLink}
