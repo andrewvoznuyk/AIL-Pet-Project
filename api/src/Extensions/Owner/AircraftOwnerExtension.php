@@ -16,7 +16,8 @@ class AircraftOwnerExtension extends AbstractOwnerAccessExtension
     {
         return [
             self::GET,
-            self::PUT
+            self::PUT,
+            self::PATCH
         ];
     }
 

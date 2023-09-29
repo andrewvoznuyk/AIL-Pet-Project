@@ -12,12 +12,6 @@ const CompaniesContainer = () => {
           Companies
         </title>
       </Helmet>
-      <Breadcrumbs aria-label="breadcrumb">
-        <Link component={NavLink} underline="hover" color="inherit" to="/">
-          Home
-        </Link>
-        <Typography color="text.primary">Companies</Typography>
-      </Breadcrumbs>
       <Typography variant="h4" component="h1" mt={1} mb={2}>
         Companies
       </Typography>

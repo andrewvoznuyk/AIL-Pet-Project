@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 #[ORM\Entity(repositoryClass: AircraftRepository::class)]
 #[UniqueEntity('serialNumber')]
@@ -77,6 +78,7 @@ class Aircraft extends DeletableEntity
         "get:item:aircraft",
         "post:collection:aircraft"
     ])]
+    #[NotNull]
     private ?AircraftModel $model = null;
 
     /**
@@ -105,6 +107,7 @@ class Aircraft extends DeletableEntity
         "get:collection:flight",
         "post:collection:aircraft"
     ])]
+    #[NotNull]
     private ?Company $company = null;
 
     /**
@@ -118,6 +121,7 @@ class Aircraft extends DeletableEntity
         "get:collection:flight",
         "post:collection:aircraft"
     ])]
+    #[NotBlank]
     private array $places = [];
 
     /**
@@ -131,6 +135,7 @@ class Aircraft extends DeletableEntity
         "get:collection:flight",
         "post:collection:aircraft"
     ])]
+    #[NotBlank]
     private array $columns = [];
 
     /**

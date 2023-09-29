@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
@@ -44,16 +45,12 @@ use Symfony\Component\Validator\Constraints\NotNull;
             "security"                => "is_granted('" . User::ROLE_OWNER . "')",
             "denormalization_context" => ["groups" => ["post:collection:company"]],
             "normalization_context"   => ["groups" => ["get:item:company"]]
-        ],
-        "delete" => [
-            "method"                => "DELETE",
-            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
-            "normalization_context" => ["groups" => ["get:item:company"]]
-        ],
+        ]
     ],
     order: ['id' => 'DESC']
 )]
 #[ORM\EntityListeners([CompanyEntityListener::class])]
+#[UniqueEntity('name', message: "Company with that name already exists")]
 class Company
 {
 
@@ -75,7 +72,7 @@ class Company
     /**
      * @var string|null
      */
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, unique: true)]
     #[NotBlank]
     #[NotNull]
     #[Groups([

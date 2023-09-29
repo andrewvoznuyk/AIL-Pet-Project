@@ -16,6 +16,7 @@ use Symfony\Component\Validator\ConstraintValidator;
 
 class AircraftConstraintValidator extends ConstraintValidator
 {
+
     /**
      * @param Security $security
      */
@@ -42,9 +43,28 @@ class AircraftConstraintValidator extends ConstraintValidator
         /** @var User $currentUser */
         $currentUser = $this->security->getUser();
 
-        //check if that company belongs to user
-        if ($value->getCompany()->getOwner() !== $currentUser) {
-            $this->context->addViolation("Select valid company");
+        if($value->getCompany()) {
+            //check if that company belongs to user
+            if ($value->getCompany()->getOwner() !== $currentUser) {
+                $this->context->addViolation("Select valid company");
+            }
+        }
+
+        //check if plane has only positive count of places
+        foreach ($value->getPlaces() as $key => $v) {
+            if ($v < 0 || !is_int($v)) {
+                $this->context->addViolation("Places could be only positive integers");
+                break;
+            }
+        }
+
+        //check if plane has only positive columns
+        foreach ($value->getColumns() as $c){
+            if ($c < 0 || !is_int($c)) {
+                $this->context->addViolation("Columns could be only positive integers");
+                break;
+            }
         }
     }
+
 }

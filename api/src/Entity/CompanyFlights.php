@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Action\CreateCompanyFlightAction;
 use App\Action\DeleteCompanyFlightAction;
 use App\Action\DeleteDeletableAction;
 use App\Repository\CompanyFlightsRepository;
@@ -23,7 +24,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
             "method"                  => "POST",
             "security"                => "is_granted('" . User::ROLE_OWNER . "')",
             "denormalization_context" => ["groups" => ["post:collection:companyFlights"]],
-            "normalization_context"   => ["groups" => ["get:item:companyFlights"]]
+            "normalization_context"   => ["groups" => ["get:item:companyFlights"]],
+            "controller"              => CreateCompanyFlightAction::class
         ]
     ],
     itemOperations: [
@@ -34,7 +36,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
         "softDelete" => [
             "method"                => "PUT",
             "path"                  => "company-flights/delete/{id}",
-            "security"              => "is_granted('" . User::ROLE_OWNER . "')",
+            "security"              => "is_granted('" . User::ROLE_OWNER . "') ",
             "normalization_context" => ["groups" => ["aircraft:empty"]],
             "controller"            => DeleteDeletableAction::class
         ]
