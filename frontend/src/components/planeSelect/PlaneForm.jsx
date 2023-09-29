@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 
 const PlaneForm = ({ currentPlane, data, setData }) => {
   const [places, setPlaces] = useState({
-    economPlaces: currentPlane.passenger_capacity,
+    economPlaces: 0,
     businessPlaces: 0,
     standardPlaces: 0
   });
@@ -27,7 +27,6 @@ const PlaneForm = ({ currentPlane, data, setData }) => {
       <TextField label="Brand" id="Brand" type="text" name="Brand" value={currentPlane.brand} style={{ margin: 10 }} required />
       <TextField label="Name" id="Name" type="text" name="Name" value={currentPlane.plane} style={{ margin: 10 }} required />
       <TextField label="Engine" id="Engine" type="text" name="Engine" value={currentPlane.engine} style={{ margin: 10 }} required />
-      <TextField label="Passenger count" type="number" id="passengers" name="passengers" defaultValue={currentPlane.passenger_capacity} style={{ margin: 10 }} />
       <div>
         <TextField
           label="Business places" type="number" id="business" name="business" defaultValue={places.businessPlaces} onChange={(event) => {
