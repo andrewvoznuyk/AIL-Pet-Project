@@ -33,7 +33,11 @@ const FlightsCreate = () => {
     axios.post("/api/company-flights", data, userAuthenticationConfig(false)).then(response => {
       setNotification({ ...notification, visible: true, type: "success", message: "Company flight created!" });
     }).catch(error => {
-      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
+      if (error.response.data.detail) {
+        setNotification({ ...notification, visible: true, type: "error", message: error.response.data.detail });
+      } else {
+        setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
+      }
     }).finally(() => {
       setLoading(false);
     });

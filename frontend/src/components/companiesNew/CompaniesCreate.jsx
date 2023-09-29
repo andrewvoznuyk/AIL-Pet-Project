@@ -27,7 +27,11 @@ const CompaniesCreate = () => {
       setNotification({ ...notification, visible: true, type: "success", message: "Company created!" });
       setName("");
     }).catch(error => {
-      setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
+      if (error.response.data.detail) {
+        setNotification({ ...notification, visible: true, type: "error", message: error.response.data.detail });
+      } else {
+        setNotification({ ...notification, visible: true, type: "error", message: error.response.data.title });
+      }
     }).finally(() => {
       setLoading(false);
     });
@@ -41,7 +45,7 @@ const CompaniesCreate = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <FormControl style={{ width: 500 }}>
-            <InputLabel htmlFor="name">Company nane</InputLabel>
+            <InputLabel htmlFor="name">Company name</InputLabel>
             <Input
               id="name"
               type="text"
