@@ -90,6 +90,11 @@ class FlightConstraintValidator extends ConstraintValidator
         //TODO: check if plane wouldn't be in another flight at the same time
     }
 
+    /**
+     * @param CompanyFlights $flight
+     * @param User $currentUser
+     * @return bool
+     */
     private function isAirportBelongsToCompany(CompanyFlights $flight, User $currentUser): bool
     {
         return !(empty($this->entityManager->getRepository(CompanyFlights::class)
