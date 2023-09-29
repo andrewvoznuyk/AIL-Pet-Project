@@ -1,4 +1,4 @@
-import { Button, TableCell, TableRow } from "@mui/material";
+import { Button, Link, TableCell, TableRow } from "@mui/material";
 import React, { useState } from "react";
 import updateFormData from "../../../utils/updateFormData";
 
@@ -6,10 +6,9 @@ const FormsItem = ({ form, isDisabled, onCancelClick, openRegisterForm }) => {
   const [isRegistered, setIsRegistered] = useState(false);
 
   const handleRegisterClick = () => {
+    openRegisterForm();
     updateFormData(form["@id"], { status: "registered" });
     setIsRegistered(true);
-
-    openRegisterForm();
   };
 
   const handleCancelClick = () => {
@@ -21,9 +20,13 @@ const FormsItem = ({ form, isDisabled, onCancelClick, openRegisterForm }) => {
       <TableCell>{form.email}</TableCell>
       <TableCell>{form.fullname}</TableCell>
       <TableCell>{form.companyName}</TableCell>
-      <TableCell>{form.documents}</TableCell>
+      <TableCell>
+        <Link href={form.documents} target="_blank" rel="noopener">
+          {form.documents.split(/[\\/]/).pop()}
+        </Link>
+      </TableCell>
       <TableCell>{form.about}</TableCell>
-      <TableCell>{form.airport}</TableCell>
+      <TableCell>{form.airport.name}</TableCell>
       <TableCell>{form.dateOfApplication}</TableCell>
       <TableCell>{form.status}</TableCell>
       <TableCell>
