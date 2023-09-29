@@ -44,10 +44,12 @@ class CalculateTicketPriceService
         return $prices;
     }
 
+
     /**
      * @param Flight $flight
      * @param string $class
      * @param int $bonus
+     * @param float $weight
      * @return float
      */
     public function calculateInitialTicketPrice(Flight $flight, string $class, int $bonus, float $weight) : float
