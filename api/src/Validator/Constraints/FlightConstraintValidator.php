@@ -72,7 +72,7 @@ class FlightConstraintValidator extends ConstraintValidator
 
         //check if flight has only positive start prices
         foreach ($value->getInitPrices() as $key => $v) {
-            if ($v < 0 || !is_float($v)) {
+            if ($v <= 0 || !is_numeric($v)) {
                 $this->context->addViolation("Prices could be only positive numbers");
                 break;
             }
@@ -80,7 +80,7 @@ class FlightConstraintValidator extends ConstraintValidator
 
         //check if flight has only positive coefs
         foreach ($value->getPlacesCoefs() as $key => $v) {
-            if ($v < 0 || !is_float($v)) {
+            if ($v <= 0 || !is_numeric($v)) {
                 $this->context->addViolation("Coefficients could be only positive numbers");
                 break;
             }
