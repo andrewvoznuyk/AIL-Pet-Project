@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Breadcrumbs, Button, Card, CardActions, CardContent, CardMedia, Link, Paper, Typography } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import { AppContext } from "../../App";
+import {myMY} from "@mui/material/locale";
 
 const FlightsItem = ({ flight }) => {
   const { authenticated } = useContext(AppContext);
@@ -11,7 +12,8 @@ const FlightsItem = ({ flight }) => {
 
     return arr[0];
   };
-
+  let myTimeDeparture=flight.fromLocation.departureTimeZone/3600;
+  let myTimeArrival=flight.toLocation.arrivalTimeZone/3600;
   return (
     <Card
       sx={{ maxWidth: 400 }} style={{
@@ -42,10 +44,10 @@ const FlightsItem = ({ flight }) => {
           Number: {flight.aircraftNumber}
         </Typography>
         <Typography variant="body2" color="black">
-          Departure: {getDate(flight.departure.date)}
+          Departure: {getDate(flight.departure.date)} {" UTC " + (myTimeDeparture < 0 ?  myTimeDeparture :  "+" + myTimeDeparture)}
         </Typography>
         <Typography variant="body2" color="black">
-          Arrival: {getDate(flight.arrival.date)}
+          Arrival: {getDate(flight.arrival.date)} {" UTC " + (myTimeArrival < 0 ?  myTimeArrival :  "+" + myTimeArrival)}
         </Typography>
       </CardContent>
       <CardActions>

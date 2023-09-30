@@ -49,4 +49,18 @@ class FlightRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
     }
 
+//    public function getBusyFlightsByAircraft(int $aircraftId, string $fromTime, string $toTime): array
+//    {
+//        $qb = $this->createQueryBuilder("flight");
+//
+//        return $this->createQueryBuilder("flight")
+//            ->where('f.aircraft_id', ':aircraftId')
+//            ->andWhere('f.departure', ':departure')
+//            ->andWhere('f.arrival', ':arrival')
+//            ->setParameter('aircraftId', $aircraftId)
+//            ->setParameter('departure', $fromTime)
+//            ->setParameter('arrival', $toTime)
+//            ->getQuery()->getResult();
+//    }
+
 }
