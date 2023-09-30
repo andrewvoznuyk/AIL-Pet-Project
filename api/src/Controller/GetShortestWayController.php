@@ -47,8 +47,15 @@ class GetShortestWayController extends AbstractController
         }
 
         $flights = $this->entityManager->getRepository(Flight::class)->findBy(["isCompleted" => 0]);
+        $neededFlights = [];
 
-        $way = $this->searchTheShortestWayService->getArrayOfWays($fromCity, $toCity, $flights);
+        foreach ($flights as $flight) {
+            if (strtotime($flight->getDeparture()->format('Y-m-d H:i:s')) > strtotime(date("Y-m-d H:i:s"))) {
+                $neededFlights[] = $flight;
+            }
+        }
+
+        $way = $this->searchTheShortestWayService->getArrayOfWays($fromCity, $toCity, $neededFlights);
 
         return new JsonResponse($way, Response::HTTP_OK);
     }
