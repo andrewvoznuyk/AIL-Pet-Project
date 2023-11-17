@@ -70,6 +70,7 @@ services:
         ipv4_address: ${MYSQL_IPV4}
 
   phpmyadmin:
+    platform: linux/amd64
     image: phpmyadmin/phpmyadmin
     container_name: ${PROJECT_NAME}-phpmyadmin
     restart: unless-stopped
