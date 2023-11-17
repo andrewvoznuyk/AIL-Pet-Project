@@ -14,6 +14,7 @@ These instructions will cover usage information and for the docker container
 In order to run this container you'll need docker installed.
 
 * [Linux](https://docs.docker.com/linux/started/)
+* [MacOs](https://docs.docker.com/desktop/install/mac-install/)
 
 
 
